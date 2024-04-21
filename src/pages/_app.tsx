@@ -7,7 +7,7 @@ export default function App({ Component, pageProps }: any) {
       <Head>
         <title>Gneissname</title>
         <meta name="og:title" content="Gneissname" />
-        <meta property="og:image" content="cdn/icon.png" />
+        <meta property="og:image" content="/cdn/icon.png" />
         <meta name="theme-color" content="#020202" />
       </Head>
       <Component {...pageProps} />
