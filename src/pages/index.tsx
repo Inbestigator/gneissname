@@ -40,7 +40,7 @@ export default function Page({ latestVideos }: any) {
         </Card>
         <div className="flex flex-col md:flex-row gap-4">
           {latestVideos.map((video: any, index: number) => (
-            <Card key={video.id} className={(!isMobile || (isMobile && index == 0)) ? "block" : "hidden"}>
+            <Card key={video.id} className={"md:block " + ((index == 0) ? "block" : "hidden")}>
               <Image
                 src={video.thumbnail}
                 width={1920}
