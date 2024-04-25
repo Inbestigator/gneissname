@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/components/theme-provider";
 import "../styles/globals.css";
 import Head from "next/head";
 
@@ -10,7 +11,14 @@ export default function App({ Component, pageProps }: any) {
         <meta property="og:image" content="/cdn/icon.png" />
         <meta name="theme-color" content="#020202" />
       </Head>
-      <Component {...pageProps} />
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <Component {...pageProps} />
+      </ThemeProvider>
     </>
   );
 }
