@@ -14,6 +14,7 @@ import { getLatestVideos } from "../lib/fetchYT";
 import { FiExternalLink } from "react-icons/fi";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { useMediaQuery } from 'react-responsive';
 
 export async function getServerSideProps() {
   const latestVideos = await getLatestVideos();
@@ -25,6 +26,8 @@ export async function getServerSideProps() {
 }
 
 export default function Page({ latestVideos }: any) {
+  const isMobile = useMediaQuery({ maxWidth: 480 });
+
   return (
     <>
       <Header />
@@ -36,8 +39,8 @@ export default function Page({ latestVideos }: any) {
           </CardHeader>
         </Card>
         <div className="flex flex-col md:flex-row gap-4">
-          {latestVideos.map((video: any) => (
-            <Card key={video.id}>
+          {latestVideos.map((video: any, index: number) => (
+            <Card key={video.id} className={(!isMobile || (isMobile && index == 0)) ? "block" : "hidden"}>
               <Image
                 src={video.thumbnail}
                 width={1920}
