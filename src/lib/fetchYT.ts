@@ -1,8 +1,7 @@
-import { readField } from "./firebaseUtils";
+import { Video } from "@/components/latestVideos";
 
-export async function getLatestVideos() {
+export async function getLatestVideos(): Promise<Video[]> {
   try {
-    // const latestVideos = await readField("misc/youtube", "videos");
     const latestVideos = [
       {
         thumbnail:

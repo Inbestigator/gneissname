@@ -14,7 +14,7 @@ export default function Header() {
   const { setTheme } = useTheme();
 
   return (
-    <Menubar className="flex justify-between items-center w-full px-4 py-2">
+    <Menubar className="flex justify-between items-center w-full px-4 py-2 border-t-0 rounded-none border-x-0 justify-center md:justify-start">
       <Link className="hidden md:block" href="/">
         <Image
           src="/favicon.ico"
@@ -24,7 +24,7 @@ export default function Header() {
           alt={"Home icon"}
         />
       </Link>
-      <div className="flex items-center">
+      <div className="flex items-center md:justify-self-end m-0">
         <MenubarMenu>
           <MenubarTrigger>
             <Link href="https://youtube.com/@gneissname">Youtube</Link>
@@ -45,15 +45,9 @@ export default function Header() {
             <ModeToggle />
           </MenubarTrigger>
           <MenubarContent>
-            <MenubarItem onClick={() => setTheme("light")}>
-              Light
-            </MenubarItem>
-            <MenubarItem onClick={() => setTheme("dark")}>
-              Dark
-            </MenubarItem>
-            <MenubarItem onClick={() => setTheme("system")}>
-              System
-            </MenubarItem>
+            <MenubarItem onClick={() => setTheme("light")}>Light</MenubarItem>
+            <MenubarItem onClick={() => setTheme("dark")}>Dark</MenubarItem>
+            <MenubarItem onClick={() => setTheme("system")}>System</MenubarItem>
           </MenubarContent>
         </MenubarMenu>
       </div>
