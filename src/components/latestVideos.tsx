@@ -12,6 +12,7 @@ import Link from "next/link";
 import { FiExternalLink } from "react-icons/fi";
 import { getLatestVideos } from "@/lib/fetchYT";
 import { Skeleton } from "./ui/skeleton";
+import { ExternalLink } from "lucide-react";
 
 export type Video = {
   thumbnail: string;
@@ -121,7 +122,7 @@ export default function LatestVideos() {
           <CardFooter>
             <Button asChild>
               <Link href={"https://youtube.com/watch?v=" + video.id}>
-                Watch on YouTube <FiExternalLink className="ml-2" />
+                Watch on YouTube <ExternalLink className="ml-2 scale-75" />
               </Link>
             </Button>
           </CardFooter>
