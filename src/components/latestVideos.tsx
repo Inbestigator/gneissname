@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { FiExternalLink } from "react-icons/fi";
 import { getLatestVideos } from "@/lib/fetchYT";
 import { Skeleton } from "./ui/skeleton";
 import { ExternalLink } from "lucide-react";

@@ -19,9 +19,10 @@ export default function Header() {
 
   return (
     <NavigationMenu
-      className={`flex p-2 justify-center items-center md:justify-start min-w-full sticky top-0 bg-${
-        theme == "light" ? "white" : "black"
-      } border-b`}
+      className="flex p-2 justify-center items-center md:justify-start min-w-full sticky top-0 border-b"
+      style={{
+        backgroundColor: "hsl(var(--background))",
+      }}
     >
       <NavigationMenuList>
         <Link href="/" className="ml-4 hidden md:block">
