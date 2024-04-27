@@ -1,56 +1,69 @@
 import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+
 import { ModeToggle } from "./modeToggle";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function Header() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  async function swapThemes() {
+    setTheme(theme == "light" ? "dark" : "light");
+  }
 
   return (
-    <Menubar className="flex justify-between items-center w-full px-4 py-2 border-t-0 rounded-none border-x-0 justify-center md:justify-start">
-      <Link className="hidden md:block" href="/">
-        <Image
-          src="/favicon.ico"
-          width={40}
-          height={40}
-          className="rounded-sm h-7 w-7"
-          alt={"Home icon"}
-        />
-      </Link>
-      <div className="flex items-center md:justify-self-end m-0">
-        <MenubarMenu>
-          <MenubarTrigger>
-            <Link href="https://youtube.com/@gneissname">Youtube</Link>
-          </MenubarTrigger>
-        </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger>
-            <Link href="https://discord.gg/JYjNjbVNyc">Discord</Link>
-          </MenubarTrigger>
-        </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger>
-            <Link href="mailto:gneiss.name@gmail.com">Contact</Link>
-          </MenubarTrigger>
-        </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger className="cursor-pointer">
+    <NavigationMenu
+      className={`flex p-2 justify-center items-center md:justify-start min-w-full sticky top-0 bg-${
+        theme == "light" ? "white" : "black"
+      } border-b`}
+    >
+      <NavigationMenuList>
+        <Link href="/" className="ml-4 hidden md:block">
+          <Image
+            src="/favicon.ico"
+            width={40}
+            height={40}
+            className="rounded-sm h-7 w-7"
+            alt={"Home icon"}
+            draggable={false}
+          />
+        </Link>
+        <NavigationMenuItem>
+          <Link href="https://youtube.com/@gneissname" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Youtube
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link href="https://discord.gg/JYjNjbVNyc" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Discord
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link href="mailto:gneiss.name@gmail.com" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Contact
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            className={navigationMenuTriggerStyle()}
+            onClick={() => swapThemes()}
+          >
             <ModeToggle />
-          </MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem onClick={() => setTheme("light")}>Light</MenubarItem>
-            <MenubarItem onClick={() => setTheme("dark")}>Dark</MenubarItem>
-            <MenubarItem onClick={() => setTheme("system")}>System</MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
-      </div>
-    </Menubar>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
   );
 }

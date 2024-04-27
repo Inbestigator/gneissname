@@ -63,13 +63,12 @@ export function SkeletonVideos({ index }: { index: number }) {
     <Card className={"md:block " + (index == 0 ? "block" : "hidden")}>
       <Skeleton className="rounded-t-lg rounded-b-none">
         <Image
-          src={
-            "https://i.ytimg.com/vi/6nulqmkLKqI/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCY-iVXyn9jnEYFTvH2lPFcXAuADg"
-          }
+          src={"/cdn/holderThumbnail.png"}
           width={1920}
           height={1080}
-          className="overflow-hidden rounded-t-lg invisible"
+          className="overflow-hidden rounded-t-lg invisible aspect-[16/9]"
           alt={"Skeleton thumbnail"}
+          draggable={false}
         />
       </Skeleton>
       <Skeleton className="w-full rounded-t-lg rounded-b-none" />
@@ -113,6 +112,7 @@ export default function LatestVideos() {
             height={1080}
             className="overflow-hidden rounded-t-lg"
             alt={"Thumbnail for " + video.title}
+            draggable={false}
           />
           <CardHeader>
             <CardTitle>{video.title}</CardTitle>
