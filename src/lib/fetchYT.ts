@@ -5,8 +5,17 @@ export async function getLatestVideos(): Promise<Video[]> {
     const latestVideos = [
       {
         thumbnail:
-          "https://i.ytimg.com/vi/khsviAjdjHg/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBcaNNax-rGxlVsyjrAe41_jNAoFw",
+          "https://i.ytimg.com/vi/e0HM_vfSuDw/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCa7TSWZ8ixd6hEdoroeW92UfsRag",
         index: 0,
+        description:
+          "Talking about the pitfalls of averaging colors and how gamma and color space affects it.",
+        id: "e0HM_vfSuDw",
+        title: "How to average color",
+      },
+      {
+        thumbnail:
+          "https://i.ytimg.com/vi/khsviAjdjHg/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBcaNNax-rGxlVsyjrAe41_jNAoFw",
+        index: 1,
         description:
           "I just wanted to check out if the new paintings are actually darker like everyone is saying.",
         id: "khsviAjdjHg",
@@ -15,20 +24,11 @@ export async function getLatestVideos(): Promise<Video[]> {
       {
         thumbnail:
           "https://i.ytimg.com/vi/6nulqmkLKqI/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCY-iVXyn9jnEYFTvH2lPFcXAuADg",
-        index: 1,
+        index: 2,
         description:
           "Discussion on how geology affects people and what geologists do.",
         id: "6nulqmkLKqI",
         title: "Why care about Geology",
-      },
-      {
-        thumbnail:
-          "https://i.ytimg.com/vi/EIlp8wyY97c/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA5tHsd-3VRm6M4O649M3JRMMjAPg",
-        index: 2,
-        description:
-          "I went back to redo the missing color video from last year but this time using oklab and some math to figure them out.",
-        id: "EIlp8wyY97c",
-        title: "The Real Missing Colors of Minecraft (*1.20)",
       },
     ];
     return latestVideos;
