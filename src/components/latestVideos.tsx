@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Card,
@@ -120,7 +120,7 @@ export default function LatestVideos() {
           </CardHeader>
           <CardFooter>
             <Button asChild>
-              <Link href={"https://youtube.com/watch?v=" + video.id}>
+              <Link target="_blank" href={"https://youtube.com/watch?v=" + video.id}>
                 Watch on YouTube <ExternalLink className="ml-2 scale-75" />
               </Link>
             </Button>
