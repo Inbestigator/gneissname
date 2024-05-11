@@ -6,6 +6,7 @@ export const siteConfig = {
     youtube: "https://youtube.com/@gneissname",
     discord: "https://discord.gg/JYjNjbVNyc",
   },
+  ogImage: "/icon.png"
 };
 
 export type SiteConfig = typeof siteConfig;

@@ -1,9 +1,11 @@
-export default function Component() {
+export default function Footer() {
   return (
-    <div className="container mx-auto px-4 md:px-6 lg:px-8">
-      <footer className="flex h-20 w-full shrink-0 items-center px-4 md:px-6">
-        <p className="mx-auto">&copy;2024 - Gneissname</p>
-      </footer>
-    </div>
+    <footer className="py-6 md:px-8 md:py-0">
+      <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+        <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
+          &copy;2024 Gneissname. Built by Inbestigator.
+        </p>
+      </div>
+    </footer>
   );
 }

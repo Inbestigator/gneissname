@@ -17,11 +17,9 @@ export function MainNav() {
           alt={"Home icon"}
           draggable={false}
         />
-        <span className="font-bold inline-block">
-          {siteConfig.name}
-        </span>
+        <span className="font-bold inline-block">{siteConfig.name}</span>
       </Link>
-      <nav className="flex items-center gap-4 text-sm lg:gap-6">
+      <nav className="flex items-center text-sm gap-6">
         <Link
           href={siteConfig.links.youtube}
           className={cn(

@@ -1,11 +1,11 @@
 import "./globals.css";
 import { Inter as FontSans } from "next/font/google";
-
+import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import Footer from "@/components/footer";
 import { ThemeProvider } from "next-themes";
 import NavBar from "@/components/navbar";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -13,15 +13,62 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Gneissname",
-  description: "I'm a geologist and YouTuber who likes to make things.",
+  title: {
+    default: siteConfig.name,
+    template: `%s - ${siteConfig.name}`,
+  },
+  metadataBase: new URL(siteConfig.url),
+  description: siteConfig.description,
+  keywords: ["Gneissname", "Rocks", "Geology", "YouTube", "Minecraft"],
+  authors: [
+    {
+      name: "Inbestigator",
+      url: "https://inbestigator.vercel.app",
+    },
+  ],
+  creator: "shadcn",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+  },
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
+
+interface RootLayoutProps {
   children: React.ReactNode;
-}>) {
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
@@ -33,7 +80,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NavBar />
-          {children}
+          <main className="flex-1">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

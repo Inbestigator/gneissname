@@ -12,6 +12,7 @@ import LatestVideos from "@/components/latestVideos";
 export default function Page() {
   return (
     <main className="flex flex-col items-center justify-between container mx-auto p-4 md:p-6 lg:p-8">
+      <CardTitle className="m-4 flex md:hidden text-3xl">Gneissname</CardTitle>
       <Card className="w-full m-4">
         <CardHeader>
           <CardTitle>About me</CardTitle>
