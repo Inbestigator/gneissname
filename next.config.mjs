@@ -9,6 +9,14 @@ const nextConfig = {
       },
     ],
   },
+  rewrites: async () => {
+    return [
+      {
+        source: "/server-map",
+        destination: "/server-map/unmined.index.html",
+      },
+    ];
+  },
 };
 
 export default nextConfig;
