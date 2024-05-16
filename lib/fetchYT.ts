@@ -1,4 +1,4 @@
-import { Video } from "@/components/latestVideos";
+import { Video } from "@/components/latestVideos"
 
 export async function getLatestVideos(): Promise<Video[]> {
   try {
@@ -30,10 +30,10 @@ export async function getLatestVideos(): Promise<Video[]> {
         id: "6nulqmkLKqI",
         title: "Why care about Geology",
       },
-    ];
-    return latestVideos;
+    ]
+    return latestVideos
   } catch (error) {
-    console.error("Error fetching latest videos:", error);
-    return [];
+    console.error("Error fetching latest videos:", error)
+    return []
   }
 }

@@ -22,7 +22,7 @@ export default function IndexPage() {
             Gneissname
           </h1>
           <p className="max-w-full text-lg text-muted-foreground md:max-w-[800px] md:text-xl">
-            I&apos;m a geologist and YouTuber who likes to make things
+            I&apos;m a geologist and YouTuber who likes to make things.
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-4">

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import Link, { LinkProps } from "next/link"
 import { useRouter } from "next/navigation"
 
@@ -65,7 +66,13 @@ export function MobileNav({ items }: MobileNavProps) {
           className="flex items-center"
           onOpenChange={setOpen}
         >
-          <Icons.logo className="mr-2 size-4" />
+          <Image
+            src="/cdn/icon.png"
+            alt="Gneiss icon"
+            width={32}
+            height={32}
+            className="mr-2 size-2 rounded-sm"
+          />
           <span className="font-bold">{siteConfig.name}</span>
         </MobileLink>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">

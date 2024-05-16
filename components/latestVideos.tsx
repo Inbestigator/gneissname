@@ -102,7 +102,13 @@ export default function LatestVideos() {
 
   if (latestVideos.error) {
     console.error(latestVideos.error.message)
-    return
+    return (
+      <>
+        <SkeletonVideos index={0} />
+        <SkeletonVideos index={1} />
+        <SkeletonVideos index={2} />
+      </>
+    )
   }
 
   return (
@@ -110,7 +116,9 @@ export default function LatestVideos() {
       {latestVideos.result?.map((video: Video) => (
         <Card
           key={video.id}
-          className={"md:col-span-1 md:block " + (video.index == 0 ? "block" : "hidden")}
+          className={
+            "md:col-span-1 md:block " + (video.index == 0 ? "block" : "hidden")
+          }
         >
           <Image
             src={video.thumbnail}
