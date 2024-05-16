@@ -71,7 +71,7 @@ export function MobileNav({ items }: MobileNavProps) {
             alt="Gneiss icon"
             width={32}
             height={32}
-            className="mr-2 size-2 rounded-sm"
+            className="mr-2 size-4 rounded-sm"
           />
           <span className="font-bold">{siteConfig.name}</span>
         </MobileLink>
