@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
@@ -15,8 +16,8 @@ const nextConfig = {
         source: "/server-map",
         destination: "/server-map/unmined.index.html",
       },
-    ];
+    ]
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig
