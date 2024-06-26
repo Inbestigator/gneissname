@@ -1,39 +1,54 @@
+import fs from "fs"
+
 import { Video } from "@/components/latestVideos"
 
 export async function getLatestVideos(): Promise<Video[]> {
+  let latestVideos: Video[] = []
+
   try {
-    const latestVideos = [
-      {
-        thumbnail:
-          "https://i.ytimg.com/vi/UqA_bVS7IV8/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBZUfZHmdTMlMuyPuINtbg9XUymGA",
-        index: 0,
-        description:
-          "My discord community setup a server to play together on and I wanted to setup a base on it.",
-        id: "UqA_bVS7IV8",
-        title: "The Gneiss Community Server SMP #01",
-      },
-      {
-        thumbnail:
-          "https://i.ytimg.com/vi/YbclYBh9n8I/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCKWUgtxeAUG2suznDkTeseZLgsEQ",
-        index: 1,
-        description:
-          "Somewhat of a tutorial for how i go about animating the blocks in my videos.",
-        id: "YbclYBh9n8I",
-        title: "Block and block_display animations",
-      },
-      {
-        thumbnail:
-          "https://i.ytimg.com/vi/p-TzJihKn1Q/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD8vlqOvR256K-lECYFg8aJ5zMkvw",
-        index: 2,
-        description:
-          "1.20.6 added yet another format to display colors in Minecraft.",
-        id: "p-TzJihKn1Q",
-        title: "Why does Minecraft keep adding new color formats?",
-      },
-    ]
-    return latestVideos
+    latestVideos = await fetchLatestVideos()
   } catch (error) {
-    console.error("Error fetching latest videos:", error)
-    return []
+    try {
+      latestVideos = await loadSavedVideos()
+    } catch (error) {
+      return []
+    }
   }
+
+  return latestVideos
+}
+
+async function fetchLatestVideos(): Promise<Video[]> {
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCCk6atPf8zBPd-5C7rgEkRg&maxResults=3&order=date&type=video&key=AIzaSyA_TRfGdlyKcpwc550xhh6ZWhmmcr1exFo`
+
+  const response = await fetch(url)
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`)
+  }
+
+  const data = await response.json()
+
+  const videos: Video[] = data.items.map((item: any, index: number) => ({
+    thumbnail: item.snippet.thumbnails.high.url,
+    index,
+    description: item.snippet.description,
+    id: item.id.videoId,
+    title: item.snippet.title,
+  }))
+
+  await writeVideosToFile(videos)
+
+  return videos
+}
+
+async function writeVideosToFile(videos: Video[]): Promise<void> {
+  const jsonContent = JSON.stringify(videos, null, 2)
+  await fs.promises.writeFile("latestVideos.json", jsonContent)
+}
+
+async function loadSavedVideos(): Promise<Video[]> {
+  const data = await fs.promises.readFile("latestVideos.json", "utf8")
+  const savedVideos: Video[] = JSON.parse(data)
+  return savedVideos
 }

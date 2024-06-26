@@ -1,6 +1,3 @@
-"use client"
-
-import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { ExternalLink } from "lucide-react"
@@ -15,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
+import { AspectRatio } from "./ui/aspect-ratio"
 import { Skeleton } from "./ui/skeleton"
 
 export type Video = {
@@ -23,43 +21,6 @@ export type Video = {
   description: string
   id: string
   title: string
-}
-
-interface Request<T> {
-  loading?: boolean
-  error?: Error
-  result?: T
-}
-
-const requestLoading = Object.freeze({ loading: true })
-
-const useFetchVideos = (): Request<Video[]> => {
-  const [latestVideos, setLatestVideos] =
-    useState<Request<Video[]>>(requestLoading)
-
-  useEffect(() => {
-    let canceled = false
-
-    setLatestVideos(requestLoading)
-    getLatestVideos().then(
-      (result) => {
-        if (!canceled) {
-          setLatestVideos({ result })
-        }
-      },
-      (error) => {
-        if (!canceled) {
-          setLatestVideos({ error })
-        }
-      }
-    )
-
-    return () => {
-      canceled = true
-    }
-  }, [])
-
-  return latestVideos
 }
 
 export function SkeletonVideos({ index }: { index: number }) {
@@ -80,54 +41,42 @@ export function SkeletonVideos({ index }: { index: number }) {
       <Skeleton className="w-full rounded-b-none rounded-t-lg" />
       <CardHeader>
         <CardTitle>
-          <Skeleton className="h-[30px] w-[300px]" />
+          <Skeleton className="h-[30px]" />
         </CardTitle>
+        <CardDescription className="space-y-1">
+          <Skeleton className="h-[10px]" />
+          <Skeleton className="h-[10px]" />
+          <Skeleton className="h-[10px] w-3/4" />
+        </CardDescription>
       </CardHeader>
     </Card>
   )
 }
 
-export default function LatestVideos() {
-  const latestVideos: Request<Video[]> = useFetchVideos()
-
-  if (latestVideos.loading) {
-    return (
-      <>
-        <SkeletonVideos index={0} />
-        <SkeletonVideos index={1} />
-        <SkeletonVideos index={2} />
-      </>
-    )
-  }
-
-  if (latestVideos.error) {
-    console.error(latestVideos.error.message)
-    return (
-      <>
-        <SkeletonVideos index={0} />
-        <SkeletonVideos index={1} />
-        <SkeletonVideos index={2} />
-      </>
-    )
-  }
+export default async function LatestVideos() {
+  const latestVideos: Video[] = await getLatestVideos()
 
   return (
     <>
-      {latestVideos.result?.map((video: Video) => (
+      {latestVideos?.map((video: Video) => (
         <Card
           key={video.id}
           className={
             "md:col-span-1 md:block " + (video.index == 0 ? "block" : "hidden")
           }
         >
-          <Image
-            src={video.thumbnail}
-            width={1920}
-            height={1080}
-            className="overflow-hidden rounded-t-lg"
-            alt={"Thumbnail for " + video.title}
-            draggable={false}
-          />
+          <AspectRatio
+            className="flex items-center overflow-hidden rounded-t-lg"
+            ratio={16 / 9}
+          >
+            <Image
+              src={video.thumbnail}
+              width={1920}
+              height={1080}
+              alt={"Thumbnail for " + video.title}
+              draggable={false}
+            />
+          </AspectRatio>
           <CardHeader>
             <CardTitle>{video.title}</CardTitle>
             <CardDescription>{video.description}</CardDescription>

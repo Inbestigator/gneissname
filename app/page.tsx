@@ -1,17 +1,16 @@
+import { Suspense } from "react"
 import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
-import { AspectRatio } from "@/components/ui/aspect-ratio"
 import BentoGrid from "@/components/ui/bento-grid"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import LatestVideos from "@/components/latestVideos"
+import LatestVideos, { SkeletonVideos } from "@/components/latestVideos"
 
 export default function IndexPage() {
   return (
@@ -57,7 +56,18 @@ export default function IndexPage() {
             </CardDescription>
           </CardHeader>
         </Card>
-        <LatestVideos />
+        <Suspense
+          fallback={
+            <>
+              <SkeletonVideos index={0} />
+              <SkeletonVideos index={1} />
+              <SkeletonVideos index={2} />
+            </>
+          }
+        >
+          {/* @ts-ignore*/}
+          <LatestVideos />
+        </Suspense>
       </BentoGrid>
     </>
   )

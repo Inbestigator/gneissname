@@ -11,7 +11,8 @@
     "preview": "next build && next start",
     "typecheck": "tsc --noEmit",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
-    "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache"
+    "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
+    "standardize": "npm run lint:fix && npm run typecheck && npm run format:write && npm run preview"
   },
   "dependencies": {
     "@radix-ui/react-aspect-ratio": "^1.0.3",
