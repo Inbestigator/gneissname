@@ -71,51 +71,20 @@
 
     document.title = UnminedMapProperties.worldName + " - " + document.title;
     const queryParams = new URLSearchParams(window.location.search);
-    if (queryParams.has('guess')) {
-      UnminedCustomMarkers.isEnabled = true;
+    queryParams.forEach((value, key) => {
       UnminedCustomMarkers.markers.push({
-        x: queryParams.get('guess').split(",")[0],
-        z: queryParams.get('guess').split(",")[1],
+        x: value.split(",")[0],
+        z: value.split(",")[1],
         image: "server-map/pin.png",
         imageAnchor: [0.5, 1],
         imageScale: 0.5,
-        text: "Guess",
+        text: key.charAt(0).toUpperCase() + key.slice(1),
         textColor: "red",
         offsetX: 0,
         offsetY: 20,
         font: "bold 20px Calibri,sans serif",
       })
-    }
-    if (queryParams.has('answer')) {
-      UnminedCustomMarkers.isEnabled = true;
-      UnminedCustomMarkers.markers.push({
-        x: queryParams.get('answer').split(",")[0],
-        z: queryParams.get('answer').split(",")[1],
-        image: "server-map/pin.png",
-        imageAnchor: [0.5, 1],
-        imageScale: 0.5,
-        text: "Answer",
-        textColor: "red",
-        offsetX: 0,
-        offsetY: 20,
-        font: "bold 20px Calibri,sans serif",
-      })
-    }
-    if (queryParams.has('pin')) {
-      UnminedCustomMarkers.isEnabled = true;
-      UnminedCustomMarkers.markers.push({
-        x: queryParams.get('pin').split(",")[0],
-        z: queryParams.get('pin').split(",")[1],
-        image: "server-map/pin.png",
-        imageAnchor: [0.5, 1],
-        imageScale: 0.5,
-        text: "Pin",
-        textColor: "red",
-        offsetX: 0,
-        offsetY: 20,
-        font: "bold 20px Calibri,sans serif",
-      })
-    }
+    })
 
     if (UnminedCustomMarkers && UnminedCustomMarkers.isEnabled && UnminedCustomMarkers.markers) {
       UnminedMapProperties.markers = UnminedMapProperties.markers.concat(UnminedCustomMarkers.markers);
