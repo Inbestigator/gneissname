@@ -1,21 +1,54 @@
-import { siteConfig } from "@/config/site"
-import { MainNav } from "@/components/main-nav"
-import { ThemeToggle } from "@/components/theme-toggle"
-
-import { MobileNav } from "./mobile-nav"
+import Image from "next/image"
+import Link from "next/link"
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 max-w-screen-2xl items-center">
-        <MainNav items={siteConfig.mainNav} />
-        <MobileNav items={siteConfig.mainNav} />
-        <div className="flex flex-1 items-center justify-end space-x-4">
-          <nav className="flex items-center space-x-1">
-            <ThemeToggle />
-          </nav>
+    <div className="border-b border-neutral">
+      <div className="navbar max-w-7xl mx-auto">
+        <div className="flex-1">
+          <Link href="/" className="btn btn-ghost text-xl">
+            <Image
+              src="/cdn/icon.png"
+              alt="Gneiss icon"
+              width={32}
+              height={32}
+              className="size-6 rounded-sm"
+            />
+            Gneissname
+          </Link>
+        </div>
+        <div className="flex-none">
+          <ul className="menu menu-horizontal px-1">
+            <li>
+              <Link
+                target="_blank"
+                rel="noreferrer"
+                href="https://youtube.com/@gneissname"
+              >
+                YouTube
+              </Link>
+            </li>
+            <li>
+              <Link
+                target="_blank"
+                rel="noreferrer"
+                href="https://discord.gg/JYjNjbVNyc"
+              >
+                Discord
+              </Link>
+            </li>
+            <li>
+              <Link
+                target="_blank"
+                rel="noreferrer"
+                href="mailto:gneiss.name@gmail.com"
+              >
+                Contact
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
-    </header>
+    </div>
   )
 }

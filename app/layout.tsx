@@ -1,12 +1,13 @@
 import "@/styles/globals.css"
+import { Suspense } from "react"
 import { Metadata, Viewport } from "next"
+import { Inter } from "next/font/google"
 
 import { siteConfig } from "@/config/site"
-import { fontSans } from "@/lib/fonts"
-import { cn } from "@/lib/utils"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
-import { ThemeProvider } from "@/components/theme-provider"
+
+import { Providers } from "./providers"
 
 export const viewport: Viewport[] = [
   { themeColor: "(prefers-color-scheme: light)", colorScheme: "light" },
@@ -21,8 +22,6 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   icons: {
     icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
   },
 }
 
@@ -30,20 +29,33 @@ interface RootLayoutProps {
   children: React.ReactNode
 }
 
+const inter = Inter({ subsets: ["latin"] })
+
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
-      >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <html lang="en">
+      <body className={inter.className}>
+        <Providers
+          themeProps={{
+            attribute: "data-theme",
+            defaultTheme: "system",
+            enableSystem: true,
+          }}
+        >
           <SiteHeader />
-          <main className="flex-1">{children}</main>
+          <main className="mx-auto max-w-7xl grow px-6 pt-16">
+            <Suspense
+              fallback={
+                <div className="flex w-full items-center justify-center">
+                  <span className="loading loading-bars loading-lg"></span>
+                </div>
+              }
+            >
+              {children}
+            </Suspense>
+          </main>
           <SiteFooter />
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   )

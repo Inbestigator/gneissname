@@ -2,20 +2,13 @@ import { Suspense } from "react"
 import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
-import BentoGrid from "@/components/ui/bento-grid"
-import { buttonVariants } from "@/components/ui/button"
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import BentoGrid from "@/components/bento-grid"
 import LatestVideos, { SkeletonVideos } from "@/components/latestVideos"
 
 export default function IndexPage() {
   return (
     <>
-      <section className="container flex flex-col gap-4 pb-8 pt-6 md:py-10">
+      <div className="container flex flex-col gap-4 pb-8 pt-6 md:py-10">
         <div className="flex w-full flex-col items-center gap-2 text-center">
           <h1 className="text-[max(30px,min(5vw,60px))] font-extrabold leading-tight tracking-tighter">
             Gneissname
@@ -29,7 +22,7 @@ export default function IndexPage() {
             target="_blank"
             rel="noreferrer"
             href={siteConfig.links.youtube}
-            className={buttonVariants()}
+            className="btn btn-primary flex-1 md:flex-none"
           >
             YouTube
           </Link>
@@ -37,25 +30,25 @@ export default function IndexPage() {
             target="_blank"
             rel="noreferrer"
             href={siteConfig.links.discord}
-            className={buttonVariants()}
+            className="btn btn-outline flex-1 md:flex-none"
           >
             Discord
           </Link>
         </div>
-      </section>
+      </div>
 
       <BentoGrid className="md:grid-cols-3">
-        <Card className="md:col-span-3">
-          <CardHeader>
-            <CardTitle>About me</CardTitle>
-            <CardDescription>
+        <div className="card bg-base-200 md:col-span-3">
+          <div className="card-body">
+            <h2 className="card-title">About me</h2>
+            <p>
               I try to explain geological concepts and other topics of interest
               to me in an understandable and fun way through the lens of
               Minecraft. Join my loyal &quot;gnerds&quot; and let&apos;s have
               some fun!
-            </CardDescription>
-          </CardHeader>
-        </Card>
+            </p>
+          </div>
+        </div>
         <Suspense
           fallback={
             <>

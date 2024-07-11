@@ -3,17 +3,7 @@ import Link from "next/link"
 import { ExternalLink } from "lucide-react"
 
 import { getLatestVideos } from "@/lib/fetchYT"
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-
-import { AspectRatio } from "./ui/aspect-ratio"
-import { Skeleton } from "./ui/skeleton"
+import { cn } from "@/lib/utils"
 
 export type Video = {
   thumbnail: string
@@ -25,31 +15,25 @@ export type Video = {
 
 export function SkeletonVideos({ index }: { index: number }) {
   return (
-    <Card
-      className={"md:col-span-1 md:block " + (index == 0 ? "block" : "hidden")}
+    <div
+      className={
+        "card bg-base-200 md:col-span-1 md:block " +
+        (index == 0 ? "block" : "hidden")
+      }
     >
-      <Skeleton className="rounded-b-none rounded-t-lg">
-        <Image
-          src={"/cdn/holderThumbnail.png"}
-          width={1920}
-          height={1080}
-          className="invisible aspect-[16/9] overflow-hidden rounded-t-lg"
-          alt={"Skeleton thumbnail"}
-          draggable={false}
-        />
-      </Skeleton>
-      <Skeleton className="w-full rounded-b-none rounded-t-lg" />
-      <CardHeader>
-        <CardTitle>
-          <Skeleton className="h-[30px]" />
-        </CardTitle>
-        <CardDescription className="space-y-1">
-          <Skeleton className="h-[10px]" />
-          <Skeleton className="h-[10px]" />
-          <Skeleton className="h-[10px] w-3/4" />
-        </CardDescription>
-      </CardHeader>
-    </Card>
+      <figure className="skeleton flex items-center overflow-hidden aspect-video" />
+      <div className="card-body">
+        <h2 className="card-title skeleton h-8" />
+        <p className="skeleton h-3 w-11/12" />
+        <p className="skeleton h-3" />
+        <p className="skeleton h-3 w-3/4" />
+        <div className="card-actions">
+          <div className="skeleton btn text-opacity-0">
+            Watch on YouTube <ExternalLink size={18} />
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -58,17 +42,15 @@ export default async function LatestVideos() {
 
   return (
     <>
-      {latestVideos?.map((video: Video) => (
-        <Card
+      {latestVideos?.map((video: Video, index) => (
+        <div
           key={video.id}
-          className={
-            "md:col-span-1 md:block " + (video.index == 0 ? "block" : "hidden")
-          }
+          className={cn(
+            "card md:col-span-1 bg-base-200 md:block",
+            index != 0 && "hidden"
+          )}
         >
-          <AspectRatio
-            className="flex items-center overflow-hidden rounded-t-lg"
-            ratio={16 / 9}
-          >
+          <figure className="flex items-center overflow-hidden aspect-video">
             <Image
               src={video.thumbnail}
               width={1920}
@@ -76,22 +58,21 @@ export default async function LatestVideos() {
               alt={"Thumbnail for " + video.title}
               draggable={false}
             />
-          </AspectRatio>
-          <CardHeader>
-            <CardTitle>{video.title}</CardTitle>
-            <CardDescription>{video.description}</CardDescription>
-          </CardHeader>
-          <CardFooter>
-            <Button asChild>
+          </figure>
+          <div className="card-body">
+            <h2 className="card-title">{video.title}</h2>
+            <p className="break-words">{video.description}</p>
+            <div className="card-actions">
               <Link
                 target="_blank"
                 href={"https://youtube.com/watch?v=" + video.id}
+                className="btn btn-neutral"
               >
-                Watch on YouTube <ExternalLink className="ml-2 scale-75" />
+                Watch on YouTube <ExternalLink size={18} />
               </Link>
-            </Button>
-          </CardFooter>
-        </Card>
+            </div>
+          </div>
+        </div>
       ))}
     </>
   )
