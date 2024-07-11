@@ -17,7 +17,7 @@ export function SiteHeader() {
             Gneissname
           </Link>
         </div>
-        <div className="flex-none">
+        <div className="flex-none hidden md:block">
           <ul className="menu menu-horizontal px-1">
             <li>
               <Link
