@@ -3,7 +3,7 @@ import Link from "next/link"
 
 export function SiteHeader() {
   return (
-    <div className="border-b border-neutral">
+    <div className="border-b border-neutral bg-base-100 relative z-10">
       <div className="navbar max-w-7xl mx-auto">
         <div className="flex-1">
           <Link href="/" className="btn btn-ghost text-xl">
