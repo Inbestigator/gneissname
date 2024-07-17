@@ -5,7 +5,6 @@ import { Inter } from "next/font/google"
 
 import { siteConfig } from "@/config/site"
 import { SiteFooter } from "@/components/site-footer"
-import { SiteHeader } from "@/components/site-header"
 
 import { Providers } from "./providers"
 
@@ -42,7 +41,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
             enableSystem: true,
           }}
         >
-          <SiteHeader />
           <main className="mx-auto max-w-7xl grow px-6 pt-16">
             <Suspense
               fallback={
