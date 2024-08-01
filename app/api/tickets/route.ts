@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 
 import { authOptions } from "@/lib/authOptions"
-import { whitelist } from "@/app/dashboard/page"
+import { whitelist } from "@/app/dashboard/whitelist"
 
 export async function GET() {
   try {

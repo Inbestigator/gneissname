@@ -19,8 +19,7 @@ export async function getLatestVideos(): Promise<Video[]> {
 }
 
 async function fetchLatestVideos(): Promise<Video[]> {
-  const url =
-    `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCCk6atPf8zBPd-5C7rgEkRg&maxResults=3&order=date&type=video&key=${process.env.YOUTUBE_API_KEY}`
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCCk6atPf8zBPd-5C7rgEkRg&maxResults=3&order=date&type=video&key=${process.env.YOUTUBE_API_KEY}`
 
   const response = await fetch(url)
 

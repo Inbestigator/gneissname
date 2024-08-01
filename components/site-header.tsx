@@ -3,8 +3,8 @@ import Link from "next/link"
 
 export function SiteHeader() {
   return (
-    <div className="border-b border-neutral bg-base-100 relative z-10">
-      <div className="navbar max-w-7xl mx-auto">
+    <div className="relative z-10 border-b border-neutral bg-base-100">
+      <div className="navbar mx-auto max-w-7xl">
         <div className="flex-1">
           <Link href="/" className="btn btn-ghost text-xl">
             <Image
@@ -17,7 +17,7 @@ export function SiteHeader() {
             Gneissname
           </Link>
         </div>
-        <div className="flex-none hidden md:block">
+        <div className="hidden flex-none md:block">
           <ul className="menu menu-horizontal px-1">
             <li>
               <Link

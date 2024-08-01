@@ -21,14 +21,14 @@ export function SkeletonVideos({ index }: { index: number }) {
         (index == 0 ? "block" : "hidden")
       }
     >
-      <figure className="skeleton flex items-center overflow-hidden aspect-video" />
+      <figure className="skeleton flex aspect-video items-center overflow-hidden" />
       <div className="card-body">
         <h2 className="card-title skeleton h-8" />
         <p className="skeleton h-3 w-11/12" />
         <p className="skeleton h-3" />
         <p className="skeleton h-3 w-3/4" />
         <div className="card-actions">
-          <div className="skeleton btn text-opacity-0">
+          <div className="btn skeleton text-opacity-0">
             Watch on YouTube <ExternalLink size={18} />
           </div>
         </div>
@@ -46,11 +46,11 @@ export default async function LatestVideos() {
         <div
           key={video.id}
           className={cn(
-            "card md:col-span-1 bg-base-200 md:block",
+            "card bg-base-200 md:col-span-1 md:block",
             index != 0 && "hidden"
           )}
         >
-          <figure className="flex items-center overflow-hidden aspect-video">
+          <figure className="flex aspect-video items-center overflow-hidden">
             <Image
               src={video.thumbnail}
               width={1920}

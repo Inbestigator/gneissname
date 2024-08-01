@@ -13,7 +13,7 @@ export default function IndexPage() {
           <h1 className="text-[max(30px,min(5vw,60px))] font-extrabold leading-tight tracking-tighter">
             Gneissname
           </h1>
-          <p className="max-w-full text-lg text-muted-foreground md:max-w-[800px] md:text-xl">
+          <p className="text-muted-foreground max-w-full text-lg md:max-w-[800px] md:text-xl">
             I&apos;m a geologist and YouTuber who likes to make things.
           </p>
         </div>

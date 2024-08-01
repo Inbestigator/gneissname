@@ -45,7 +45,7 @@ export default function Tickets() {
     <div className="card bg-base-200">
       <div className="card-body overflow-x-scroll">
         <h2 className="card-title">Tickets</h2>
-        <div role="tablist" className="tabs tabs-boxed flex-wrap flex">
+        <div role="tablist" className="tabs-boxed tabs flex flex-wrap">
           {data?.map((ticket: any) => (
             <a
               role="tab"
