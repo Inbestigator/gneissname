@@ -33,11 +33,11 @@ export async function deleteTicket(data: FormData) {
 
     if (!response.ok) throw new Error("Failed to fetch messages")
 
-    const messageId = (
-      await ((await response.json()) as any[]).findLast(
-        (m) => m.author.id === "1202823859930136586" && m.embeds[0]?.title
-      )
-    ).id
+    const messageId = [...(await response.json())]
+      .reverse()
+      .find(
+        (m: any) => m.author.id === "1202823859930136586" && m.embeds[0]?.title
+      ).id
 
     if (!messageId) throw new Error("No message found")
 

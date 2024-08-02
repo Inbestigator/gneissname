@@ -144,7 +144,7 @@ function EditTicket({
             }
           }}
         >
-          <button type="submit" className="btn btn-error btn-outline">
+          <button type="submit" className="btn btn-outline btn-error">
             Delete
           </button>
           <input type="hidden" name="ticketId" value={ticket.id} />
