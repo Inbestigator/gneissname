@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/authOptions"
 import Tickets from "@/components/tickets"
 
+import { deleteTicket, updateTicket } from "./actions"
 import { whitelist } from "./whitelist"
 
 export default async function DashboardPage() {
@@ -12,5 +13,5 @@ export default async function DashboardPage() {
     redirect("/login")
   }
 
-  return <Tickets />
+  return <Tickets updateTicket={updateTicket} deleteTicket={deleteTicket} />
 }
