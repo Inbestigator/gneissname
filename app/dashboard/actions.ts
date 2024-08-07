@@ -70,7 +70,7 @@ export async function deleteTicket(data: FormData) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: `[Solved] ${data.get("name")`,
+        name: `[Solved] ${data.get("name")}`,
         locked: true,
         archived: true,
       }),
