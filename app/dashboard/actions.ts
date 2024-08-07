@@ -11,7 +11,6 @@ export async function updateTicket(data: FormData) {
       return
     }
     
-    if (!session.user || !whitelists.includ
     await fetch(`https://discord.com/api/v9/channels/${data.get("ticketId")}`, {
       method: "PATCH",
       headers: {
