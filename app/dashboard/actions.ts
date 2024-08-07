@@ -1,7 +1,17 @@
 "use server"
 
+import { getServerSession } from "next-auth"
+import { whitelist } from "./whitelist"
+import { authOptions } from "@/lib/authOptions"
+
 export async function updateTicket(data: FormData) {
   try {
+    const session = await getServerSession(authOptions)
+    if (!session || !whitelist.includes(session.user.id)) {
+      return
+    }
+    
+    if (!session.user || !whitelists.includ
     await fetch(`https://discord.com/api/v9/channels/${data.get("ticketId")}`, {
       method: "PATCH",
       headers: {
@@ -14,13 +24,17 @@ export async function updateTicket(data: FormData) {
     })
     return
   } catch (e) {
-    console.error(e)
     return
   }
 }
 
 export async function deleteTicket(data: FormData) {
   try {
+    const session = await getServerSession(authOptions)
+    if (!session || !whitelist.includes(session.user.id)) {
+      return
+    }
+    
     const response = await fetch(
       `https://discord.com/api/v9/channels/${data.get("ticketId")}/messages`,
       {
@@ -31,7 +45,7 @@ export async function deleteTicket(data: FormData) {
       }
     )
 
-    if (!response.ok) throw new Error("Failed to fetch messages")
+    if (!response.ok) return
 
     const messageId = [...(await response.json())]
       .reverse()
@@ -39,7 +53,7 @@ export async function deleteTicket(data: FormData) {
         (m: any) => m.author.id === "1202823859930136586" && m.embeds[0]?.title
       ).id
 
-    if (!messageId) throw new Error("No message found")
+    if (!messageId) return
 
     await fetch(
       `https://discord.com/api/v9/channels/${data.get(
@@ -63,6 +77,17 @@ export async function deleteTicket(data: FormData) {
       }
     )
 
+    await fetch(`https://discord.com/api/v9/channels/${data.get("ticketId")}/messages`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content: `> **\`\`\`Closed by ${session.user.name}\`\`\`**`,
+      }),
+    })
+
     await fetch(`https://discord.com/api/v9/channels/${data.get("ticketId")}`, {
       method: "PATCH",
       headers: {
@@ -77,7 +102,6 @@ export async function deleteTicket(data: FormData) {
     })
     return
   } catch (e) {
-    console.error(e)
     return
   }
 }
