@@ -1,6 +1,6 @@
 import fs from "fs"
 
-import { Video } from "@/components/latestVideos"
+import { Video } from "@/components/latest-videos"
 
 export async function getLatestVideos(): Promise<Video[]> {
   let latestVideos: Video[] = []
