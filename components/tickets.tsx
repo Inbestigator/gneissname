@@ -148,6 +148,11 @@ function EditTicket({
             Delete
           </button>
           <input type="hidden" name="ticketId" value={ticket.id} />
+          <input
+            type="hidden"
+            name="name"
+            value={ticket.name}
+          />
         </form>
       </div>
     </div>
