@@ -1,8 +1,11 @@
 "use server"
 
+import { readField, writeField } from "@/firebaseUtils"
 import { getServerSession } from "next-auth"
-import { whitelist } from "./whitelist"
+
 import { authOptions } from "@/lib/authOptions"
+
+import { whitelist } from "./whitelist"
 
 export async function updateTicket(data: FormData) {
   try {
@@ -10,7 +13,7 @@ export async function updateTicket(data: FormData) {
     if (!session || !whitelist.includes(session.user.id)) {
       return
     }
-    
+
     await fetch(`https://discord.com/api/v9/channels/${data.get("ticketId")}`, {
       method: "PATCH",
       headers: {
@@ -33,7 +36,7 @@ export async function deleteTicket(data: FormData) {
     if (!session || !whitelist.includes(session.user.id)) {
       return
     }
-    
+
     const response = await fetch(
       `https://discord.com/api/v9/channels/${data.get("ticketId")}/messages`,
       {
@@ -76,16 +79,19 @@ export async function deleteTicket(data: FormData) {
       }
     )
 
-    await fetch(`https://discord.com/api/v9/channels/${data.get("ticketId")}/messages`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        content: `> **\`\`\`Closed by ${session.user.name}\`\`\`**`,
-      }),
-    })
+    await fetch(
+      `https://discord.com/api/v9/channels/${data.get("ticketId")}/messages`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: `> **\`\`\`Closed by ${session.user.name}\`\`\`**`,
+        }),
+      }
+    )
 
     await fetch(`https://discord.com/api/v9/channels/${data.get("ticketId")}`, {
       method: "PATCH",
@@ -99,6 +105,29 @@ export async function deleteTicket(data: FormData) {
         archived: true,
       }),
     })
+    return
+  } catch (e) {
+    return
+  }
+}
+
+export async function opt(data: FormData) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session || !whitelist.includes(session.user.id)) {
+      return
+    }
+
+    const optOuts = await readField("misc/site", "optouts")
+
+    if (optOuts.includes(session.user.id)) {
+      optOuts.splice(optOuts.indexOf(session.user.id), 1)
+    } else {
+      optOuts.push(session.user.id)
+    }
+
+    await writeField(optOuts, "misc/site", "optouts")
+
     return
   } catch (e) {
     return

@@ -2,9 +2,10 @@ import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth"
 
 import { authOptions } from "@/lib/authOptions"
+import BulkCollection from "@/components/bulk-collection"
 import Tickets from "@/components/tickets"
 
-import { deleteTicket, updateTicket } from "./actions"
+import { deleteTicket, opt, updateTicket } from "./actions"
 import { whitelist } from "./whitelist"
 
 export default async function DashboardPage() {
@@ -13,5 +14,10 @@ export default async function DashboardPage() {
     redirect("/login")
   }
 
-  return <Tickets updateTicket={updateTicket} deleteTicket={deleteTicket} />
+  return (
+    <div className="grid gap-4">
+      <Tickets updateTicket={updateTicket} deleteTicket={deleteTicket} />
+      <BulkCollection opt={opt} />
+    </div>
+  )
 }

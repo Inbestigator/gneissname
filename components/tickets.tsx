@@ -112,7 +112,6 @@ function EditTicket({
             queryClient.invalidateQueries({ queryKey: ["tickets"] })
           }}
         >
-          <label className="label">Tags</label>
           <input
             type="text"
             id="tags"
@@ -133,7 +132,7 @@ function EditTicket({
             value={ticket.name.replace(/\[.*?\][ ]*/g, "")}
           />
           <button className="btn btn-primary mt-2" type="submit">
-            Submit
+            Submit tags
           </button>
         </form>
         <form
@@ -148,11 +147,7 @@ function EditTicket({
             Delete
           </button>
           <input type="hidden" name="ticketId" value={ticket.id} />
-          <input
-            type="hidden"
-            name="name"
-            value={ticket.name}
-          />
+          <input type="hidden" name="name" value={ticket.name} />
         </form>
       </div>
     </div>
