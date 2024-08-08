@@ -12,6 +12,8 @@ export default function BulkCollection({
     queryFn: fetchOpted,
   })
 
+  const queryClient = useQueryClient()
+
   async function fetchOpted() {
     const data: boolean = await (await fetch("/api/bulkcollect/opted")).json()
     return data
@@ -26,8 +28,6 @@ export default function BulkCollection({
       </div>
     )
   }
-
-  const queryClient = useQueryClient()
 
   return (
     <div className="card bg-base-200">
