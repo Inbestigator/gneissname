@@ -58,6 +58,12 @@ export default function LatestVideos() {
     )
   }
 
+  function decodeHtmlEntities(v: string) {
+    const textArea = document.createElement("textarea")
+    textArea.innerHTML = v
+    return textArea.value
+  }
+
   return (
     <>
       {data?.map((video: Video, index: number) => (
@@ -78,8 +84,10 @@ export default function LatestVideos() {
             />
           </figure>
           <div className="card-body">
-            <h2 className="card-title">{video.title}</h2>
-            <p className="break-words">{video.description}</p>
+            <h2 className="card-title">{decodeHtmlEntities(video.title)}</h2>
+            <p className="break-words">
+              {decodeHtmlEntities(video.description)}
+            </p>
             <div className="card-actions">
               <Link
                 target="_blank"
