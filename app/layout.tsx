@@ -29,7 +29,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers
           themeProps={{
