@@ -1,8 +1,10 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { useQuery } from "@tanstack/react-query"
 import { ExternalLink } from "lucide-react"
 
-import { getLatestVideos } from "@/lib/fetchYT"
 import { cn } from "@/lib/utils"
 
 export type Video = {
@@ -21,12 +23,12 @@ export function SkeletonVideos({ index }: { index: number }) {
         (index == 0 ? "block" : "hidden")
       }
     >
-      <figure className="skeleton flex aspect-video items-center overflow-hidden" />
+      <figure className="skeleton flex aspect-video items-center overflow-hidden rounded-b-none" />
       <div className="card-body">
-        <h2 className="card-title skeleton h-8" />
-        <p className="skeleton h-3 w-11/12" />
-        <p className="skeleton h-3" />
-        <p className="skeleton h-3 w-3/4" />
+        <h2 className="card-title skeleton mb-3 h-6" />
+        <p className="skeleton mb-1 h-4" />
+        <p className="skeleton mb-1 h-4" />
+        <p className="skeleton mb-1 h-4 w-3/4" />
         <div className="card-actions">
           <div className="btn skeleton text-opacity-0">
             Watch on YouTube <ExternalLink size={18} />
@@ -37,12 +39,28 @@ export function SkeletonVideos({ index }: { index: number }) {
   )
 }
 
-export default async function LatestVideos() {
-  const latestVideos: Video[] = await getLatestVideos()
+export default function LatestVideos() {
+  const { isPending, isError, data } = useQuery({
+    queryKey: ["videos"],
+    queryFn: async () => {
+      const response = await fetch("/api/videos")
+      return await response.json()
+    },
+  })
+
+  if (isPending || isError) {
+    return (
+      <>
+        <SkeletonVideos index={0} />
+        <SkeletonVideos index={1} />
+        <SkeletonVideos index={2} />
+      </>
+    )
+  }
 
   return (
     <>
-      {latestVideos?.map((video: Video, index) => (
+      {data?.map((video: Video, index: number) => (
         <div
           key={video.id}
           className={cn(

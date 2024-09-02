@@ -49,18 +49,7 @@ export default function IndexPage() {
             </p>
           </div>
         </div>
-        <Suspense
-          fallback={
-            <>
-              <SkeletonVideos index={0} />
-              <SkeletonVideos index={1} />
-              <SkeletonVideos index={2} />
-            </>
-          }
-        >
-          {/* @ts-ignore*/}
-          <LatestVideos />
-        </Suspense>
+        <LatestVideos />
       </BentoGrid>
     </>
   )
