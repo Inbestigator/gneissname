@@ -1,9 +1,8 @@
-import { Suspense } from "react"
 import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
 import BentoGrid from "@/components/bento-grid"
-import LatestVideos, { SkeletonVideos } from "@/components/latest-videos"
+import LatestVideos from "@/components/latest-videos"
 
 export default function IndexPage() {
   return (

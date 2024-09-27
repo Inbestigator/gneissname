@@ -1,7 +1,6 @@
+import { prisma } from "@/db"
 import { NextAuthOptions } from "next-auth"
 import DiscordProvider from "next-auth/providers/discord"
-
-import { createDocument, documentExists } from "../firebaseUtils"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -25,9 +24,11 @@ export const authOptions: NextAuthOptions = {
     jwt: async ({ user, token }) => {
       if (user) {
         token.uid = user.id
-        if (!(await documentExists(`users/${user.id}`))) {
-          const userData = new Map([["credit", 0]])
-          await createDocument(userData, `users/${user.id}`)
+        const prismaUser = await prisma.user.findFirst({
+          where: { id: user.id },
+        })
+        if (!prismaUser) {
+          await prisma.user.create({ data: { id: user.id, credit: 0 } })
         }
       }
       return token

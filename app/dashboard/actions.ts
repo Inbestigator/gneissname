@@ -1,6 +1,6 @@
 "use server"
 
-import { readField, writeField } from "@/firebaseUtils"
+import { prisma } from "@/db"
 import { getServerSession } from "next-auth"
 
 import { authOptions } from "@/lib/authOptions"
@@ -111,22 +111,27 @@ export async function deleteTicket(data: FormData) {
   }
 }
 
-export async function opt(data: FormData) {
+export async function opt() {
   try {
     const session = await getServerSession(authOptions)
-    if (!session || !whitelist.includes(session.user.id)) {
+    if (!session) {
       return
     }
 
-    const optOuts = await readField("misc/site", "optouts")
+    const user = await prisma.user.findFirst({
+      where: {
+        id: session.user.id,
+      },
+    })
 
-    if (optOuts.includes(session.user.id)) {
-      optOuts.splice(optOuts.indexOf(session.user.id), 1)
-    } else {
-      optOuts.push(session.user.id)
-    }
-
-    await writeField(optOuts, "misc/site", "optouts")
+    await prisma.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        optedOut: !user?.optedOut,
+      },
+    })
 
     return
   } catch (e) {
