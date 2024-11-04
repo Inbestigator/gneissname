@@ -43,7 +43,9 @@ export default function LatestVideos() {
   const { isPending, isError, data } = useQuery({
     queryKey: ["videos"],
     queryFn: async () => {
-      const response = await fetch("/api/videos")
+      const response = await fetch("/api/videos", {
+        next: { revalidate: 24 * 60 * 60 },
+      })
       return await response.json()
     },
   })
