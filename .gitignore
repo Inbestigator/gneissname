@@ -35,3 +35,4 @@ yarn-error.log*
 .contentlayer
 .env
 latestVideos.json
+pnpm-lock.yaml

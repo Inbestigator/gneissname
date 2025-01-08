@@ -30,6 +30,13 @@ const inter = Inter({ subsets: ["latin"] })
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9958847471815518"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className={inter.className}>
         <Providers
           themeProps={{

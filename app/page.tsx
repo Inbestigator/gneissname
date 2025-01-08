@@ -1,7 +1,6 @@
 import Link from "next/link"
 
 import { siteConfig } from "@/config/site"
-import BentoGrid from "@/components/bento-grid"
 import LatestVideos from "@/components/latest-videos"
 
 export default function IndexPage() {
@@ -36,20 +35,9 @@ export default function IndexPage() {
         </div>
       </div>
 
-      <BentoGrid className="md:grid-cols-3">
-        <div className="card bg-base-200 md:col-span-3">
-          <div className="card-body">
-            <h2 className="card-title">About me</h2>
-            <p>
-              I try to explain geological concepts and other topics of interest
-              to me in an understandable and fun way through the lens of
-              Minecraft. Join my loyal &quot;gnerds&quot; and let&apos;s have
-              some fun!
-            </p>
-          </div>
-        </div>
+      <div className="container grid w-full gap-4 md:grid-cols-3">
         <LatestVideos />
-      </BentoGrid>
+      </div>
     </>
   )
 }

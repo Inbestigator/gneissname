@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 
 import { Video } from "@/components/latest-videos"
 
-export const revalidate = 24 * 60;
+export const revalidate = 24 * 60
 
 export async function GET() {
   try {

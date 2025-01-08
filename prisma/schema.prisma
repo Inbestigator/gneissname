@@ -9,10 +9,9 @@ datasource db {
 }
 
 model User {
-  id       String  @id @unique
-  credit   Int
-  optedOut Boolean @default(false)
-
+  id            String         @id @unique
+  credit        Int
+  optedOut      Boolean        @default(false)
   creditrecords CreditRecord[]
   tracks        Tracking[]
 }
@@ -20,39 +19,32 @@ model User {
 model CreditRecord {
   id             String   @id @unique @default(uuid())
   userId         String
-  user           User     @relation(fields: [userId], references: [id])
   change         Int
   currentBalance Int
   timestamp      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id])
 }
 
 model Tracking {
   id        String   @id @unique @default(uuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
   type      String
   timestamp DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Trivia {
-  id          Int      @id @unique @default(autoincrement())
   question    String   @unique
   explanation String
+  id          Int      @id @unique @default(autoincrement())
   answers     Answer[]
 }
 
 model Answer {
   id       String  @id @unique @default(uuid())
-  triviaId Int
-  question Trivia  @relation(fields: [triviaId], references: [id], onDelete: Cascade)
   correct  Boolean
   emoji    String?
   text     String
-}
-
-model Guesser {
-  id    Int    @id @unique @default(autoincrement())
-  image String @unique
-  x     Int
-  z     Int
+  triviaId Int
+  question Trivia  @relation(fields: [triviaId], references: [id], onDelete: Cascade)
 }
