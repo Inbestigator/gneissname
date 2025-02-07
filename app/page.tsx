@@ -6,7 +6,7 @@ import LatestVideos from "@/components/latest-videos"
 export default function IndexPage() {
   return (
     <>
-      <div className="container flex flex-col gap-4 pb-8 pt-6 md:py-10">
+      <div className="flex flex-col gap-4 pb-8 pt-6 md:py-10">
         <div className="flex w-full flex-col items-center gap-2 text-center">
           <h1 className="text-[max(30px,min(5vw,60px))] font-extrabold leading-tight tracking-tighter">
             Gneissname
@@ -34,8 +34,7 @@ export default function IndexPage() {
           </Link>
         </div>
       </div>
-
-      <div className="container grid w-full gap-4 md:grid-cols-3">
+      <div className="grid w-full gap-4 md:grid-cols-3">
         <LatestVideos />
       </div>
     </>

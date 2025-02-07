@@ -45,7 +45,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             enableSystem: true,
           }}
         >
-          <main className="mx-auto max-w-7xl grow px-6 pt-16">
+          <main className="container mx-auto grow px-6 pt-16">
             <Suspense
               fallback={
                 <div className="flex w-full items-center justify-center">

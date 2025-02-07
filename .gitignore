@@ -36,3 +36,4 @@ yarn-error.log*
 .env
 latestVideos.json
 pnpm-lock.yaml
+tsconfig.tsbuildinfo

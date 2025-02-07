@@ -21,7 +21,7 @@ export default function Tickets({
 
   async function fetchTickets() {
     const data: any[] = await (await fetch("/api/tickets")).json()
-    setSelectedTab(data[0].id)
+    data[0] && setSelectedTab(data[0].id)
     return data
   }
 
@@ -52,7 +52,7 @@ export default function Tickets({
       <div className="card-body overflow-x-scroll">
         <h2 className="card-title">Tickets</h2>
         <div role="tablist" className="tabs-boxed tabs flex flex-wrap">
-          {data?.map((ticket: any) => (
+          {data.map((ticket: any) => (
             <a
               role="tab"
               key={ticket.id}
@@ -63,11 +63,13 @@ export default function Tickets({
             </a>
           ))}
         </div>
-        <EditTicket
-          ticket={data?.find((ticket: any) => ticket.id == selectedTab)}
-          updateTicket={updateTicket}
-          deleteTicket={deleteTicket}
-        />
+        {selectedTab && (
+          <EditTicket
+            ticket={data.find((ticket: any) => ticket.id == selectedTab)}
+            updateTicket={updateTicket}
+            deleteTicket={deleteTicket}
+          />
+        )}
       </div>
     </div>
   )
