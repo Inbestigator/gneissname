@@ -71,8 +71,9 @@
 
     document.title = UnminedMapProperties.worldName + " - " + document.title;
     const queryParams = new URLSearchParams(window.location.search);
+
     queryParams.forEach((value, key) => {
-      UnminedCustomMarkers.markers.push({
+      UnminedMapProperties.markers.push({
         x: value.split(",")[0],
         z: value.split(",")[1],
         image: "server-map/pin.png",
@@ -85,10 +86,6 @@
         font: "bold 20px Calibri,sans serif",
       })
     })
-
-    if (UnminedCustomMarkers && UnminedCustomMarkers.isEnabled && UnminedCustomMarkers.markers) {
-      UnminedMapProperties.markers = UnminedMapProperties.markers.concat(UnminedCustomMarkers.markers);
-    }
 
     let unmined = new Unmined();
 
