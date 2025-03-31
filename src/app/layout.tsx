@@ -3,10 +3,10 @@ import { Suspense } from "react";
 import { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 
-import { siteConfig } from "@/config/site";
 import { SiteFooter } from "@/components/site-footer";
 
 import { Providers } from "./providers";
+import { cn } from "@/lib/utils";
 
 export const viewport: Viewport[] = [
   { themeColor: "(prefers-color-scheme: light)", colorScheme: "light" },
@@ -15,10 +15,10 @@ export const viewport: Viewport[] = [
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    default: "Gneissname",
+    template: "%s - Gneissname",
   },
-  description: siteConfig.description,
+  description: "I'm a geologist and YouTuber who likes to make things.",
 };
 
 interface RootLayoutProps {
@@ -30,9 +30,9 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={cn("px-4", inter.className)}>
         <Providers>
-          <main className="container mx-auto grow px-6 pt-16">
+          <main className="container mx-auto mt-16">
             <Suspense
               fallback={
                 <div className="flex w-full items-center justify-center">
