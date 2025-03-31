@@ -72,7 +72,8 @@ export default function LatestVideos() {
         <div
           key={video.id}
           className={cn(
-            "card bg-base-200 md:col-span-1 md:block",
+            "card bg-base-200 md:block",
+            index < 2 && "sm:block",
             index != 0 && "hidden",
           )}
         >

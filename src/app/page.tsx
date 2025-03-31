@@ -28,7 +28,7 @@ export default function IndexPage() {
           </Link>
         )}
       </section>
-      <section className="grid w-full gap-4 md:grid-cols-3">
+      <section className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3">
         <LatestVideos />
       </section>
     </>
