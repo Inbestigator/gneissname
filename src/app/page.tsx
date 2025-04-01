@@ -15,18 +15,16 @@ export default function IndexPage() {
             I&apos;m a geologist and YouTuber who likes to make things.
           </p>
         </header>
-        {Date.now() > Date.UTC(2025, 3, 31, 4) && (
-          <Link
-            href="https://shop.gneiss.name"
-            className="btn btn-dash group relative mx-auto w-fit"
-          >
-            Check out the Gneiss shop! <ArrowUpRight className="ml-2" />
-            <div className="absolute -top-4 -right-4 size-8 rounded-full bg-[radial-gradient(white_30%,transparent_100%)] group-hover:hidden" />
-            <div className="absolute -top-2 -right-2 size-4 animate-ping rounded-full bg-red-100 p-1 group-hover:hidden">
-              <div className="size-full rounded-full bg-red-600" />
-            </div>
-          </Link>
-        )}
+        <Link
+          href="https://shop.gneiss.name"
+          className="btn btn-dash group relative mx-auto w-fit"
+        >
+          Check out the Gneiss shop! <ArrowUpRight className="ml-2" />
+          <div className="absolute -top-4 -right-4 size-8 rounded-full bg-[radial-gradient(white_30%,transparent_100%)] group-hover:hidden" />
+          <div className="absolute -top-2 -right-2 size-4 animate-ping rounded-full bg-red-100 p-1 group-hover:hidden">
+            <div className="size-full rounded-full bg-red-600" />
+          </div>
+        </Link>
       </section>
       <section className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3">
         <LatestVideos />
