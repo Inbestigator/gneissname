@@ -50,7 +50,7 @@ export default function LatestVideos() {
     },
   });
 
-  if (isPending || isError) {
+  if (isPending || isError || !data || !data.length) {
     return (
       <>
         <SkeletonVideos index={0} />
@@ -68,7 +68,7 @@ export default function LatestVideos() {
 
   return (
     <>
-      {data?.map((video: Video, index: number) => (
+      {data.map((video: Video, index: number) => (
         <div
           key={video.id}
           className={cn(
