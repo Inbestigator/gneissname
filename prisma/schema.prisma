@@ -13,7 +13,6 @@ model User {
   credit        Int
   optedOut      Boolean        @default(false)
   creditrecords CreditRecord[]
-  tracks        Tracking[]
 }
 
 model CreditRecord {
@@ -22,22 +21,33 @@ model CreditRecord {
   change         Int
   currentBalance Int
   timestamp      DateTime @default(now())
-  user           User     @relation(fields: [userId], references: [id])
-}
-
-model Tracking {
-  id        String   @id @unique @default(uuid())
-  userId    String
-  type      String
-  timestamp DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Trivia {
-  question    String   @unique
+  question    String          @unique
   explanation String
-  id          Int      @id @unique @default(autoincrement())
+  id          Int             @id @unique @default(autoincrement())
   answers     Answer[]
+  sessions    TriviaSession[]
+}
+
+model TriviaSession {
+  id        String           @id @unique @default(uuid())
+  triviaId  Int
+  channelId String
+  messageId String
+  startedAt DateTime         @default(now())
+  responses TriviaResponse[]
+  trivia    Trivia           @relation(fields: [triviaId], references: [id], onDelete: Cascade)
+}
+
+model TriviaResponse {
+  id        String        @id @unique @default(uuid())
+  userId    String
+  isCorrect Boolean
+  sessionId String
+  session   TriviaSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 }
 
 model Answer {

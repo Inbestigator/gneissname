@@ -37,3 +37,5 @@ yarn-error.log*
 latestVideos.json
 pnpm-lock.yaml
 tsconfig.tsbuildinfo
+
+bot.gen.ts

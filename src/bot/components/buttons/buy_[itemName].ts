@@ -1,0 +1,44 @@
+import { MessageComponentInteraction } from "@dressed/dressed";
+import { getCredit, modCredit } from "@/bot/utils";
+import { shopItems } from "@/bot/commands/shop";
+import { openTicket } from "../selects/ticket-open";
+
+const blockedShoppers = {
+  Whitelist: ["580638706805768203", "617635763974307859", "786737189965922316"],
+  "Community call topic": [] as string[],
+  "Custom role": [] as string[],
+};
+
+export default async function buy(
+  interaction: MessageComponentInteraction,
+  { itemName }: { itemName: string },
+) {
+  await interaction.deferReply({ ephemeral: true });
+  const selectedItem = shopItems.find(
+    (item) => item.name.toLowerCase() === itemName,
+  );
+  if (!selectedItem) {
+    return await interaction.editReply("Item not found");
+  }
+  const credit = await getCredit(interaction.user.id);
+  if (credit < selectedItem.price) {
+    return await interaction.editReply("You don't have enough to buy that!");
+  }
+  if (
+    blockedShoppers[selectedItem.name as keyof typeof blockedShoppers].includes(
+      interaction.user.id,
+    )
+  ) {
+    return await interaction.editReply("You can't buy that!");
+  }
+  await modCredit(interaction.user.id, selectedItem.price * -1, true);
+  const thread = await openTicket(
+    `Claim ${selectedItem.name.toLowerCase()}`,
+    `${interaction.user.global_name} has purchased a ${selectedItem.name.toLowerCase()} and would like to claim it`,
+    selectedItem.name.toLowerCase() === "whitelist"
+      ? "<@&1232903620421484575>"
+      : undefined,
+    interaction.user,
+  );
+  await interaction.editReply(`<#${thread.id}>`);
+}
