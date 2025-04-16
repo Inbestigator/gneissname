@@ -1,4 +1,8 @@
-import { ActionRow, MessageComponentInteraction } from "@dressed/dressed";
+import {
+  ActionRow,
+  editMessage,
+  MessageComponentInteraction,
+} from "@dressed/dressed";
 import { APIButtonComponentWithCustomId } from "discord-api-types/v10";
 import { prisma } from "@/db";
 
@@ -6,40 +10,32 @@ export default async function guess(
   interaction: MessageComponentInteraction,
   { session, answer }: { session: string; answer: string },
 ) {
-  const triviaSession = await prisma.triviaSession.findFirst({
-    orderBy: { startedAt: "desc" },
-    include: { trivia: { include: { answers: true } }, responses: true },
-  });
+  const [triviaSession] = await Promise.all([
+    prisma.triviaSession.findFirst({
+      orderBy: { startedAt: "desc" },
+      include: { trivia: { include: { answers: true } }, responses: true },
+    }),
+    interaction.deferReply({ ephemeral: true }),
+  ]);
 
   if (!triviaSession || triviaSession.messageId !== interaction.message.id) {
-    await interaction.reply({
-      content: "This question has expired!",
-      ephemeral: true,
-    });
-    return;
+    return interaction.editReply("This question has expired!");
   }
 
   const correctAnswer = triviaSession.trivia.answers.find((a) => a.correct);
 
   if (triviaSession.responses.some((a) => a.userId === interaction.user.id)) {
-    await interaction.reply({
-      content: "You have already answered!",
-      ephemeral: true,
-    });
-    return;
+    return interaction.editReply("You have already answered!");
   }
 
   const isCorrect = answer === correctAnswer?.id;
 
-  const newRes = await prisma.triviaResponse.create({
-    data: {
-      sessionId: session,
-      userId: interaction.user.id,
-      isCorrect,
-    },
+  triviaSession.responses.push({
+    id: Math.random().toString(),
+    userId: interaction.user.id,
+    isCorrect,
+    sessionId: session,
   });
-
-  triviaSession.responses.push(newRes);
 
   let updatedButtons = interaction.message.components![0]!
     .components as APIButtonComponentWithCustomId[];
@@ -61,7 +57,7 @@ export default async function guess(
     "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
     "🟥".repeat(Math.round(Number(incorrectPercentage) / 10));
 
-  await interaction.update({
+  editMessage(interaction.channel.id, interaction.message.id, {
     content: interaction.message.content.replace(
       /[⬛️🟥🟩]+\s\|.+/,
       `${barGraph} | ${numVoted}/15`,
@@ -69,11 +65,18 @@ export default async function guess(
     components: [ActionRow(...updatedButtons)],
   });
 
-  await interaction.followUp({
-    content: `## ${isCorrect ? "Correct" : "Nice try"}!\n>>> ${
+  interaction.editReply(
+    `## ${isCorrect ? "Correct" : "Nice try"}!\n>>> ${
       !isCorrect ? `### Answer:\n${correctAnswer?.text}\n` : ""
     }### Explanation:\n${triviaSession.trivia.explanation}`,
-    ephemeral: true,
+  );
+
+  await prisma.triviaResponse.create({
+    data: {
+      sessionId: session,
+      userId: interaction.user.id,
+      isCorrect,
+    },
   });
 }
 

@@ -12,10 +12,8 @@ export const config: CommandConfig = {
 };
 
 export default async function leaderboard(interaction: CommandInteraction) {
-  await interaction.deferReply({ ephemeral: true });
-
-  try {
-    const [topUsers, userRank] = await prisma.$transaction(async (prisma) => {
+  const [[topUsers, userRank]] = await Promise.all([
+    prisma.$transaction(async (prisma) => {
       const topUsers = prisma.user.findMany({
         take: 10,
         orderBy: { credit: "desc" },
@@ -30,12 +28,15 @@ export default async function leaderboard(interaction: CommandInteraction) {
             gte: currentUser.credit,
           },
         },
-        cacheStrategy: { swr: 60, ttl: 60 },
+        cacheStrategy: { swr: 120, ttl: 120 },
       });
 
       return Promise.all([topUsers, userRank]);
-    });
+    }),
+    interaction.deferReply({ ephemeral: true }),
+  ]);
 
+  try {
     const embed: APIEmbed = {
       title: "Leaderboard",
       description: `Members with the highest social credit\n> You're #${userRank}`,

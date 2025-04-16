@@ -31,7 +31,10 @@ export const config: CommandConfig = {
 };
 
 export default async function shop(interaction: CommandInteraction) {
-  const credit = await getCredit(interaction.user.id);
+  const [credit] = await Promise.all([
+    getCredit(interaction.user.id),
+    interaction.deferReply({ ephemeral: true }),
+  ]);
 
   const embed: APIEmbed = {
     title: "Shop",
@@ -42,7 +45,7 @@ export default async function shop(interaction: CommandInteraction) {
     })),
   };
 
-  await interaction.reply({
+  await interaction.editReply({
     embeds: [embed],
     components: [
       ActionRow(
@@ -55,6 +58,5 @@ export default async function shop(interaction: CommandInteraction) {
         ),
       ),
     ],
-    ephemeral: true,
   });
 }

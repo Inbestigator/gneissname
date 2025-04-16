@@ -19,25 +19,26 @@ export const config: CommandConfig = {
 export type TriviaResponses = Record<string, boolean>;
 
 export default async function trivia(interaction: CommandInteraction) {
-  await interaction.deferReply({
-    ephemeral: true,
-  });
-  const [triviaSession, questions] = await prisma.$transaction([
-    prisma.triviaSession.findFirst({
-      orderBy: { startedAt: "desc" },
-      include: { trivia: { include: { answers: true } } },
-    }),
-    prisma.trivia.findMany({
-      include: { answers: true },
-      cacheStrategy: { swr: 1800, ttl: 1800 },
+  const [[triviaSession, questions]] = await Promise.all([
+    prisma.$transaction([
+      prisma.triviaSession.findFirst({
+        orderBy: { startedAt: "desc" },
+        include: { trivia: { include: { answers: true } } },
+      }),
+      prisma.trivia.findMany({
+        include: { answers: true },
+        cacheStrategy: { swr: 1800, ttl: 1800 },
+      }),
+    ]),
+    interaction.deferReply({
+      ephemeral: true,
     }),
   ]);
   if (
     triviaSession &&
     triviaSession.startedAt.getTime() > Date.now() - 5 * 60 * 1000
   ) {
-    await interaction.editReply("There is a trivia game already in progress!");
-    return;
+    return interaction.editReply("There is a trivia game already in progress!");
   } else if (triviaSession) {
     try {
       const message = await getMessage(
@@ -48,7 +49,7 @@ export default async function trivia(interaction: CommandInteraction) {
         message.components![0]!.components as APIButtonComponentWithCustomId[],
         triviaSession.trivia.answers.find((a) => a.correct)?.id ?? "",
       );
-      await editMessage(triviaSession.channelId, triviaSession.messageId, {
+      editMessage(triviaSession.channelId, triviaSession.messageId, {
         components: [ActionRow(...disabledButtons)],
       });
     } catch {
@@ -60,8 +61,7 @@ export default async function trivia(interaction: CommandInteraction) {
   const sessionId = crypto.randomUUID();
 
   if (!question) {
-    await interaction.editReply("Error fetching trivia question!");
-    return;
+    return interaction.editReply("Error fetching trivia question!");
   }
 
   const buttons = question.answers
