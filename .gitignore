@@ -35,7 +35,6 @@ yarn-error.log*
 .contentlayer
 .env
 latestVideos.json
-pnpm-lock.yaml
 tsconfig.tsbuildinfo
 
 bot.gen.ts

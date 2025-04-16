@@ -110,31 +110,3 @@ export async function deleteTicket(data: FormData) {
     return;
   }
 }
-
-export async function opt() {
-  try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return;
-    }
-
-    const user = await prisma.user.findFirst({
-      where: {
-        id: session.user.id,
-      },
-    });
-
-    await prisma.user.update({
-      where: {
-        id: session.user.id,
-      },
-      data: {
-        optedOut: !user?.optedOut,
-      },
-    });
-
-    return;
-  } catch (e) {
-    return;
-  }
-}

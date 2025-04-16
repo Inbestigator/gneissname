@@ -46,13 +46,13 @@ export default async function shop(interaction: CommandInteraction) {
     embeds: [embed],
     components: [
       ActionRow(
-        ...shopItems.map((item) => {
-          return Button({
+        ...shopItems.map((item) =>
+          Button({
             custom_id: `buy_${item.name.toLowerCase()}`,
             label: item.name,
             style: "Secondary",
-          });
-        }),
+          }),
+        ),
       ),
     ],
     ephemeral: true,

@@ -58,24 +58,6 @@ export async function modCredit(
   }
 }
 
-/** Depped? After the migration it's only been used in one place lol */
-// export async function trackUser(userId: string, category: string) {
-//   try {
-//     const user = await getUser(userId);
-//     if (user.optedOut) {
-//       return;
-//     }
-//     await prisma.tracking.create({
-//       data: {
-//         userId,
-//         type: category,
-//       },
-//     });
-//   } catch {
-//     return;
-//   }
-// }
-
 export async function getUser(userId: string) {
   let user = await prisma.user.findFirst({
     where: { id: userId },
