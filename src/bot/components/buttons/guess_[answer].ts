@@ -22,7 +22,7 @@ export default async function guess(
   if (
     !triviaSession ||
     triviaSession.messageId !== interaction.message.id ||
-    triviaSession.startedAt > Date.now() - 5 * 60 * 1000
+    triviaSession.startedAt < Date.now() - 5 * 60 * 1000
   ) {
     return interaction.editReply("This question has expired!");
   }
@@ -54,8 +54,7 @@ export default async function guess(
   ).toFixed(2);
   const incorrectPercentage = (100 - Number(correctPercentage)).toFixed(2);
 
-  const barGraph =
-    "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
+  const barGraph = "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
     "🟥".repeat(Math.round(Number(incorrectPercentage) / 10));
 
   if (updatedComponents[0] && updatedComponents[0].type === 17) {
