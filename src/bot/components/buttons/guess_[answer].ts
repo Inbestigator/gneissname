@@ -19,7 +19,11 @@ export default async function guess(
     interaction.deferReply({ ephemeral: true }),
   ]);
 
-  if (!triviaSession || triviaSession.messageId !== interaction.message.id) {
+  if (
+    !triviaSession ||
+    triviaSession.messageId !== interaction.message.id ||
+    triviaSession.startedAt > Date.now() - 5 * 60 * 1000
+  ) {
     return interaction.editReply("This question has expired!");
   }
 
