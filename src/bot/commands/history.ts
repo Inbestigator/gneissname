@@ -77,7 +77,7 @@ function aggregateHistory(history: CreditRecord[]): CreditRecord[] {
 
 export default async function history(interaction: CommandInteraction) {
   await interaction.deferReply({ ephemeral: true });
-  const user = await getUser(interaction.getOption("user", true).user().id);
+  const userId = interaction.getOption("user", true).user().id;
 
   const history: {
     id: string;
@@ -86,7 +86,7 @@ export default async function history(interaction: CommandInteraction) {
     timestamp: Date;
     userId: string;
   }[] = await prisma.creditRecord.findMany({
-    where: { userId: user.id },
+    where: { userId },
     orderBy: { timestamp: "asc" },
   });
 

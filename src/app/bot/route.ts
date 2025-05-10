@@ -13,7 +13,7 @@ export function POST(req: Request) {
   ];
   return handleRequest(
     req,
-    (i) => waitUntil(runCommand(i) as Promise<unknown>),
-    (i) => waitUntil(runComponent(i) as Promise<unknown>),
+    async (i) => waitUntil(runCommand(i)),
+    async (i) => waitUntil(runComponent(i)),
   );
 }

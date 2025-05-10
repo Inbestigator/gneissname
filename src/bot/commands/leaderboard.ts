@@ -17,7 +17,7 @@ export default async function leaderboard(interaction: CommandInteraction) {
       const topUsers = prisma.user.findMany({
         take: 10,
         orderBy: { credit: "desc" },
-        cacheStrategy: { swr: 120, ttl: 120 },
+        cacheStrategy: { swr: 300, ttl: 300 },
       });
 
       const currentUser = await getUser(interaction.user.id);
@@ -28,7 +28,7 @@ export default async function leaderboard(interaction: CommandInteraction) {
             gte: currentUser.credit,
           },
         },
-        cacheStrategy: { swr: 120, ttl: 120 },
+        cacheStrategy: { swr: 300, ttl: 300 },
       });
 
       return Promise.all([topUsers, userRank]);
@@ -45,7 +45,7 @@ export default async function leaderboard(interaction: CommandInteraction) {
           const user = await getDiscordUser(entry.id);
           return {
             name: `#${index + 1} - ${user.global_name}`,
-            value: `> $${entry.credit.toLocaleString()}`,
+            value: entry.credit.toLocaleString(),
           };
         }),
       ),

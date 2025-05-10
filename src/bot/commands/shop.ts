@@ -4,8 +4,11 @@ import {
   Button,
   CommandConfig,
   CommandInteraction,
+  Container,
+  Section,
+  TextDisplay,
 } from "@dressed/dressed";
-import { APIEmbed } from "discord-api-types/v10";
+import { APIEmbed, MessageFlags } from "discord-api-types/v10";
 
 export const shopItems = [
   {
@@ -31,32 +34,22 @@ export const config: CommandConfig = {
 };
 
 export default async function shop(interaction: CommandInteraction) {
-  const [credit] = await Promise.all([
-    getCredit(interaction.user.id),
-    interaction.deferReply({ ephemeral: true }),
-  ]);
-
-  const embed: APIEmbed = {
-    title: "Shop",
-    description: `Your social credit score is ${credit.toLocaleString()}`,
-    fields: shopItems.map((item) => ({
-      name: item.name,
-      value: `>>> ${item.description}\nPrice: ${item.price.toLocaleString()}`,
-    })),
-  };
-
-  await interaction.editReply({
-    embeds: [embed],
+  await interaction.reply({
+    flags: MessageFlags.IsComponentsV2,
     components: [
-      ActionRow(
+      Container(
+        TextDisplay("## Shop"),
         ...shopItems.map((item) =>
-          Button({
-            custom_id: `buy_${item.name.toLowerCase()}`,
-            label: item.name,
-            style: "Secondary",
-          }),
+          Section(
+            [`### ${item.name}`, item.description],
+            Button({
+              custom_id: `buy_${item.name.toLowerCase()}`,
+              label: `$${item.price.toLocaleString()}`,
+            }),
+          ),
         ),
       ),
     ],
+    ephemeral: true,
   });
 }

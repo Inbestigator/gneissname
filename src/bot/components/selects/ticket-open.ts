@@ -7,6 +7,7 @@ import {
   createThread,
   MessageComponentInteraction,
   SelectMenu,
+  SelectMenuOption,
 } from "@dressed/dressed";
 
 export async function openTicket(
@@ -62,25 +63,19 @@ export default async function openTicketSelect(
               custom_id: "suggest_type",
               placeholder: "What are you suggesting?",
               options: [
-                {
-                  label: "Video idea",
-                  value: "Video idea",
+                SelectMenuOption("Video idea", "Video idea", {
                   description: "If you have a video idea",
                   emoji: { name: "📺" },
-                },
-                {
-                  label: "Discord suggestion",
-                  value: "Discord suggestion",
+                }),
+                SelectMenuOption("Discord suggestion", "Discord suggestion", {
                   description:
                     "If you have a suggestion for the Discord server",
                   emoji: { name: "💬" },
-                },
-                {
-                  label: "Other",
-                  value: "Suggestion",
+                }),
+                SelectMenuOption("Other", "Suggestion", {
                   description: "For anything else",
                   emoji: { name: "❓" },
-                },
+                }),
               ],
             }),
           ),

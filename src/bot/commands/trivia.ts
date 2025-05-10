@@ -1,56 +1,84 @@
 import {
-  ActionRow,
   Button,
   type CommandConfig,
   type CommandInteraction,
+  Container,
   createMessage,
   editMessage,
   getMessage,
+  Section,
+  Separator,
+  TextDisplay,
 } from "@dressed/dressed";
-import { prisma } from "@/db";
-import { disableButtons } from "../components/buttons/guess_[session]_[answer]";
-import { APIButtonComponentWithCustomId } from "discord-api-types/v10";
+import { prisma, redis } from "@/db";
+import {
+  APIButtonComponentWithCustomId,
+  APIMessageTopLevelComponent,
+  ComponentType,
+  MessageFlags,
+} from "discord-api-types/v10";
 
 export const config: CommandConfig = {
   description: "Gives a random trivia question",
   contexts: ["Guild"],
 };
 
-export type TriviaResponses = Record<string, boolean>;
+export interface TriviaResponse {
+  userId: string;
+  isCorrect: boolean;
+}
+
+export interface TriviaSession {
+  correct: {
+    id: string;
+    text: string;
+  };
+  explanation: string;
+  messageId: string;
+  channelId: string;
+  startedAt: number;
+}
+
+export async function getTriviaSession(): Promise<{
+  session?: TriviaSession;
+  responses: TriviaResponse[];
+}> {
+  const sessionJson = await redis.get("currentTrivia");
+  const keys = await redis.keys("trivia-response:*");
+  const responses = keys.length
+    ? (await redis.mGet(keys)).map((v) => JSON.parse(v ?? ""))
+    : [];
+  if (!sessionJson) {
+    return { responses };
+  }
+  return {
+    session: JSON.parse(sessionJson),
+    responses,
+  };
+}
 
 export default async function trivia(interaction: CommandInteraction) {
-  const [[triviaSession, questions]] = await Promise.all([
-    prisma.$transaction([
-      prisma.triviaSession.findFirst({
-        orderBy: { startedAt: "desc" },
-        include: { trivia: { include: { answers: true } } },
-      }),
-      prisma.trivia.findMany({
-        include: { answers: true },
-        cacheStrategy: { swr: 1800, ttl: 1800 },
-      }),
-    ]),
+  const [{ session: triviaSession, responses }, questions] = await Promise.all([
+    getTriviaSession(),
+    prisma.trivia.findMany({
+      include: { answers: true },
+      cacheStrategy: { swr: 1800, ttl: 1800 },
+    }),
     interaction.deferReply({
       ephemeral: true,
     }),
   ]);
-  if (
-    triviaSession &&
-    triviaSession.startedAt.getTime() > Date.now() - 5 * 60 * 1000
-  ) {
+  if (triviaSession && triviaSession.startedAt > Date.now() - 5 * 60 * 1000) {
     return interaction.editReply("There is a trivia game already in progress!");
   } else if (triviaSession) {
     try {
-      const message = await getMessage(
+      const { components } = await getMessage(
         triviaSession.channelId,
         triviaSession.messageId,
       );
-      const disabledButtons = disableButtons(
-        message.components![0]!.components as APIButtonComponentWithCustomId[],
-        triviaSession.trivia.answers.find((a) => a.correct)?.id ?? "",
-      );
+      if (!components) throw new Error("No components");
       editMessage(triviaSession.channelId, triviaSession.messageId, {
-        components: [ActionRow(...disabledButtons)],
+        components: disableButtons(components, triviaSession.correct.id),
       });
     } catch {
       // pass
@@ -58,46 +86,86 @@ export default async function trivia(interaction: CommandInteraction) {
   }
 
   const question = questions[Math.floor(Math.random() * questions.length)];
-  const sessionId = crypto.randomUUID();
 
   if (!question) {
     return interaction.editReply("Error fetching trivia question!");
   }
 
-  const buttons = question.answers
+  const answers = question.answers
     .sort(() => Math.random() - 0.5)
     .map((answer) =>
-      Button({
-        label: answer.text,
-        emoji: {
-          name: answer.emoji ?? undefined,
-        },
-        custom_id: `guess_${sessionId}_${answer.id}`,
-      }),
+      Section(
+        [`### ${answer.text}`],
+        Button({
+          emoji: answer.emoji
+            ? {
+                name: answer.emoji,
+              }
+            : undefined,
+          custom_id: `guess_${answer.id}`,
+          style: "Secondary",
+        }),
+      ),
     );
 
   interaction.editReply("Question sent!");
 
   const message = await createMessage(interaction.channel.id, {
-    content: `## Trivia!\n>>> ${question.question}\n⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ | 0/15`,
-    components: [ActionRow(...buttons)],
+    flags: MessageFlags.IsComponentsV2,
+    components: [
+      Container(
+        TextDisplay(`## Trivia!\n${question.question}`),
+        ...answers,
+        Separator(),
+        TextDisplay("## ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ | 0/15"),
+      ),
+    ],
   });
 
-  prisma.$transaction([
-    prisma.triviaSession.deleteMany({
-      where: {
-        startedAt: {
-          lte: new Date(Date.now() - 5 * 60 * 1000),
-        },
+  const correct = question.answers.find((a) => a.correct);
+  const newTriviaSession: TriviaSession = {
+    channelId: interaction.channel.id,
+    messageId: message.id,
+    correct: {
+      id: correct?.id ?? "",
+      text: correct?.text ?? "",
+    },
+    explanation: question.explanation,
+    startedAt: Date.now(),
+  };
+
+  const multi = redis.multi();
+  multi.set("currentTrivia", JSON.stringify(newTriviaSession));
+  responses.forEach((r) => {
+    multi.del(`trivia-response:${r.userId}`);
+  });
+  await multi.exec();
+}
+
+export function disableButtons(
+  components: APIMessageTopLevelComponent[],
+  correctId: string,
+): APIMessageTopLevelComponent[] {
+  const sections = getAnswerSections(components);
+  sections.forEach((section, i) => {
+    const accessory = section.accessory as APIButtonComponentWithCustomId;
+    components.find((c) => c.type === 17)!.components[i + 1] = {
+      ...section,
+      accessory: {
+        ...accessory,
+        style: accessory.custom_id.endsWith(correctId) ? 3 : 4,
+        disabled: true,
       },
-    }),
-    prisma.triviaSession.create({
-      data: {
-        id: sessionId,
-        triviaId: question.id,
-        messageId: message.id,
-        channelId: message.channel_id,
-      },
-    }),
-  ]);
+    };
+  });
+
+  return components;
+}
+
+function getAnswerSections(components: APIMessageTopLevelComponent[]) {
+  return (
+    components
+      .find((c) => c.type === ComponentType.Container)
+      ?.components.filter((c) => c.type === ComponentType.Section) ?? []
+  );
 }
