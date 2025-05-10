@@ -80,19 +80,19 @@ export default async function guess(
     );
   }
 
-  editMessage(interaction.channel.id, interaction.message.id, {
-    components: updatedComponents,
-  });
-
-  interaction.editReply(
-    `## ${isCorrect ? "Correct" : "Nice try"}!\n>>> ${
-      !isCorrect ? `### Answer:\n${triviaSession.correct.text}\n` : ""
-    }### Explanation:\n${triviaSession.explanation}`,
-  );
-
-  await redis.set(
-    `trivia-response:${interaction.user.id}`,
-    JSON.stringify(newResponse),
-    { expiration: { type: "PXAT", value: triviaSession.expiresAt } },
-  );
+  await Promise.all([
+    editMessage(interaction.channel.id, interaction.message.id, {
+      components: updatedComponents,
+    }),
+    interaction.editReply(
+      `## ${isCorrect ? "Correct" : "Nice try"}!\n>>> ${
+        !isCorrect ? `### Answer:\n${triviaSession.correct.text}\n` : ""
+      }### Explanation:\n${triviaSession.explanation}`,
+    ),
+    redis.set(
+      `trivia-response:${interaction.user.id}`,
+      JSON.stringify(newResponse),
+      { expiration: { type: "PXAT", value: triviaSession.expiresAt } },
+    ),
+  ]);
 }
