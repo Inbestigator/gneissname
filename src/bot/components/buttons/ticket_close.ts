@@ -9,7 +9,7 @@ import {
 export default async function closeTicket(
   interaction: MessageComponentInteraction,
 ) {
-  await interaction.update({
+  interaction.update({
     components: [
       Container(
         TextDisplay("## Ticket closed"),

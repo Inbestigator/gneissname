@@ -25,7 +25,6 @@ export async function openTicket(
   addThreadMember(thread.id, user.id);
   createMessage(thread.id, {
     flags: MessageFlags.IsComponentsV2,
-    content: `<@${user.id}> ${relevantStaff}`,
     components: [
       Container(
         TextDisplay("## Ticket opened"),
@@ -40,6 +39,7 @@ export async function openTicket(
             style: "Danger",
           }),
         ),
+        TextDisplay(`-# <@${user.id}> ${relevantStaff}`),
       ),
     ],
   });

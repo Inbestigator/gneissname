@@ -24,6 +24,18 @@ export default async function guess(
     triviaSession.messageId !== interaction.message.id ||
     triviaSession.expiresAt < Date.now()
   ) {
+    if (
+      triviaSession &&
+      triviaSession.expiresAt < Date.now() &&
+      interaction.message.components
+    ) {
+      editMessage(interaction.channel.id, interaction.message.id, {
+        components: disableButtons(
+          interaction.message.components,
+          triviaSession.correct.id,
+        ),
+      });
+    }
     return interaction.editReply("This question has expired!");
   }
 
