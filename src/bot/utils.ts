@@ -53,7 +53,7 @@ export async function modCredit(
 
       return updatedUser;
     });
-    redis.set(`user-${userId}`, JSON.stringify(user), {
+    redis.set(`user:${userId}`, JSON.stringify(user), {
       expiration: { type: "EX", value: 120 },
     });
   } catch {
@@ -62,7 +62,7 @@ export async function modCredit(
 }
 
 export async function getUser(userId: string): Promise<{ credit: number }> {
-  const redisUser = await redis.get(`user-${userId}`);
+  const redisUser = await redis.get(`user:${userId}`);
   if (redisUser) {
     return JSON.parse(redisUser);
   }
@@ -80,7 +80,7 @@ export async function getUser(userId: string): Promise<{ credit: number }> {
       select: { credit: true },
     });
   }
-  redis.set(`user-${userId}`, JSON.stringify({ credit: user.credit }), {
+  redis.set(`user:${userId}`, JSON.stringify({ credit: user.credit }), {
     expiration: { type: "EX", value: 120 },
   });
   return user;

@@ -14,8 +14,7 @@ import {
 
 export async function openTicket(
   ticketName: string,
-  message =
-    "Our staff will be with you shortly, in the meantime please state your issue.",
+  message = "Our staff will be with you shortly, in the meantime please state your issue.",
   relevantStaff = "<@&1225973068141297757>",
   user: APIUser,
 ) {

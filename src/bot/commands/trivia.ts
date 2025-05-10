@@ -36,7 +36,7 @@ export interface TriviaSession {
   explanation: string;
   messageId: string;
   channelId: string;
-  startedAt: number;
+  expiresAt: number;
 }
 
 export async function getTriviaSession(): Promise<{
@@ -68,7 +68,7 @@ export default async function trivia(interaction: CommandInteraction) {
       ephemeral: true,
     }),
   ]);
-  if (triviaSession && triviaSession.startedAt > Date.now() - 5 * 60 * 1000) {
+  if (triviaSession && triviaSession.expiresAt > Date.now()) {
     return interaction.editReply("There is a trivia game already in progress!");
   } else if (triviaSession) {
     try {
@@ -131,7 +131,7 @@ export default async function trivia(interaction: CommandInteraction) {
       text: correct?.text ?? "",
     },
     explanation: question.explanation,
-    startedAt: Date.now(),
+    expiresAt: Date.now() + 15 * 60 * 1000,
   };
 
   const multi = redis.multi();

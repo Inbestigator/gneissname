@@ -22,7 +22,7 @@ export default async function guess(
   if (
     !triviaSession ||
     triviaSession.messageId !== interaction.message.id ||
-    triviaSession.startedAt < Date.now() - 5 * 60 * 1000
+    triviaSession.expiresAt < Date.now()
   ) {
     return interaction.editReply("This question has expired!");
   }
@@ -81,6 +81,6 @@ export default async function guess(
   await redis.set(
     `trivia-response:${interaction.user.id}`,
     JSON.stringify(newResponse),
-    { expiration: { type: "EX", value: 300 } },
+    { expiration: { type: "PXAT", value: triviaSession.expiresAt } },
   );
 }
