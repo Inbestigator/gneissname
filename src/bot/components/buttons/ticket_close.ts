@@ -1,20 +1,21 @@
 import {
+  Container,
   createMessage,
   type MessageComponentInteraction,
   modifyChannel,
+  TextDisplay,
 } from "@dressed/dressed";
 
 export default async function closeTicket(
   interaction: MessageComponentInteraction,
 ) {
   await interaction.update({
-    embeds: [
-      {
-        title: "Ticket closed",
-        description: `Closed by ${interaction.user.username}`,
-      },
+    components: [
+      Container(
+        TextDisplay("## Ticket closed"),
+        TextDisplay(`Closed by ${interaction.user.username}`),
+      ),
     ],
-    components: [],
   });
   await createMessage(
     interaction.channel.id,

@@ -1,18 +1,21 @@
-import { APIUser } from "discord-api-types/v10";
+import { APIUser, MessageFlags } from "discord-api-types/v10";
 import {
   ActionRow,
   addThreadMember,
   Button,
+  Container,
   createMessage,
   createThread,
   MessageComponentInteraction,
   SelectMenu,
   SelectMenuOption,
+  TextDisplay,
 } from "@dressed/dressed";
 
 export async function openTicket(
   ticketName: string,
-  message = "Our staff will be with you shortly, in the meantime please state your issue.",
+  message =
+    "Our staff will be with you shortly, in the meantime please state your issue.",
   relevantStaff = "<@&1225973068141297757>",
   user: APIUser,
 ) {
@@ -22,23 +25,22 @@ export async function openTicket(
   });
   addThreadMember(thread.id, user.id);
   createMessage(thread.id, {
+    flags: MessageFlags.IsComponentsV2,
     content: `<@${user.id}> ${relevantStaff}`,
-    embeds: [
-      {
-        title: "Ticket open",
-        description: message,
-      },
-    ],
     components: [
-      ActionRow(
-        Button({
-          custom_id: "ticket_close",
-          label: "Close",
-          emoji: {
-            name: "🔒",
-          },
-          style: "Danger",
-        }),
+      Container(
+        TextDisplay("## Ticket opened"),
+        TextDisplay(message),
+        ActionRow(
+          Button({
+            custom_id: "ticket_close",
+            label: "Close",
+            emoji: {
+              name: "🔒",
+            },
+            style: "Danger",
+          }),
+        ),
       ),
     ],
   });

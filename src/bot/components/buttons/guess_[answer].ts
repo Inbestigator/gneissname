@@ -33,10 +33,12 @@ export default async function guess(
 
   const isCorrect = answer === triviaSession.correct.id;
 
-  responses.push({
+  const newResponse: TriviaResponse = {
     userId: interaction.user.id,
     isCorrect,
-  });
+  };
+
+  responses.push(newResponse);
 
   let updatedComponents = interaction.message.components ?? [];
 
@@ -54,7 +56,8 @@ export default async function guess(
   ).toFixed(2);
   const incorrectPercentage = (100 - Number(correctPercentage)).toFixed(2);
 
-  const barGraph = "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
+  const barGraph =
+    "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
     "🟥".repeat(Math.round(Number(incorrectPercentage) / 10));
 
   if (updatedComponents[0] && updatedComponents[0].type === 17) {
@@ -74,11 +77,6 @@ export default async function guess(
       !isCorrect ? `### Answer:\n${triviaSession.correct.text}\n` : ""
     }### Explanation:\n${triviaSession.explanation}`,
   );
-
-  const newResponse: TriviaResponse = {
-    userId: interaction.user.id,
-    isCorrect,
-  };
 
   await redis.set(
     `trivia-response:${interaction.user.id}`,
