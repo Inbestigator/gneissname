@@ -1,4 +1,5 @@
 import {
+  ActionRow,
   Button,
   type CommandConfig,
   type CommandInteraction,
@@ -9,7 +10,7 @@ import {
   Section,
   Separator,
   TextDisplay,
-} from "@dressed/dressed";
+} from "dressed";
 import { prisma, redis } from "@/db";
 import {
   APIButtonComponentWithCustomId,
@@ -24,8 +25,9 @@ export const config: CommandConfig = {
 };
 
 export interface TriviaResponse {
-  userId: string;
+  answerId: string;
   isCorrect: boolean;
+  userId: string;
 }
 
 export interface TriviaSession {
@@ -33,6 +35,7 @@ export interface TriviaSession {
     id: string;
     text: string;
   };
+  answerIds: string[];
   explanation: string;
   messageId: string;
   channelId: string;
@@ -92,22 +95,19 @@ export default async function trivia(interaction: CommandInteraction) {
     return interaction.editReply("Error fetching trivia question!");
   }
 
-  const answers = question.answers
-    .sort(() => Math.random() - 0.5)
-    .map((answer) =>
-      Section(
-        [`### ${answer.text}`],
-        Button({
-          emoji: answer.emoji
-            ? {
-                name: answer.emoji,
-              }
-            : undefined,
-          custom_id: `guess_${answer.id}`,
-          style: "Secondary",
-        }),
-      ),
-    );
+  const answers = question.answers.sort(() => Math.random() - 0.5);
+
+  const answerButtons = answers.map((answer) =>
+    Button({
+      emoji: answer.emoji
+        ? {
+            name: answer.emoji,
+          }
+        : undefined,
+      label: answer.text,
+      custom_id: `guess_${answer.id}`,
+    }),
+  );
 
   interaction.editReply("Question sent!");
 
@@ -116,9 +116,9 @@ export default async function trivia(interaction: CommandInteraction) {
     components: [
       Container(
         TextDisplay(`## Trivia!\n${question.question}`),
-        ...answers,
+        ActionRow(...answerButtons),
         Separator(),
-        TextDisplay("## ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ | 0/15"),
+        responsesSection([]),
       ),
     ],
   });
@@ -127,6 +127,7 @@ export default async function trivia(interaction: CommandInteraction) {
   const newTriviaSession: TriviaSession = {
     channelId: interaction.channel.id,
     messageId: message.id,
+    answerIds: answers.map((a) => a.id),
     correct: {
       id: correct?.id ?? "",
       text: correct?.text ?? "",
@@ -144,30 +145,63 @@ export default async function trivia(interaction: CommandInteraction) {
   await multi.exec();
 }
 
+function DetailsButton(props: { disabled?: boolean } = {}) {
+  return Button({
+    custom_id: "trivia_details",
+    emoji: { name: "📊" },
+    style: "Secondary",
+    ...props,
+  });
+}
+
+export function responsesSection(responses: TriviaResponse[]) {
+  const numVoted = responses.length;
+
+  const correctPercentage = (
+    (responses.filter((a) => a.isCorrect).length / numVoted) *
+    100
+  ).toFixed(2);
+  const incorrectPercentage = (100 - Number(correctPercentage)).toFixed(2);
+
+  const barGraph =
+    "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
+    "🟥".repeat(Math.round(Number(incorrectPercentage) / 10));
+  return Section(
+    [
+      `## ${numVoted === 0 ? "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" : barGraph} | ${numVoted}/15`,
+    ],
+    DetailsButton(),
+  );
+}
+
 export function disableButtons(
   components: APIMessageTopLevelComponent[],
   correctId: string,
 ): APIMessageTopLevelComponent[] {
-  const sections = getAnswerSections(components);
-  sections.forEach((section, i) => {
-    const accessory = section.accessory as APIButtonComponentWithCustomId;
-    components.find((c) => c.type === 17)!.components[i + 1] = {
-      ...section,
-      accessory: {
-        ...accessory,
-        style: accessory.custom_id.endsWith(correctId) ? 3 : 4,
-        disabled: true,
-      },
-    };
-  });
+  const row = getAnswerRow(components);
+  row.components = row.components.map((b) => ({
+    ...b,
+    style: b.custom_id.endsWith(correctId) ? 3 : 4,
+    disabled: true,
+  }));
+  const responses = getResponsesSection(components);
+  responses.accessory = DetailsButton({ disabled: true });
 
   return components;
 }
 
-function getAnswerSections(components: APIMessageTopLevelComponent[]) {
-  return (
-    components
-      .find((c) => c.type === ComponentType.Container)
-      ?.components.filter((c) => c.type === ComponentType.Section) ?? []
-  );
+function getAnswerRow(components: APIMessageTopLevelComponent[]) {
+  const row = components
+    .find((c) => c.type === ComponentType.Container)
+    ?.components.find((c) => c.type === 1);
+  if (!row) throw new Error("No answer row");
+  return row as ReturnType<typeof ActionRow<APIButtonComponentWithCustomId>>;
+}
+
+function getResponsesSection(components: APIMessageTopLevelComponent[]) {
+  const row = components
+    .find((c) => c.type === ComponentType.Container)
+    ?.components.find((c) => c.type === 9);
+  if (!row) throw new Error("No responses section");
+  return row as ReturnType<typeof Section>;
 }

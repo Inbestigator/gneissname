@@ -1,8 +1,4 @@
-import {
-  ActionRow,
-  MessageComponentInteraction,
-  TextInput,
-} from "@dressed/dressed";
+import { ActionRow, MessageComponentInteraction, TextInput } from "dressed";
 
 export default async function addQuestion(
   interaction: MessageComponentInteraction,

@@ -1,4 +1,4 @@
-import { MessageComponentInteraction } from "@dressed/dressed";
+import { MessageComponentInteraction } from "dressed";
 import { openTicket } from "./ticket-open";
 
 export default async function suggestType(

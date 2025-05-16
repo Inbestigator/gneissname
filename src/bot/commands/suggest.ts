@@ -3,7 +3,7 @@ import {
   CommandConfig,
   CommandInteraction,
   TextInput,
-} from "@dressed/dressed";
+} from "dressed";
 
 export const config: CommandConfig = {
   description: "Suggest a trivia question",

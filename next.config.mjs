@@ -16,6 +16,6 @@ export default {
         source: "/server-map",
         destination: "/server-map/unmined.index.html",
       },
-    ]
+    ];
   },
-}
+};

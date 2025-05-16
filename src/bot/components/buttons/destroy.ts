@@ -1,4 +1,4 @@
-import { deleteMessage, MessageComponentInteraction } from "@dressed/dressed";
+import { deleteMessage, MessageComponentInteraction } from "dressed";
 
 export default async function destroy(
   interaction: MessageComponentInteraction,

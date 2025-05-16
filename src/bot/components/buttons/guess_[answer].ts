@@ -1,12 +1,9 @@
-import {
-  editMessage,
-  MessageComponentInteraction,
-  TextDisplay,
-} from "@dressed/dressed";
+import { editMessage, MessageComponentInteraction, TextDisplay } from "dressed";
 import { redis } from "@/db";
 import {
   disableButtons,
   getTriviaSession,
+  responsesSection,
   TriviaResponse,
 } from "@/bot/commands/trivia";
 
@@ -46,37 +43,23 @@ export default async function guess(
   const isCorrect = answer === triviaSession.correct.id;
 
   const newResponse: TriviaResponse = {
-    userId: interaction.user.id,
+    answerId: answer,
     isCorrect,
+    userId: interaction.user.id,
   };
 
   responses.push(newResponse);
 
   let updatedComponents = interaction.message.components ?? [];
 
-  if (responses.length >= 15) {
-    const { components } = interaction.message;
-    if (!components) throw new Error("No components");
-    updatedComponents = disableButtons(components, triviaSession.correct.id);
+  if (updatedComponents[0] && updatedComponents[0].type === 17) {
+    updatedComponents[0].components.splice(-1, 1, responsesSection(responses));
   }
 
-  const numVoted = responses.length;
-
-  const correctPercentage = (
-    (responses.filter((a) => a.isCorrect).length / numVoted) *
-    100
-  ).toFixed(2);
-  const incorrectPercentage = (100 - Number(correctPercentage)).toFixed(2);
-
-  const barGraph =
-    "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
-    "🟥".repeat(Math.round(Number(incorrectPercentage) / 10));
-
-  if (updatedComponents[0] && updatedComponents[0].type === 17) {
-    updatedComponents[0].components.splice(
-      -1,
-      1,
-      TextDisplay(`## ${barGraph} | ${numVoted}/15`),
+  if (responses.length >= 15) {
+    updatedComponents = disableButtons(
+      updatedComponents,
+      triviaSession.correct.id,
     );
   }
 

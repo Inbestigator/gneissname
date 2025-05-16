@@ -1,8 +1,4 @@
-import {
-  ActionRow,
-  Button,
-  MessageComponentInteraction,
-} from "@dressed/dressed";
+import { ActionRow, Button, MessageComponentInteraction } from "dressed";
 
 export default async function acceptTrivia(
   interaction: MessageComponentInteraction,

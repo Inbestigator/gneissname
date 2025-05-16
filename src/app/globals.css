@@ -2,6 +2,6 @@
 
 @plugin "@tailwindcss/typography";
 @plugin "daisyui" {
-    themes: wireframe --default;
+  themes: wireframe --default;
 }
 @custom-variant dark (&:is(.dark *));

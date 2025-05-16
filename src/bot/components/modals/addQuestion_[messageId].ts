@@ -4,7 +4,7 @@ import {
   Button,
   editMessage,
   ModalSubmitInteraction,
-} from "@dressed/dressed";
+} from "dressed";
 
 export default async function addQuestion(
   interaction: ModalSubmitInteraction,

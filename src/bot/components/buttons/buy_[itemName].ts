@@ -1,4 +1,4 @@
-import { MessageComponentInteraction } from "@dressed/dressed";
+import { MessageComponentInteraction } from "dressed";
 import { getCredit, modCredit } from "@/bot/utils";
 import { shopItems } from "@/bot/commands/shop";
 import { openTicket } from "../selects/ticket-open";

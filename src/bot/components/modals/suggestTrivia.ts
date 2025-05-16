@@ -3,7 +3,7 @@ import {
   Button,
   createMessage,
   ModalSubmitInteraction,
-} from "@dressed/dressed";
+} from "dressed";
 
 export default async function suggestTrivia(
   interaction: ModalSubmitInteraction,

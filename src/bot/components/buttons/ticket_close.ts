@@ -4,7 +4,7 @@ import {
   type MessageComponentInteraction,
   modifyChannel,
   TextDisplay,
-} from "@dressed/dressed";
+} from "dressed";
 
 export default async function closeTicket(
   interaction: MessageComponentInteraction,

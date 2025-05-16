@@ -1,5 +1,5 @@
 import { modCredit } from "@/bot/utils";
-import { CommandConfig, CommandInteraction } from "@dressed/dressed";
+import { CommandConfig, CommandInteraction } from "dressed";
 import { PermissionFlagsBits } from "discord-api-types/v10";
 
 export const config: CommandConfig = {

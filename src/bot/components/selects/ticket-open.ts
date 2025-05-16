@@ -10,7 +10,7 @@ import {
   SelectMenu,
   SelectMenuOption,
   TextDisplay,
-} from "@dressed/dressed";
+} from "dressed";
 
 export async function openTicket(
   ticketName: string,

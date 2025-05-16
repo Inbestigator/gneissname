@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { whitelist } from "@/app/dashboard/whitelist";
-import { listActiveThreads } from "@dressed/dressed";
+import { listActiveThreads } from "dressed";
 
 export async function GET() {
   try {
@@ -13,7 +13,7 @@ export async function GET() {
 
     const tickets = await listActiveThreads("750062409364013159").then((list) =>
       list.threads.filter(
-        (t) => t.type === 10 && t.parent_id === "1225971091344982128",
+        (t) => t.type === 12 && t.parent_id === "1225971091344982128",
       ),
     );
 

@@ -1,9 +1,5 @@
 import { getUser } from "@/bot/utils";
-import {
-  CommandConfig,
-  CommandInteraction,
-  CommandOption,
-} from "@dressed/dressed";
+import { CommandConfig, CommandInteraction, CommandOption } from "dressed";
 import { PermissionFlagsBits } from "discord-api-types/v10";
 
 export const config: CommandConfig = {

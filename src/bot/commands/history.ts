@@ -1,7 +1,6 @@
 import { prisma } from "@/db";
-import { getUser } from "@/bot/utils";
 import QuickChart from "chartjs-to-image";
-import { CommandConfig, CommandInteraction } from "@dressed/dressed";
+import { CommandConfig, CommandInteraction } from "dressed";
 import { PermissionFlagsBits } from "discord-api-types/v10";
 
 export const config: CommandConfig = {

@@ -2,7 +2,7 @@ import {
   CommandConfig,
   CommandInteraction,
   getUser as getDiscordUser,
-} from "@dressed/dressed";
+} from "dressed";
 import { prisma } from "@/db";
 import { getUser } from "@/bot/utils";
 import { APIEmbed } from "discord-api-types/v10";

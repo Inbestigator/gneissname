@@ -1,13 +1,11 @@
-import { getCredit } from "@/bot/utils";
 import {
-  ActionRow,
   Button,
   CommandConfig,
   CommandInteraction,
   Container,
   Section,
   TextDisplay,
-} from "@dressed/dressed";
+} from "dressed";
 import { APIEmbed, MessageFlags } from "discord-api-types/v10";
 
 export const shopItems = [
