@@ -3,7 +3,7 @@ import { redis } from "@/db";
 import {
   disableButtons,
   getTriviaSession,
-  responsesSection,
+  ResponsesSection,
   TriviaResponse,
 } from "@/bot/commands/trivia";
 
@@ -53,7 +53,7 @@ export default async function guess(
   let updatedComponents = interaction.message.components ?? [];
 
   if (updatedComponents[0] && updatedComponents[0].type === 17) {
-    updatedComponents[0].components.splice(-1, 1, responsesSection(responses));
+    updatedComponents[0].components.splice(-1, 1, ResponsesSection(responses));
   }
 
   if (responses.length >= 15) {

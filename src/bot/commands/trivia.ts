@@ -118,7 +118,7 @@ export default async function trivia(interaction: CommandInteraction) {
         TextDisplay(`## Trivia!\n${question.question}`),
         ActionRow(...answerButtons),
         Separator(),
-        responsesSection([]),
+        ResponsesSection([]),
       ),
     ],
   });
@@ -154,18 +154,17 @@ function DetailsButton(props: { disabled?: boolean } = {}) {
   });
 }
 
-export function responsesSection(responses: TriviaResponse[]) {
+export function ResponsesSection(responses: TriviaResponse[]) {
   const numVoted = responses.length;
-
   const correctPercentage = (
     (responses.filter((a) => a.isCorrect).length / numVoted) *
     100
   ).toFixed(2);
   const incorrectPercentage = (100 - Number(correctPercentage)).toFixed(2);
-
   const barGraph =
     "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
     "🟥".repeat(Math.round(Number(incorrectPercentage) / 10));
+
   return Section(
     [
       `## ${numVoted === 0 ? "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" : barGraph} | ${numVoted}/15`,

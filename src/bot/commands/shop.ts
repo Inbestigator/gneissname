@@ -6,7 +6,7 @@ import {
   Section,
   TextDisplay,
 } from "dressed";
-import { APIEmbed, MessageFlags } from "discord-api-types/v10";
+import { MessageFlags } from "discord-api-types/v10";
 
 export const shopItems = [
   {
