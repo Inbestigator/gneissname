@@ -105,6 +105,7 @@ export default async function trivia(interaction: CommandInteraction) {
           }
         : undefined,
       label: answer.text,
+      style: "Secondary",
       custom_id: `guess_${answer.id}`,
     }),
   );
