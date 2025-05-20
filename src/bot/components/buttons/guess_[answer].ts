@@ -85,7 +85,7 @@ export default async function guess(
                   custom_id: `ticket_open_Answer suggestion_For "${triviaSession.correct.id}"`,
                   label: "Suggest",
                   emoji: {
-                    name: "➕",
+                    name: "💡",
                   },
                 }),
               ),
