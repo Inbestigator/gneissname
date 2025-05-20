@@ -1,4 +1,9 @@
-import { editMessage, MessageComponentInteraction, TextDisplay } from "dressed";
+import {
+  ActionRow,
+  Button,
+  editMessage,
+  MessageComponentInteraction,
+} from "dressed";
 import { redis } from "@/db";
 import {
   disableButtons,
@@ -67,11 +72,26 @@ export default async function guess(
     editMessage(interaction.channel.id, interaction.message.id, {
       components: updatedComponents,
     }),
-    interaction.editReply(
-      `## ${isCorrect ? "Correct" : "Nice try"}!\n>>> ${
+    interaction.editReply({
+      content: `## ${isCorrect ? "Correct" : "Nice try"}!\n>>> ${
         !isCorrect ? `### Answer:\n${triviaSession.correct.text}\n` : ""
       }### Explanation:\n${triviaSession.explanation}`,
-    ),
+      components:
+        triviaSession.explanation ===
+        "This question has no explanation yet, please suggest one!"
+          ? [
+              ActionRow(
+                Button({
+                  custom_id: `ticket_open_Answer suggestion_For "${triviaSession.correct.id}"`,
+                  label: "Suggest",
+                  emoji: {
+                    name: "➕",
+                  },
+                }),
+              ),
+            ]
+          : [],
+    }),
     redis.set(
       `trivia-response:${interaction.user.id}`,
       JSON.stringify(newResponse),

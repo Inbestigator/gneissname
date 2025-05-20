@@ -50,13 +50,13 @@ export default async function openTicketSelect(
   interaction: MessageComponentInteraction,
 ) {
   if (interaction.data.component_type !== 3) return;
-  await interaction.deferReply({ ephemeral: true });
   let ticketName;
   let relevantStaff;
   let message;
   switch (interaction.data.values[0]) {
     case "Suggestion": {
-      await interaction.editReply({
+      await interaction.reply({
+        ephemeral: true,
         components: [
           ActionRow(
             SelectMenu({
@@ -104,5 +104,5 @@ export default async function openTicketSelect(
     relevantStaff,
     interaction.user,
   );
-  await interaction.editReply(`<#${thread.id}>`);
+  await interaction.reply({ content: `<#${thread.id}>`, ephemeral: true });
 }
