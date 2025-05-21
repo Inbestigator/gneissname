@@ -73,17 +73,17 @@ export default async function trivia(interaction: CommandInteraction) {
     }),
   ]);
   if (triviaSession && triviaSession.replaceableAt > Date.now()) {
-    return interaction.editReply("There is a trivia game already in progress!");
+    return interaction.editReply("There is already a trivia game in progress!");
   } else if (triviaSession) {
     try {
-      const { components } = await getMessage(
-        triviaSession.channelId,
-        triviaSession.messageId,
+      getMessage(triviaSession.channelId, triviaSession.messageId).then(
+        ({ components }) => {
+          if (!components) throw new Error("No components");
+          editMessage(triviaSession.channelId, triviaSession.messageId, {
+            components: disableButtons(components, triviaSession.correct.id),
+          });
+        },
       );
-      if (!components) throw new Error("No components");
-      editMessage(triviaSession.channelId, triviaSession.messageId, {
-        components: disableButtons(components, triviaSession.correct.id),
-      });
     } catch {
       // pass
     }

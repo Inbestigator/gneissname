@@ -1,11 +1,19 @@
 "use server";
 
-import { prisma } from "@/db";
 import { getServerSession } from "next-auth";
 
 import { authOptions } from "@/lib/authOptions";
 
 import { whitelist } from "./whitelist";
+import {
+  Container,
+  createMessage,
+  editMessage,
+  listMessages,
+  modifyChannel,
+  TextDisplay,
+} from "dressed";
+import { botEnv } from "dressed/server";
 
 export async function updateTicket(data: FormData) {
   try {
@@ -37,73 +45,29 @@ export async function deleteTicket(data: FormData) {
       return;
     }
 
-    const response = await fetch(
-      `https://discord.com/api/v9/channels/${data.get("ticketId")}/messages`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
-        },
-      },
-    );
-
-    if (!response.ok) return;
-
-    const messageId = [...(await response.json())]
-      .reverse()
-      .find(
-        (m: any) => m.author.id === "1202823859930136586" && m.embeds[0]?.title,
-      ).id;
+    const channelId = data.get("ticketId")?.toString() ?? "";
+    const messages = await listMessages(channelId, { limit: 100 });
+    const messageId = messages.findLast(
+      (m) => m.author.id === botEnv.DISCORD_APP_ID,
+    )?.id;
 
     if (!messageId) return;
 
-    await fetch(
-      `https://discord.com/api/v9/channels/${data.get(
-        "ticketId",
-      )}/messages/${messageId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          embeds: [
-            {
-              title: "**Ticket closed.**",
-              color: 0,
-            },
-          ],
-          components: [],
-        }),
-      },
-    );
-
-    await fetch(
-      `https://discord.com/api/v9/channels/${data.get("ticketId")}/messages`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content: `> **\`\`\`Closed by ${session.user.name}\`\`\`**`,
-        }),
-      },
-    );
-
-    await fetch(`https://discord.com/api/v9/channels/${data.get("ticketId")}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: `[Solved] ${data.get("name")}`,
-        locked: true,
-        archived: true,
+    await Promise.all([
+      editMessage(channelId, messageId, {
+        components: [
+          Container(
+            TextDisplay("## Ticket closed"),
+            TextDisplay(`Closed by ${session.user.name}`),
+          ),
+        ],
       }),
+      createMessage(channelId, `> Closed by ${session.user.name}`),
+    ]);
+    await modifyChannel(channelId, {
+      name: `[Solved] ${data.get("name")}`,
+      archived: true,
+      locked: true,
     });
     return;
   } catch (e) {
