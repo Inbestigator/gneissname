@@ -48,7 +48,7 @@ export async function deleteTicket(data: FormData) {
     const channelId = data.get("ticketId")?.toString() ?? "";
     const messages = await listMessages(channelId, { limit: 100 });
     const messageId = messages.findLast(
-      (m) => m.author.id === botEnv.DISCORD_APP_ID,
+      (m) => m.author.id === botEnv.DISCORD_APP_ID && !!m.components?.length,
     )?.id;
 
     if (!messageId) return;
