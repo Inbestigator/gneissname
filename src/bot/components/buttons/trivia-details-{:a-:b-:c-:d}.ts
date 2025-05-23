@@ -21,14 +21,13 @@ export default async function triviaDetails(
     interaction.deferReply({ ephemeral: true }),
   ]);
   const isPersisted = "a" in args && "b" in args && "c" in args && "d" in args;
-  let graphMap;
 
-  if (!isPersisted) {
-    if (
-      !triviaSession ||
-      triviaSession.messageId !== interaction.message.id ||
-      triviaSession.expiresAt < Date.now()
-    ) {
+  if (
+    !triviaSession ||
+    triviaSession.messageId !== interaction.message.id ||
+    triviaSession.expiresAt < Date.now()
+  ) {
+    if (!isPersisted) {
       if (
         triviaSession &&
         triviaSession.expiresAt < Date.now() &&
@@ -42,34 +41,39 @@ export default async function triviaDetails(
         });
       }
       return interaction.editReply("This question has expired!");
-    }
+    } else {
+      const counts = [
+        Number(args.a),
+        Number(args.b),
+        Number(args.c),
+        Number(args.d),
+      ];
+      const persistedAnswerIds = Object.keys(args);
+      const persistedResponses = [];
 
-    if (!responses.some((a) => a.userId === interaction.user.id)) {
-      return interaction.editReply("You haven't answered yet!");
-    }
-
-    graphMap = separateAnswers(responses, triviaSession.answerIds);
-  } else {
-    const counts = [
-      Number(args.a),
-      Number(args.b),
-      Number(args.c),
-      Number(args.d),
-    ];
-    const persistedAnswerIds = Object.keys(args);
-    const persistedResponses = [];
-
-    for (let i = 0; i < counts.length && i < persistedAnswerIds.length; i++) {
-      for (let j = 0; j < counts[i]; j++) {
-        persistedResponses.push({
-          answerId: persistedAnswerIds[i],
-        } as TriviaResponse);
+      for (let i = 0; i < counts.length && i < persistedAnswerIds.length; i++) {
+        for (let j = 0; j < counts[i]; j++) {
+          persistedResponses.push({
+            answerId: persistedAnswerIds[i],
+          } as TriviaResponse);
+        }
       }
+      await interaction.editReply(
+        generateBarGraph(
+          separateAnswers(persistedResponses, Object.keys(args)),
+        ),
+      );
+      return;
     }
-    graphMap = separateAnswers(persistedResponses, Object.keys(args));
   }
 
-  await interaction.editReply(generateBarGraph(graphMap));
+  if (!responses.some((a) => a.userId === interaction.user.id)) {
+    return interaction.editReply("You haven't answered yet!");
+  }
+
+  await interaction.editReply(
+    generateBarGraph(separateAnswers(responses, triviaSession.answerIds)),
+  );
 }
 
 function generateBarGraph(counts: Record<string, number>): string {

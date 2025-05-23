@@ -60,7 +60,7 @@ export default async function guess(
 
   if (updatedComponents[0] && updatedComponents[0].type === 17) {
     const responseSection = getResponsesSection(updatedComponents);
-    const newSection = ResponsesSection(responses);
+    const newSection = ResponsesSection(responses, triviaSession.answerIds);
     responseSection.components = newSection.components;
     responseSection.accessory = newSection.accessory;
   }
