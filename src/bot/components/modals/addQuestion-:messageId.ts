@@ -30,7 +30,7 @@ export default async function addQuestion(
           style: "Secondary",
         }),
         Button({
-          custom_id: `addAnswer_true_${triviaQ.id}`,
+          custom_id: `addAnswer-true-${triviaQ.id}`,
           label: "Add true answer",
           style: "Primary",
         }),

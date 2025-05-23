@@ -54,7 +54,7 @@ export default async function addAnswer(
           style: "Secondary",
         }),
         Button({
-          custom_id: `addAnswer_false_${args.questionId}`,
+          custom_id: `addAnswer-false-${args.questionId}`,
           label: "Add false answer",
           disabled: isLast,
           style: isLast ? "Secondary" : "Primary",

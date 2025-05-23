@@ -4,7 +4,7 @@ export default async function addQuestion(
   interaction: MessageComponentInteraction,
 ) {
   await interaction.showModal({
-    custom_id: `addQuestion_${interaction.message.id}`,
+    custom_id: `addQuestion-${interaction.message.id}`,
     title: "Add question",
     components: [
       ActionRow(

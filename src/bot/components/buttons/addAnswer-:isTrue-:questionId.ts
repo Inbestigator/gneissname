@@ -8,7 +8,7 @@ export default async function addAnswer(
   },
 ) {
   await interaction.showModal({
-    custom_id: `addAnswer_${interaction.message.id}_${args.isTrue}_${args.questionId}`,
+    custom_id: `addAnswer-${interaction.message.id}-${args.isTrue}-${args.questionId}`,
     title: `Add ${args.isTrue} answer`,
     components: [
       ActionRow(

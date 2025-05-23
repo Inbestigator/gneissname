@@ -1,4 +1,5 @@
 import {
+  ActionRow,
   Button,
   CommandConfig,
   CommandInteraction,
@@ -41,10 +42,13 @@ export default async function shop(interaction: CommandInteraction) {
           Section(
             [`### ${item.name}`, item.description],
             Button({
-              custom_id: `buy_${item.name.toLowerCase()}`,
+              custom_id: `buy-${item.name.toLowerCase()}`,
               label: `$${item.price.toLocaleString()}`,
             }),
           ),
+        ),
+        ActionRow(
+          Button({ custom_id: "ticket-open-Answer-Hello", label: "ticket" }),
         ),
       ),
     ],

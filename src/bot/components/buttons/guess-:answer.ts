@@ -7,6 +7,7 @@ import {
 import { redis } from "@/db";
 import {
   disableButtons,
+  getResponsesSection,
   getTriviaSession,
   ResponsesSection,
   TriviaResponse,
@@ -58,7 +59,10 @@ export default async function guess(
   let updatedComponents = interaction.message.components ?? [];
 
   if (updatedComponents[0] && updatedComponents[0].type === 17) {
-    updatedComponents[0].components.splice(-1, 1, ResponsesSection(responses));
+    const responseSection = getResponsesSection(updatedComponents);
+    const newSection = ResponsesSection(responses);
+    responseSection.components = newSection.components;
+    responseSection.accessory = newSection.accessory;
   }
 
   if (responses.length >= 15) {
@@ -82,7 +86,7 @@ export default async function guess(
           ? [
               ActionRow(
                 Button({
-                  custom_id: `ticket_open_Answer suggestion_For "${triviaSession.correct.id}"`,
+                  custom_id: `ticket-open-Answer suggestion-For "${triviaSession.correct.id}"`,
                   label: "Suggest",
                   emoji: {
                     name: "💡",

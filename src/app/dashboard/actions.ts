@@ -1,9 +1,7 @@
 "use server";
 
 import { getServerSession } from "next-auth";
-
 import { authOptions } from "@/lib/authOptions";
-
 import { whitelist } from "./whitelist";
 import {
   Container,
@@ -21,17 +19,10 @@ export async function updateTicket(data: FormData) {
     if (!session || !whitelist.includes(session.user.id)) {
       return;
     }
+    const channelId = data.get("ticketId")?.toString() ?? "";
+    const tags = data.get("tags")?.toString() ?? "";
 
-    await fetch(`https://discord.com/api/v9/channels/${data.get("ticketId")}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: (data.get("tags") as string) + data.get("user"),
-      }),
-    });
+    await modifyChannel(channelId, { name: tags + data.get("user") });
     return;
   } catch (e) {
     return;

@@ -31,7 +31,7 @@ export async function openTicket(
         TextDisplay(message),
         ActionRow(
           Button({
-            custom_id: "ticket_close",
+            custom_id: "ticket-close",
             label: "Close",
             emoji: {
               name: "🔒",
@@ -61,7 +61,7 @@ export default async function openTicketSelect(
           ActionRow(
             SelectMenu({
               type: "String",
-              custom_id: "suggest_type",
+              custom_id: "suggest-type",
               placeholder: "What are you suggesting?",
               options: [
                 SelectMenuOption("Video idea", "Video idea", {

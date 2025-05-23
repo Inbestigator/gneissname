@@ -18,6 +18,7 @@ import {
   ComponentType,
   MessageFlags,
 } from "discord-api-types/v10";
+import { separateAnswers } from "../components/buttons/trivia-details-{:a-:b-:c-:d}";
 
 export const config: CommandConfig = {
   description: "Gives a random trivia question",
@@ -106,7 +107,7 @@ export default async function trivia(interaction: CommandInteraction) {
         : undefined,
       label: answer.text,
       style: "Secondary",
-      custom_id: `guess_${answer.id}`,
+      custom_id: `guess-${answer.id}`,
     }),
   );
 
@@ -146,16 +147,20 @@ export default async function trivia(interaction: CommandInteraction) {
   await multi.exec();
 }
 
-function DetailsButton(props: { disabled?: boolean } = {}) {
+function DetailsButton(
+  props = { custom_id: "trivia-details", disabled: false },
+) {
   return Button({
-    custom_id: "trivia_details",
     emoji: { name: "📊" },
     style: "Secondary",
     ...props,
   });
 }
 
-export function ResponsesSection(responses: TriviaResponse[]) {
+export function ResponsesSection(
+  responses: TriviaResponse[],
+  answerIds?: string[],
+) {
   const numVoted = responses.length;
   const correctPercentage = (
     (responses.filter((a) => a.isCorrect).length / numVoted) *
@@ -165,12 +170,19 @@ export function ResponsesSection(responses: TriviaResponse[]) {
   const barGraph =
     "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
     "🟥".repeat(Math.round(Number(incorrectPercentage) / 10));
+  let counts;
+  if (answerIds) {
+    counts = separateAnswers(responses, answerIds);
+  }
 
   return Section(
     [
       `## ${numVoted === 0 ? "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" : barGraph} | ${numVoted}/15`,
     ],
-    DetailsButton(),
+    DetailsButton({
+      disabled: !counts,
+      custom_id: `trivia-details-${counts ? Object.values(counts).join("-") : ""}`,
+    }),
   );
 }
 
@@ -184,8 +196,6 @@ export function disableButtons(
     style: b.custom_id.endsWith(correctId) ? 3 : 4,
     disabled: true,
   }));
-  const responses = getResponsesSection(components);
-  responses.accessory = DetailsButton({ disabled: true });
 
   return components;
 }
@@ -198,7 +208,7 @@ function getAnswerRow(components: APIMessageTopLevelComponent[]) {
   return row as ReturnType<typeof ActionRow<APIButtonComponentWithCustomId>>;
 }
 
-function getResponsesSection(components: APIMessageTopLevelComponent[]) {
+export function getResponsesSection(components: APIMessageTopLevelComponent[]) {
   const row = components
     .find((c) => c.type === ComponentType.Container)
     ?.components.find((c) => c.type === 9);
