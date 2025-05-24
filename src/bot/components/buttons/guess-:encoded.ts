@@ -87,8 +87,20 @@ export default async function guess(
       ),
     ]);
   } else {
-    interaction.editReply(
-      `## ${isCorrect ? "Correct" : "Nice try"}!\n-# This trivia has expired, so your answer isn't counted`,
-    );
+    await Promise.all([
+      interaction.editReply(
+        `## ${isCorrect ? "Correct" : "Nice try"}!\n-# This trivia has expired, so your answer isn't counted`,
+      ),
+      async () => {
+        if (
+          triviaSession &&
+          triviaSession.messageId === interaction.message.id
+        ) {
+          await editMessage(interaction.channel.id, interaction.message.id, {
+            components: disableButtons(interaction.message.components ?? []),
+          });
+        }
+      },
+    ]);
   }
 }
