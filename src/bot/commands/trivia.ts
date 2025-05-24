@@ -18,7 +18,7 @@ import {
   ComponentType,
   MessageFlags,
 } from "discord-api-types/v10";
-import { separateAnswers } from "../components/buttons/trivia-details-{:a-:b-:c-:d}";
+import { separateAnswers } from "../components/buttons/trivia-details-:a-:b-:c-:d";
 
 export const config: CommandConfig = {
   description: "Gives a random trivia question",
@@ -81,7 +81,7 @@ export default async function trivia(interaction: CommandInteraction) {
         ({ components }) => {
           if (!components) throw new Error("No components");
           editMessage(triviaSession.channelId, triviaSession.messageId, {
-            components: disableButtons(components, triviaSession.correct.id),
+            components: disableButtons(components),
           });
         },
       );
@@ -97,9 +97,11 @@ export default async function trivia(interaction: CommandInteraction) {
   }
 
   const answers = question.answers.sort(() => Math.random() - 0.5);
+  const correctN = answers.findIndex((a) => a.correct);
 
-  const answerButtons = answers.map((answer) =>
-    Button({
+  const answerButtons = answers.map((answer, i) => {
+    const encoded = encode(answer.id, correctN);
+    return Button({
       emoji: answer.emoji
         ? {
             name: answer.emoji,
@@ -107,9 +109,10 @@ export default async function trivia(interaction: CommandInteraction) {
         : undefined,
       label: answer.text,
       style: "Secondary",
-      custom_id: `guess-${answer.id}`,
-    }),
-  );
+      custom_id: `guess-${encode(encoded, i)}`,
+      id: i * 3,
+    });
+  });
 
   interaction.editReply("Question sent!");
 
@@ -141,9 +144,9 @@ export default async function trivia(interaction: CommandInteraction) {
 
   const multi = redis.multi();
   multi.set("currentTrivia", JSON.stringify(newTriviaSession));
-  responses.forEach((r) => {
-    multi.del(`trivia-response:${r.userId}`);
-  });
+  for (const response of responses) {
+    multi.del(`trivia-response:${response.userId}`);
+  }
   await multi.exec();
 }
 
@@ -188,16 +191,19 @@ export function ResponsesSection(
 
 export function disableButtons(
   components: APIMessageTopLevelComponent[],
-  correctId: string,
+  // correctId: string,
 ): APIMessageTopLevelComponent[] {
-  const row = getAnswerRow(components);
-  row.components = row.components.map((b) => ({
-    ...b,
-    style: b.custom_id.endsWith(correctId) ? 3 : 4,
-    disabled: true,
-  }));
+  // const row = getAnswerRow(components);
+  // row.components = row.components.map((b) => ({
+  //   ...b,
+  //   style: b.custom_id.endsWith(correctId) ? 3 : 4,
+  //   disabled: true,
+  // }));
 
-  return components;
+  return [
+    ...components,
+    TextDisplay("-# This trivia has expired. However, you can still respond"),
+  ];
 }
 
 function getAnswerRow(components: APIMessageTopLevelComponent[]) {
@@ -214,4 +220,26 @@ export function getResponsesSection(components: APIMessageTopLevelComponent[]) {
     ?.components.find((c) => c.type === 9);
   if (!row) throw new Error("No responses section");
   return row as ReturnType<typeof Section>;
+}
+
+function encode(input: string, modifier: number): string {
+  const chars = Array.from(input).map((c) =>
+    String.fromCharCode(c.charCodeAt(0) ^ modifier),
+  );
+  const encoded = chars.join("");
+  const data = `${modifier}:${encoded}`;
+  return btoa(data);
+}
+
+export function decode(encoded: string): {
+  original: string;
+  modifier: number;
+} {
+  const decoded = atob(encoded);
+  const [modStr, transformed] = decoded.split(":", 2);
+  const modifier = parseInt(modStr, 10);
+  const original = Array.from(transformed)
+    .map((c) => String.fromCharCode(c.charCodeAt(0) ^ modifier))
+    .join("");
+  return { original, modifier };
 }

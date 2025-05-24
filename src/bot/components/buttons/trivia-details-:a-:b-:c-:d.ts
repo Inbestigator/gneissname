@@ -1,70 +1,45 @@
-import { editMessage, MessageComponentInteraction } from "dressed";
-import {
-  disableButtons,
-  getTriviaSession,
-  TriviaResponse,
-} from "@/bot/commands/trivia";
+import { MessageComponentInteraction } from "dressed";
+import { getTriviaSession, TriviaResponse } from "@/bot/commands/trivia";
 
 export default async function triviaDetails(
   interaction: MessageComponentInteraction,
-  args:
-    | {
-        a: string;
-        b: string;
-        c: string;
-        d: string;
-      }
-    | {},
+  args: {
+    a: string;
+    b: string;
+    c: string;
+    d: string;
+  },
 ) {
   const [{ session: triviaSession, responses }] = await Promise.all([
     getTriviaSession(),
     interaction.deferReply({ ephemeral: true }),
   ]);
-  const isPersisted = "a" in args && "b" in args && "c" in args && "d" in args;
 
   if (
     !triviaSession ||
     triviaSession.messageId !== interaction.message.id ||
     triviaSession.expiresAt < Date.now()
   ) {
-    if (!isPersisted) {
-      if (
-        triviaSession &&
-        triviaSession.expiresAt < Date.now() &&
-        interaction.message.components
-      ) {
-        editMessage(interaction.channel.id, interaction.message.id, {
-          components: disableButtons(
-            interaction.message.components,
-            triviaSession.correct.id,
-          ),
-        });
-      }
-      return interaction.editReply("This question has expired!");
-    } else {
-      const counts = [
-        Number(args.a),
-        Number(args.b),
-        Number(args.c),
-        Number(args.d),
-      ];
-      const persistedAnswerIds = Object.keys(args);
-      const persistedResponses = [];
+    const counts = [
+      Number(args.a),
+      Number(args.b),
+      Number(args.c),
+      Number(args.d),
+    ];
+    const persistedAnswerIds = Object.keys(args);
+    const persistedResponses = [];
 
-      for (let i = 0; i < counts.length && i < persistedAnswerIds.length; i++) {
-        for (let j = 0; j < counts[i]; j++) {
-          persistedResponses.push({
-            answerId: persistedAnswerIds[i],
-          } as TriviaResponse);
-        }
+    for (let i = 0; i < counts.length && i < persistedAnswerIds.length; i++) {
+      for (let j = 0; j < counts[i]; j++) {
+        persistedResponses.push({
+          answerId: persistedAnswerIds[i],
+        } as TriviaResponse);
       }
-      await interaction.editReply(
-        generateBarGraph(
-          separateAnswers(persistedResponses, Object.keys(args)),
-        ),
-      );
-      return;
     }
+    await interaction.editReply(
+      generateBarGraph(separateAnswers(persistedResponses, Object.keys(args))),
+    );
+    return;
   }
 
   if (!responses.some((a) => a.userId === interaction.user.id)) {
