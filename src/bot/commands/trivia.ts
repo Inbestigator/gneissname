@@ -81,7 +81,7 @@ export default async function trivia(interaction: CommandInteraction) {
         ({ components }) => {
           if (!components) throw new Error("No components");
           editMessage(triviaSession.channelId, triviaSession.messageId, {
-            components: disableButtons(components),
+            components: markArchived(components),
           });
         },
       );
@@ -189,29 +189,17 @@ export function ResponsesSection(
   );
 }
 
-export function disableButtons(
+export function markArchived(
   components: APIMessageTopLevelComponent[],
-  // correctId: string,
 ): APIMessageTopLevelComponent[] {
-  // const row = getAnswerRow(components);
-  // row.components = row.components.map((b) => ({
-  //   ...b,
-  //   style: b.custom_id.endsWith(correctId) ? 3 : 4,
-  //   disabled: true,
-  // }));
+  const container = components.find((c) => c.type === ComponentType.Container);
 
-  return [
-    ...components,
+  if (!container || !container.components) return components;
+  container.components.push(
     TextDisplay("-# This trivia has expired. However, you can still respond"),
-  ];
-}
+  );
 
-function getAnswerRow(components: APIMessageTopLevelComponent[]) {
-  const row = components
-    .find((c) => c.type === ComponentType.Container)
-    ?.components.find((c) => c.type === 1);
-  if (!row) throw new Error("No answer row");
-  return row as ReturnType<typeof ActionRow<APIButtonComponentWithCustomId>>;
+  return components;
 }
 
 export function getResponsesSection(components: APIMessageTopLevelComponent[]) {

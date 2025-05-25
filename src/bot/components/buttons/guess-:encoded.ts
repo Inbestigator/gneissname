@@ -7,7 +7,7 @@ import {
 import { redis } from "@/db";
 import {
   decode,
-  disableButtons,
+  markArchived,
   getResponsesSection,
   getTriviaSession,
   ResponsesSection,
@@ -53,7 +53,7 @@ export default async function guess(
     }
 
     if (responses.length >= 15) {
-      updatedComponents = disableButtons(updatedComponents);
+      updatedComponents = markArchived(updatedComponents);
     }
 
     await Promise.all([
@@ -92,14 +92,9 @@ export default async function guess(
         `## ${isCorrect ? "Correct" : "Nice try"}!\n-# This trivia has expired, so your answer isn't counted`,
       ),
       async () => {
-        if (
-          triviaSession &&
-          triviaSession.messageId === interaction.message.id
-        ) {
-          await editMessage(interaction.channel.id, interaction.message.id, {
-            components: disableButtons(interaction.message.components ?? []),
-          });
-        }
+        await editMessage(interaction.channel.id, interaction.message.id, {
+          components: markArchived(interaction.message.components ?? []),
+        });
       },
     ]);
   }

@@ -47,9 +47,6 @@ export default async function shop(interaction: CommandInteraction) {
             }),
           ),
         ),
-        ActionRow(
-          Button({ custom_id: "ticket-open-Answer-Hello", label: "ticket" }),
-        ),
       ),
     ],
     ephemeral: true,
