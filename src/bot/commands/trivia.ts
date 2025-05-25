@@ -13,12 +13,11 @@ import {
 } from "dressed";
 import { prisma, redis } from "@/db";
 import {
-  APIButtonComponentWithCustomId,
   APIMessageTopLevelComponent,
   ComponentType,
   MessageFlags,
 } from "discord-api-types/v10";
-import { separateAnswers } from "../components/buttons/trivia-details-:a-:b-:c-:d";
+import { separateAnswers } from "../components/buttons/trivia-details-:a([0-9]+)-:b([0-9]+)-:c([0-9]+)-:d([0-9]+)";
 
 export const config: CommandConfig = {
   description: "Gives a random trivia question",
