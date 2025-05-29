@@ -11,7 +11,7 @@ import {
   modifyChannel,
   TextDisplay,
 } from "dressed";
-import { botEnv } from "dressed/server";
+import { botEnv } from "dressed/utils";
 
 export async function updateTicket(data: FormData) {
   try {

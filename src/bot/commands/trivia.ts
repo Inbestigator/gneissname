@@ -17,7 +17,7 @@ import {
   ComponentType,
   MessageFlags,
 } from "discord-api-types/v10";
-import { separateAnswers } from "../components/buttons/trivia-details-:a([0-9]+)-:b([0-9]+)-:c([0-9]+)-:d([0-9]+)";
+import { separateAnswers } from "../components/buttons/trivia-details";
 
 export const config: CommandConfig = {
   description: "Gives a random trivia question",

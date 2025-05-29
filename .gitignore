@@ -38,3 +38,4 @@ latestVideos.json
 tsconfig.tsbuildinfo
 
 bot.gen.ts
+.dressed/

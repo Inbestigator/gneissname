@@ -6,6 +6,8 @@ import {
   ModalSubmitInteraction,
 } from "dressed";
 
+export const pattern = "addAnswer-:messageId-:isTrue-:questionId";
+
 export default async function addAnswer(
   interaction: ModalSubmitInteraction,
   args: {

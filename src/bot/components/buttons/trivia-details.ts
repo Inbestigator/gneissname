@@ -1,6 +1,8 @@
 import { MessageComponentInteraction } from "dressed";
 import { getTriviaSession, TriviaResponse } from "@/bot/commands/trivia";
 
+export const pattern = "trivia-details-:a(\\d+)-:b(\\d+)-:c(\\d+)-:d(\\d+)";
+
 export default async function triviaDetails(
   interaction: MessageComponentInteraction,
   args: {
