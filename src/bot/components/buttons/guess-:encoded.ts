@@ -40,6 +40,7 @@ export default async function guess(
       isCorrect,
       userId: interaction.user.id,
     };
+    console.log(newResponse);
 
     responses.push(newResponse);
 
@@ -48,6 +49,7 @@ export default async function guess(
     if (updatedComponents[0] && updatedComponents[0].type === 17) {
       const responseSection = getResponsesSection(updatedComponents);
       const newSection = ResponsesSection(responses, triviaSession.answerIds);
+      console.log(newSection);
       responseSection.components = newSection.components;
       responseSection.accessory = newSection.accessory;
     }
@@ -91,11 +93,9 @@ export default async function guess(
       interaction.editReply(
         `## ${isCorrect ? "Correct" : "Nice try"}!\n-# This trivia has expired, so your answer isn't counted`,
       ),
-      async () => {
-        await editMessage(interaction.channel.id, interaction.message.id, {
-          components: markArchived(interaction.message.components ?? []),
-        });
-      },
+      editMessage(interaction.channel.id, interaction.message.id, {
+        components: markArchived(interaction.message.components ?? []),
+      }),
     ]);
   }
 }
