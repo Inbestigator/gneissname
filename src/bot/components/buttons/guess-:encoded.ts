@@ -40,7 +40,6 @@ export default async function guess(
       isCorrect,
       userId: interaction.user.id,
     };
-    console.log(newResponse);
 
     responses.push(newResponse);
 
@@ -49,7 +48,6 @@ export default async function guess(
     if (updatedComponents[0] && updatedComponents[0].type === 17) {
       const responseSection = getResponsesSection(updatedComponents);
       const newSection = ResponsesSection(responses, triviaSession.answerIds);
-      console.log(newSection);
       responseSection.components = newSection.components;
       responseSection.accessory = newSection.accessory;
     }

@@ -193,7 +193,12 @@ export function markArchived(
 ): APIMessageTopLevelComponent[] {
   const container = components.find((c) => c.type === ComponentType.Container);
 
-  if (!container || !container.components) return components;
+  if (
+    !container ||
+    !container.components ||
+    container.components.at(-1)?.type === 10
+  )
+    return components;
   container.components.push(
     TextDisplay("-# This trivia has expired. However, you can still respond"),
   );
