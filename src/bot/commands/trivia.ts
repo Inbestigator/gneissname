@@ -18,6 +18,7 @@ import {
   MessageFlags,
 } from "discord-api-types/v10";
 import { separateAnswers } from "../components/buttons/trivia-details";
+import { createHash } from "node:crypto";
 
 export const config: CommandConfig = {
   description: "Gives a random trivia question",
@@ -96,10 +97,12 @@ export default async function trivia(interaction: CommandInteraction) {
   }
 
   const answers = question.answers.sort(() => Math.random() - 0.5);
-  const correctN = answers.findIndex((a) => a.correct);
+  const hashedCorrect = createHash("sha1")
+    .update(answers.find((a) => a.correct)?.id ?? "")
+    .digest("hex")
+    .slice(0, 6);
 
   const answerButtons = answers.map((answer, i) => {
-    const encoded = encode(answer.id, correctN);
     return Button({
       emoji: answer.emoji
         ? {
@@ -108,7 +111,7 @@ export default async function trivia(interaction: CommandInteraction) {
         : undefined,
       label: answer.text,
       style: "Secondary",
-      custom_id: `guess-${encode(encoded, i)}`,
+      custom_id: `guess-${answer.id}-${hashedCorrect}`,
       id: i * 3,
     });
   });
@@ -228,7 +231,7 @@ export function decode(encoded: string): {
 } {
   const decoded = atob(encoded);
   const [modStr, transformed] = decoded.split(":", 2);
-  const modifier = parseInt(modStr, 10);
+  const modifier = Number(modStr);
   const original = Array.from(transformed)
     .map((c) => String.fromCharCode(c.charCodeAt(0) ^ modifier))
     .join("");

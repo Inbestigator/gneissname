@@ -6,25 +6,24 @@ import {
 } from "dressed";
 import { redis } from "@/db";
 import {
-  decode,
   markArchived,
   getResponsesSection,
   getTriviaSession,
   ResponsesSection,
   TriviaResponse,
 } from "@/bot/commands/trivia";
+import { createHash } from "node:crypto";
 
 export default async function guess(
   interaction: MessageComponentInteraction,
-  { encoded }: { encoded: string },
+  { answerId, hashed }: { answerId: string; hashed: string },
 ) {
   const [{ session: triviaSession, responses }] = await Promise.all([
     getTriviaSession(),
     interaction.deferReply({ ephemeral: true }),
   ]);
-  const { original: decoded, modifier: answerN } = decode(encoded);
-  const { original: answer, modifier: correctN } = decode(decoded);
-  const isCorrect = answerN === correctN;
+  const isCorrect =
+    createHash("sha1").update(answerId).digest("hex").slice(0, 6) === hashed;
 
   if (
     triviaSession &&
@@ -36,7 +35,7 @@ export default async function guess(
     }
 
     const newResponse: TriviaResponse = {
-      answerId: answer,
+      answerId,
       isCorrect,
       userId: interaction.user.id,
     };
