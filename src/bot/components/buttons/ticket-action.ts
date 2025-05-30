@@ -7,7 +7,7 @@ import {
 } from "dressed";
 import { openTicket } from "../selects/ticket-open";
 
-export const pattern = "ticket-:action(close|open-:ticketname{-:message})";
+export const pattern = "ticket-:action(close|open){-:ticketname{-:message}}";
 
 export default async function ticketButton(
   interaction: MessageComponentInteraction,
