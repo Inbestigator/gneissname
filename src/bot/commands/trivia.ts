@@ -172,7 +172,8 @@ export function ResponsesSection(
   const barGraph =
     "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
     "🟥".repeat(Math.round(Number(incorrectPercentage) / 10));
-  let counts;
+  let counts = [0, 0, 0, 0];
+
   if (answerIds) {
     counts = separateAnswers(responses, answerIds);
   }

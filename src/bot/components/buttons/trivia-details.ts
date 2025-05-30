@@ -28,19 +28,7 @@ export default async function triviaDetails(
       Number(args.c),
       Number(args.d),
     ];
-    const persistedAnswerIds = Object.keys(args);
-    const persistedResponses = [];
-
-    for (let i = 0; i < counts.length && i < persistedAnswerIds.length; i++) {
-      for (let j = 0; j < counts[i]; j++) {
-        persistedResponses.push({
-          answerId: persistedAnswerIds[i],
-        } as TriviaResponse);
-      }
-    }
-    await interaction.editReply(
-      generateBarGraph(separateAnswers(persistedResponses, Object.keys(args))),
-    );
+    await interaction.editReply(generateBarGraph(counts));
     return;
   }
 
@@ -53,26 +41,22 @@ export default async function triviaDetails(
   );
 }
 
-function generateBarGraph(counts: Record<string, number>): string {
-  const EMOJIS = ["🟩", "🟪", "🟨", "🟦"];
-  const EMPTY = "⬛";
+function generateBarGraph(counts: number[], height = 4): string {
+  const emojis = ["🟩", "🟪", "🟨", "🟦"];
 
-  const total = Object.values(counts).reduce((p, v) => p + v, 0);
+  const total = counts.reduce((sum, value) => sum + value, 0);
 
-  const emojiMap: Record<string, string> = {};
-  Object.keys(counts).forEach((id, i) => {
-    emojiMap[id] = EMOJIS[i % EMOJIS.length];
-  });
-
-  const heights = Object.keys(counts).map((id) =>
-    total === 0 ? 0 : Math.round((counts[id] / total) * 4),
-  );
+  const heights =
+    total === 0
+      ? [0, 0, 0, 0]
+      : counts.map((count) => Math.round((count / total) * height));
 
   const rows: string[] = [];
-  for (let row = 3; row >= 0; row--) {
-    const line = Object.keys(counts)
-      .map((id, i) => (heights[i] > row ? emojiMap[id] : EMPTY))
-      .join("");
+  for (let row = height - 1; row >= 0; row--) {
+    let line = "";
+    for (let i = 0; i < counts.length; i++) {
+      line += heights[i] > row ? emojis[i % emojis.length] : "⬛";
+    }
     rows.push(line);
   }
 
@@ -81,10 +65,18 @@ function generateBarGraph(counts: Record<string, number>): string {
 
 export function separateAnswers(
   responses: TriviaResponse[],
-  allAnswerIds: string[],
-) {
-  const counts: Record<string, number> = {};
-  for (const id of allAnswerIds) counts[id] = 0;
-  for (const r of responses) counts[r.answerId]++;
-  return counts;
+  order: string[],
+): number[] {
+  const countsMap = responses.reduce(
+    (acc, entry) => {
+      if (!acc[entry.answerId]) {
+        acc[entry.answerId] = 0;
+      }
+      acc[entry.answerId]++;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  return order.map((id) => countsMap[id] || 0);
 }
