@@ -172,19 +172,17 @@ export function ResponsesSection(
   const barGraph =
     "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
     "🟥".repeat(Math.round(Number(incorrectPercentage) / 10));
-  let counts = [0, 0, 0, 0];
-
-  if (answerIds) {
-    counts = separateAnswers(responses, answerIds);
-  }
+  const counts = answerIds
+    ? separateAnswers(responses, answerIds)
+    : [0, 0, 0, 0];
 
   return Section(
     [
       `## ${numVoted === 0 ? "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" : barGraph} | ${numVoted}/15`,
     ],
     DetailsButton({
-      disabled: !counts,
-      custom_id: `trivia-details-${counts ? Object.values(counts).join("-") : ""}`,
+      disabled: Math.max(...counts) === 0,
+      custom_id: `trivia-details-${counts ? counts.join("-") : ""}`,
     }),
   );
 }
