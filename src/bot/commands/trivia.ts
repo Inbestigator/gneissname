@@ -97,11 +97,17 @@ export default async function trivia(interaction: CommandInteraction) {
   }
 
   const answers = question.answers.sort(() => Math.random() - 0.5);
+  const correct = answers.find((a) => a.correct);
+
+  if (!correct) {
+    console.error("No correct id");
+    return;
+  }
+
   const hashedCorrect = createHash("sha1")
-    .update(answers.find((a) => a.correct)?.id ?? "")
+    .update(correct.id)
     .digest("hex")
     .slice(0, 6);
-
   const answerButtons = answers.map((answer, i) => {
     return Button({
       emoji: answer.emoji
@@ -111,7 +117,7 @@ export default async function trivia(interaction: CommandInteraction) {
         : undefined,
       label: answer.text,
       style: "Secondary",
-      custom_id: `guess-${answer.id}-${hashedCorrect}`,
+      custom_id: `guess-${answer.id},${hashedCorrect}`,
       id: i * 3,
     });
   });
@@ -130,14 +136,13 @@ export default async function trivia(interaction: CommandInteraction) {
     ],
   });
 
-  const correct = question.answers.find((a) => a.correct);
   const newTriviaSession: TriviaSession = {
     channelId: interaction.channel.id,
     messageId: message.id,
     answerIds: answers.map((a) => a.id),
     correct: {
-      id: correct?.id ?? "",
-      text: correct?.text ?? "",
+      id: correct.id,
+      text: correct.text,
     },
     explanation: question.explanation,
     expiresAt: Date.now() + 45 * 60 * 1000,

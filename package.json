@@ -1,8 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "bun build:bot && next dev",
-    "build": "next build",
+    "dev": "bun build:bot && next dev --turbo",
+    "build": "next build --turbo",
     "start": "next start --turbo",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
