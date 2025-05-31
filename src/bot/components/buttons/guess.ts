@@ -3,6 +3,8 @@ import {
   Button,
   editMessage,
   MessageComponentInteraction,
+  Separator,
+  TextDisplay,
 } from "dressed";
 import { redis } from "@/db";
 import {
@@ -13,17 +15,32 @@ import {
   TriviaResponse,
 } from "@/bot/commands/trivia";
 import { createHash } from "node:crypto";
+import { MessageFlags } from "discord-api-types/v10";
+
+export const pattern = "guess-(:depAnswerId,:depHashed|:hashed-:answerId)";
 
 export default async function guess(
   interaction: MessageComponentInteraction,
-  { answerId, hashed }: { answerId: string; hashed: string },
+  args:
+    | { answerId: string; hashed: string }
+    | { depAnswerId: string; depHashed: string },
 ) {
+  const { answerId, hashed } =
+    "answerId" in args
+      ? args
+      : { answerId: args.depAnswerId, hashed: args.depHashed };
   const [{ session: triviaSession, responses }] = await Promise.all([
     getTriviaSession(),
-    interaction.deferReply({ ephemeral: true }),
+    interaction.deferReply({
+      ephemeral: true,
+      flags: MessageFlags.IsComponentsV2,
+    }),
   ]);
   const isCorrect =
-    createHash("sha1").update(answerId).digest("hex").slice(0, 6) === hashed;
+    createHash("sha1")
+      .update(answerId)
+      .digest("hex")
+      .slice(0, hashed.length) === hashed;
 
   if (
     triviaSession &&
@@ -87,9 +104,22 @@ export default async function guess(
     ]);
   } else {
     await Promise.all([
-      interaction.editReply(
-        `## ${isCorrect ? "Correct" : "Nice try"}!\n-# This trivia has expired, so your answer isn't counted`,
-      ),
+      interaction.editReply({
+        components: [
+          ...("depAnswerId" in args
+            ? [
+                TextDisplay(
+                  "## This version of trivia is being phased out and will not work soon!",
+                ),
+                Separator(),
+              ]
+            : []),
+          TextDisplay(`## ${isCorrect ? "Correct" : "Nice try"}!`),
+          TextDisplay(
+            "-# This trivia has expired, so your answer isn't counted",
+          ),
+        ],
+      }),
       editMessage(interaction.channel.id, interaction.message.id, {
         components: markArchived(interaction.message.components ?? []),
       }),

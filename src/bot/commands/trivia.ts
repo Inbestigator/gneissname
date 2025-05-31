@@ -107,7 +107,7 @@ export default async function trivia(interaction: CommandInteraction) {
   const hashedCorrect = createHash("sha1")
     .update(correct.id)
     .digest("hex")
-    .slice(0, 6);
+    .slice(0, 8);
   const answerButtons = answers.map((answer, i) => {
     return Button({
       emoji: answer.emoji
@@ -117,7 +117,7 @@ export default async function trivia(interaction: CommandInteraction) {
         : undefined,
       label: answer.text,
       style: "Secondary",
-      custom_id: `guess-${answer.id},${hashedCorrect}`,
+      custom_id: `guess-${hashedCorrect}-${answer.id}`,
       id: i * 3,
     });
   });
