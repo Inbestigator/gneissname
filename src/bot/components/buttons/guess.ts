@@ -41,10 +41,7 @@ export default async function guess(
   const hashed = args.hashed ?? args.depHashed;
   const [{ session: triviaSession, responses }] = await Promise.all([
     getTriviaSession(),
-    interaction.deferReply({
-      ephemeral: true,
-      flags: MessageFlags.IsComponentsV2,
-    }),
+    interaction.deferReply({ ephemeral: true }),
   ]);
   const isCorrect =
     createHash("sha1")
@@ -115,6 +112,7 @@ export default async function guess(
   } else {
     await Promise.all([
       interaction.editReply({
+        flags: MessageFlags.IsComponentsV2,
         components: [
           ...(!!args.depAnswerId
             ? [
