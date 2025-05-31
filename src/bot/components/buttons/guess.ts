@@ -19,17 +19,26 @@ import { MessageFlags } from "discord-api-types/v10";
 
 export const pattern = "guess-(:depAnswerId,:depHashed|:hashed-:answerId)";
 
+interface Args {
+  answerId: string;
+  hashed: string;
+}
+
+interface DeppedArgs {
+  depAnswerId: string;
+  depHashed: string;
+}
+
+type Undefined<T> = {
+  [K in keyof T]: undefined;
+};
+
 export default async function guess(
   interaction: MessageComponentInteraction,
-  args:
-    | { answerId: string; hashed: string }
-    | { depAnswerId: string; depHashed: string },
+  args: (Args & Undefined<DeppedArgs>) | (DeppedArgs & Undefined<Args>),
 ) {
-  console.log(args, "answerId" in args);
-  const { answerId, hashed } =
-    "answerId" in args
-      ? args
-      : { answerId: args.depAnswerId, hashed: args.depHashed };
+  const answerId = args.answerId ?? args.depAnswerId;
+  const hashed = args.hashed ?? args.depHashed;
   const [{ session: triviaSession, responses }] = await Promise.all([
     getTriviaSession(),
     interaction.deferReply({
@@ -107,7 +116,7 @@ export default async function guess(
     await Promise.all([
       interaction.editReply({
         components: [
-          ...("depAnswerId" in args
+          ...(!!args.depAnswerId
             ? [
                 TextDisplay(
                   "## This version of trivia is being phased out and will not work soon!",
