@@ -12,7 +12,7 @@
     "build:bot": "dressed build -R src/bot"
   },
   "dependencies": {
-    "@dressed/next": "^1.0.4",
+    "@dressed/next": "^1.1.0",
     "@prisma/client": "^6.8.2",
     "@prisma/extension-accelerate": "^2.0.1",
     "@tailwindcss/postcss": "^4.1.8",
@@ -21,7 +21,7 @@
     "chartjs-to-image": "^1.2.2",
     "clsx": "^2.1.1",
     "discord-api-types": "^0.38.8",
-    "dressed": "^1.7.0",
+    "dressed": "^1.7.1",
     "lucide-react": "0.511.0",
     "next": "^15.3.3",
     "next-auth": "^4.24.11",
@@ -33,16 +33,16 @@
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.4.2",
-    "@types/node": "^22.15.27",
+    "@types/node": "^22.15.29",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
     "@typescript-eslint/parser": "^8.33.0",
-    "daisyui": "^5.0.42",
-    "eslint": "^9.27.0",
+    "daisyui": "^5.0.43",
+    "eslint": "^9.28.0",
     "eslint-config-next": "15.4.0-canary.51",
     "eslint-config-prettier": "^10.1.5",
     "prettier": "^3.5.3",
-    "prettier-plugin-tailwindcss": "^0.6.11",
+    "prettier-plugin-tailwindcss": "^0.6.12",
     "prisma": "^6.8.2",
     "tailwindcss": "^4.1.8",
     "typescript": "^5.8.3"
