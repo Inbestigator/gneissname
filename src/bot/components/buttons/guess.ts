@@ -25,6 +25,7 @@ export default async function guess(
     | { answerId: string; hashed: string }
     | { depAnswerId: string; depHashed: string },
 ) {
+  console.log(args, "answerId" in args);
   const { answerId, hashed } =
     "answerId" in args
       ? args
