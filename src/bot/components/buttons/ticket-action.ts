@@ -6,20 +6,19 @@ import {
   TextDisplay,
 } from "dressed";
 import { openTicket } from "../selects/ticket-open";
+import { Params } from "@dressed/matcher";
 
-export const pattern = "ticket-:action(close|open){-:ticketname{-:message}}";
+export const pattern = "ticket-:action(close|open){-:ticketName{-:message}}";
 
 export default async function ticketButton(
   interaction: MessageComponentInteraction,
-  args:
-    | { action: "close" }
-    | { action: "open"; ticketname: string; message: string },
+  args: Params<typeof pattern>,
 ) {
   if (args.action === "open") {
-    const { ticketname, message } = args;
+    const { ticketName = "Unknown", message } = args;
     const thread = await openTicket(
-      ticketname !== "null" ? ticketname : "Unknown",
-      message !== "null" ? message : undefined,
+      ticketName,
+      message,
       undefined,
       interaction.user,
     );

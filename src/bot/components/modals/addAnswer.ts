@@ -1,4 +1,5 @@
 import { prisma } from "@/db";
+import { Params } from "@dressed/matcher";
 import {
   ActionRow,
   Button,
@@ -10,11 +11,7 @@ export const pattern = "addAnswer-:messageId-:isTrue-:questionId";
 
 export default async function addAnswer(
   interaction: ModalSubmitInteraction,
-  args: {
-    isTrue: string;
-    questionId: string;
-    messageId: string;
-  },
+  args: Params<typeof pattern>,
 ) {
   await interaction.deferUpdate();
   const triviaQ = await prisma.trivia.findUnique({

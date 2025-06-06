@@ -2,6 +2,7 @@ import { MessageComponentInteraction } from "dressed";
 import { getCredit, modCredit } from "@/bot/utils";
 import { shopItems } from "@/bot/commands/shop";
 import { openTicket } from "../selects/ticket-open";
+import { Params } from "@dressed/matcher";
 
 const blockedShoppers = {
   Whitelist: ["580638706805768203", "617635763974307859", "786737189965922316"],
@@ -9,9 +10,11 @@ const blockedShoppers = {
   "Custom role": [] as string[],
 };
 
+export const pattern = "buy-:itemName";
+
 export default async function buy(
   interaction: MessageComponentInteraction,
-  { itemName }: { itemName: string },
+  { itemName }: Params<typeof pattern>,
 ) {
   await interaction.deferReply({ ephemeral: true });
   const selectedItem = shopItems.find(

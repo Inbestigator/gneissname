@@ -1,11 +1,11 @@
 import { ActionRow, MessageComponentInteraction, TextInput } from "dressed";
+import type { Params } from "@dressed/matcher";
+
+export const pattern = "addAnswer-:isTrue-:questionId";
 
 export default async function addAnswer(
   interaction: MessageComponentInteraction,
-  args: {
-    isTrue: string;
-    questionId: string;
-  },
+  args: Params<typeof pattern>,
 ) {
   await interaction.showModal({
     custom_id: `addAnswer-${interaction.message.id}-${args.isTrue}-${args.questionId}`,

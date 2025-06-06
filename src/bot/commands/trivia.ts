@@ -220,25 +220,3 @@ export function getResponsesSection(components: APIMessageTopLevelComponent[]) {
   if (!row) throw new Error("No responses section");
   return row as ReturnType<typeof Section>;
 }
-
-function encode(input: string, modifier: number): string {
-  const chars = Array.from(input).map((c) =>
-    String.fromCharCode(c.charCodeAt(0) ^ modifier),
-  );
-  const encoded = chars.join("");
-  const data = `${modifier}:${encoded}`;
-  return btoa(data);
-}
-
-export function decode(encoded: string): {
-  original: string;
-  modifier: number;
-} {
-  const decoded = atob(encoded);
-  const [modStr, transformed] = decoded.split(":", 2);
-  const modifier = Number(modStr);
-  const original = Array.from(transformed)
-    .map((c) => String.fromCharCode(c.charCodeAt(0) ^ modifier))
-    .join("");
-  return { original, modifier };
-}

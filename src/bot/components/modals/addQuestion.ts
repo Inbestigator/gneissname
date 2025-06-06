@@ -1,4 +1,5 @@
 import { prisma } from "@/db";
+import { Params } from "@dressed/matcher";
 import {
   ActionRow,
   Button,
@@ -6,11 +7,11 @@ import {
   ModalSubmitInteraction,
 } from "dressed";
 
+export const pattern = "addQuestion-:messageId";
+
 export default async function addQuestion(
   interaction: ModalSubmitInteraction,
-  args: {
-    messageId: string;
-  },
+  args: Params<typeof pattern>,
 ) {
   await interaction.deferUpdate();
   const triviaQ = await prisma.trivia.create({

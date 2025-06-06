@@ -16,29 +16,14 @@ import {
 } from "@/bot/commands/trivia";
 import { createHash } from "node:crypto";
 import { MessageFlags } from "discord-api-types/v10";
+import { Params } from "@dressed/matcher";
 
-export const pattern = "guess-(:depAnswerId,:depHashed|:hashed-:answerId)";
-
-interface Args {
-  answerId: string;
-  hashed: string;
-}
-
-interface DeppedArgs {
-  depAnswerId: string;
-  depHashed: string;
-}
-
-type Undefined<T> = {
-  [K in keyof T]: undefined;
-};
+export const pattern = "guess-:hashed-:answerId";
 
 export default async function guess(
   interaction: MessageComponentInteraction,
-  args: (Args & Undefined<DeppedArgs>) | (DeppedArgs & Undefined<Args>),
+  { answerId, hashed }: Params<typeof pattern>,
 ) {
-  const answerId = args.answerId ?? args.depAnswerId;
-  const hashed = args.hashed ?? args.depHashed;
   const [{ session: triviaSession, responses }] = await Promise.all([
     getTriviaSession(),
     interaction.deferReply({ ephemeral: true }),
@@ -114,14 +99,6 @@ export default async function guess(
       interaction.editReply({
         flags: MessageFlags.IsComponentsV2,
         components: [
-          ...(!!args.depAnswerId
-            ? [
-                TextDisplay(
-                  "## This version of trivia is being phased out and will not work soon!",
-                ),
-                Separator(),
-              ]
-            : []),
           TextDisplay(`## ${isCorrect ? "Correct" : "Nice try"}!`),
           TextDisplay(
             "-# This trivia has expired, so your answer isn't counted",

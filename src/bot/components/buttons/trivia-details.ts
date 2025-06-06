@@ -1,20 +1,12 @@
 import { MessageComponentInteraction } from "dressed";
-import {
-  decode,
-  getTriviaSession,
-  TriviaResponse,
-} from "@/bot/commands/trivia";
+import { getTriviaSession, TriviaResponse } from "@/bot/commands/trivia";
+import { Params } from "@dressed/matcher";
 
 export const pattern = "trivia-details-:a(\\d+)-:b(\\d+)-:c(\\d+)-:d(\\d+)";
 
 export default async function triviaDetails(
   interaction: MessageComponentInteraction,
-  args: {
-    a: string;
-    b: string;
-    c: string;
-    d: string;
-  },
+  args: Params<typeof pattern>,
 ) {
   const [{ session: triviaSession, responses }] = await Promise.all([
     getTriviaSession(),
