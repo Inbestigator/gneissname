@@ -1,9 +1,4 @@
-import {
-  type CommandConfig,
-  editMessage,
-  getMessage,
-  TextDisplay as DressedTextDisplay,
-} from "dressed";
+import { type CommandConfig, TextDisplay as DressedTextDisplay } from "dressed";
 import { prisma, redis } from "@/db";
 import {
   APIMessageTopLevelComponent,
@@ -17,7 +12,7 @@ import {
   CommandInteraction,
   Container,
   createMessage,
-  render,
+  editMessage,
   Section,
   Separator,
   TextDisplay,
@@ -83,13 +78,14 @@ export default async function trivia(interaction: CommandInteraction) {
     return interaction.editReply("There is already a trivia game in progress!");
   } else if (currentSession) {
     try {
-      getMessage(currentSession.channelId, currentSession.messageId).then(
-        ({ components }) => {
-          if (!components) throw new Error("No components");
-          editMessage(currentSession.channelId, currentSession.messageId, {
-            components: markArchived(components),
-          });
-        },
+      editMessage(
+        currentSession.channelId,
+        currentSession.messageId,
+        <TriviaGame
+          session={currentSession}
+          responses={responses}
+          isArchived
+        />,
       );
     } catch {
       // pass
@@ -103,12 +99,7 @@ export default async function trivia(interaction: CommandInteraction) {
   }
 
   const answers = game.answers.sort(() => Math.random() - 0.5);
-  const correct = answers.find((a) => a.correct);
-
-  if (!correct) {
-    console.error("No correct id");
-    return;
-  }
+  const correct = answers.find((a) => a.correct) ?? { id: "", text: "" };
 
   const hashedCorrect = createHash("sha1")
     .update(correct.id)
