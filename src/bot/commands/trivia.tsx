@@ -156,7 +156,7 @@ export function TriviaGame({
 }) {
   return (
     <Container>
-      ## Trivia!
+      <TextDisplay>## Trivia!</TextDisplay>
       {session.game.question}
       <ActionRow>
         {session.game.answers.map((answer, i) => (

@@ -26,7 +26,7 @@ export async function openTicket(
     thread.id,
     <Container>
       ## Ticket opened
-      {message}
+      <TextDisplay>{message}</TextDisplay>
       <ActionRow>
         <Button
           custom_id="ticket-close"
@@ -35,9 +35,7 @@ export async function openTicket(
           style="Danger"
         />
       </ActionRow>
-      <TextDisplay>
-        -# {`<@${user.id}>`} {relevantStaff}
-      </TextDisplay>
+      -# {`<@${user.id}>`} {relevantStaff}
     </Container>,
   );
   return thread;

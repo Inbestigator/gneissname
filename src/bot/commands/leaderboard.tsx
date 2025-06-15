@@ -49,8 +49,10 @@ export default async function leaderboard(interaction: CommandInteraction) {
             const user = await getDiscordUser(entry.id);
             return (
               <Fragment key={entry.id}>
-                ### {index + 1} - {user.global_name}
-                <TextDisplay>{entry.credit.toLocaleString()}</TextDisplay>
+                <TextDisplay>
+                  ### {index + 1} - {user.global_name}
+                </TextDisplay>
+                {entry.credit.toLocaleString()}
               </Fragment>
             );
           }),

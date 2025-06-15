@@ -24,10 +24,8 @@ export default async function userData(interaction: CommandInteraction) {
   ]);
   await interaction.editReply(
     <Container>
-      <TextDisplay>
-        ## {interaction.getOption("user", true).user().global_name + "'"}s data
-      </TextDisplay>
-      ### Credit
+      ## {interaction.getOption("user", true).user().global_name + "'"}s data
+      <TextDisplay>### Credit</TextDisplay>
       {user.credit.toLocaleString()}
     </Container>,
   );
