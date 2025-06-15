@@ -2,8 +2,6 @@ import { prisma } from "@/db";
 import { ActionRow, Button, ModalSubmitInteraction } from "@dressed/react";
 import { APIMessageTopLevelComponent } from "discord-api-types/v10";
 
-export const pattern = "addQuestion";
-
 export default async function addQuestion(interaction: ModalSubmitInteraction) {
   const [triviaQ] = await Promise.all([
     prisma.trivia.create({

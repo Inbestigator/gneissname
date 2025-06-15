@@ -9,27 +9,21 @@ export async function getCredit(userId: string) {
   }
 }
 
-const userCaps = new Map();
-let cap = 256;
-
-setTimeout(
-  () => {
-    userCaps.clear();
-    cap = Math.floor(Math.random() * (300 - 200 + 1)) + 200;
-  },
-  53 * 59 * 1000,
-);
-
 export async function modCredit(
   userId: string,
   modifier: number,
-  exemptCap = false,
+  exemptCap?: boolean,
 ) {
   try {
     if (!exemptCap) {
-      if (!userCaps.has(userId)) userCaps.set(userId, 0);
-      if (userCaps.get(userId) > cap) modifier /= 10;
-      userCaps.set(userId, userCaps.get(userId) + modifier);
+      const key = `credit-cap:${userId}`;
+      await redis.set(key, 256, {
+        expiration: { type: "EX", value: 53 * 60 },
+        condition: "NX",
+      });
+      if ((await redis.decrBy(key, modifier)) <= 0) {
+        modifier /= 10;
+      }
     }
     modifier = Math.round(modifier);
     const user = await prisma.$transaction(async (prisma) => {

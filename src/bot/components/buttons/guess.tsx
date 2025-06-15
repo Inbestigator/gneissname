@@ -15,6 +15,7 @@ import {
   MessageComponentInteraction,
   TextDisplay,
 } from "@dressed/react";
+import { modCredit } from "@/bot/utils";
 
 export const pattern = "guess-:hashed-:answerId";
 
@@ -85,6 +86,10 @@ export default async function guess(
         `trivia-response:${interaction.user.id}`,
         JSON.stringify(newResponse),
         { expiration: { type: "PXAT", value: session.expiresAt } },
+      ),
+      modCredit(
+        interaction.user.id,
+        Math.round(100 + Math.random() * 100) * (isCorrect ? 1 : -1),
       ),
     ]);
   } else {
