@@ -14,7 +14,7 @@ export default async function addQuestion(interaction: ModalSubmitInteraction) {
     }),
     interaction.deferUpdate(),
   ]);
-  await interaction.update(
+  await interaction.editReply(
     <ProposalStage
       components={interaction.message?.components}
       id={triviaQ.id}

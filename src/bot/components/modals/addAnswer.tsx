@@ -30,7 +30,7 @@ export default async function addAnswer(
 
   const isLast = triviaQ.answers.length === 3;
 
-  await interaction.update(
+  await interaction.editReply(
     <ProposalStage
       components={interaction.message?.components}
       id={triviaQ.id}
