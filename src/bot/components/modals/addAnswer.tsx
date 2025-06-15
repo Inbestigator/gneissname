@@ -28,7 +28,7 @@ export default async function addAnswer(
     interaction.deferUpdate(),
   ]);
 
-  const isLast = triviaQ.answers.length === 3;
+  const isLast = triviaQ.answers.length === 4;
 
   await interaction.editReply(
     <ProposalStage
