@@ -174,7 +174,11 @@ export function TriviaGame({
         ))}
       </ActionRow>
       <Separator />
-      <ResponsesSection responses={responses} isArchived={isArchived} />
+      <ResponsesSection
+        responses={responses}
+        isArchived={isArchived}
+        answerIds={session.game.answers.map((a) => a.id)}
+      />
     </Container>
   );
 }
@@ -185,7 +189,7 @@ function ResponsesSection({
   isArchived,
 }: {
   responses: TriviaResponse[];
-  answerIds?: string[];
+  answerIds: string[];
   isArchived?: boolean;
 }) {
   const numVoted = responses.length;
@@ -197,9 +201,7 @@ function ResponsesSection({
   const barGraph =
     "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
     "🟥".repeat(Math.round(Number(incorrectPercentage) / 10));
-  const counts = answerIds
-    ? separateAnswers(responses, answerIds)
-    : [0, 0, 0, 0];
+  const counts = separateAnswers(responses, answerIds);
 
   return (
     <Section
