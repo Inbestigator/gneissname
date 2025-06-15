@@ -41,19 +41,15 @@ export default async function leaderboard(interaction: CommandInteraction) {
   try {
     await interaction.editReply(
       <Container>
-        <>## Leaderboard</>
-        <>Members with the highest social credit</>
-        <TextDisplay>
-          You{"'"}re #{userRank}
-        </TextDisplay>
+        ## Leaderboard
+        <TextDisplay>Members with the highest social credit</TextDisplay>
+        You{"'"}re #{userRank}
         {await Promise.all(
           topUsers.map(async (entry, index) => {
             const user = await getDiscordUser(entry.id);
             return (
               <Fragment key={entry.id}>
-                <TextDisplay>
-                  ### {index + 1} - {user.global_name}
-                </TextDisplay>
+                ### {index + 1} - {user.global_name}
                 <TextDisplay>{entry.credit.toLocaleString()}</TextDisplay>
               </Fragment>
             );

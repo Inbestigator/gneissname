@@ -25,8 +25,8 @@ export default async function ticketButton(
   } else if (args.action === "close") {
     interaction.update(
       <Container>
-        <>### Ticket closed</>
-        <TextDisplay>Closed by {interaction.user.username}</TextDisplay>
+        <TextDisplay>### Ticket closed</TextDisplay>
+        Closed by {interaction.user.username}
       </Container>,
     );
     await createMessage(

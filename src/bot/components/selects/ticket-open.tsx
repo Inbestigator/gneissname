@@ -1,4 +1,4 @@
-import { APIUser, MessageFlags } from "discord-api-types/v10";
+import { APIUser } from "discord-api-types/v10";
 import { addThreadMember, createThread } from "dressed";
 import {
   ActionRow,

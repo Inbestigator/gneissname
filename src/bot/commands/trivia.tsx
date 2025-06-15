@@ -3,13 +3,11 @@ import {
   editMessage,
   getMessage,
   TextDisplay as DressedTextDisplay,
-  Section as DressedSection,
 } from "dressed";
 import { prisma, redis } from "@/db";
 import {
   APIMessageTopLevelComponent,
   ComponentType,
-  MessageFlags,
 } from "discord-api-types/v10";
 import { separateAnswers } from "../components/buttons/trivia-details";
 import { createHash } from "node:crypto";

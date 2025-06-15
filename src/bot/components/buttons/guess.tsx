@@ -65,11 +65,11 @@ export default async function guess(
           <TextDisplay>## {isCorrect ? "Correct" : "Nice try"}!</TextDisplay>
           {!isCorrect && (
             <>
-              <>### Answer:</>
+              <TextDisplay>### Answer:</TextDisplay>
               {session.correct.text}
             </>
           )}
-          <>### Explanation:</>
+          <TextDisplay>### Explanation:</TextDisplay>
           {session.game.explanation}
           {session.game.explanation.endsWith("please suggest one!") && (
             <ActionRow>
