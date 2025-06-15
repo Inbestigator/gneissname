@@ -68,6 +68,8 @@ export default async function guess(
               {session.correct.text}
             </>
           )}
+          <>### Explanation:</>
+          {session.game.explanation}
           {session.game.explanation.endsWith("please suggest one!") && (
             <ActionRow>
               <Button
