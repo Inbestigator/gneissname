@@ -213,8 +213,7 @@ function ResponsesSection({
       }
     >
       <TextDisplay>
-        ## ${numVoted === 0 ? "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" : barGraph} | ${numVoted}
-        /15
+        ## {numVoted === 0 ? "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" : barGraph} | {numVoted}/15
       </TextDisplay>
       {isArchived &&
         "-# This trivia has expired. However, you can still respond"}

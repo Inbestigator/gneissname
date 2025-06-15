@@ -43,12 +43,12 @@ export function ProposalStage({
           custom_id="addQuestion"
           label="Add the question"
           disabled={stage !== "addQuestion"}
-          style="Secondary"
+          style={stage === "addQuestion" ? "Primary" : "Secondary"}
         />
         <Button
           custom_id={`addAnswer-${isCorrect}-${id}`}
           label={`Add ${isCorrect} answer`}
-          style={stage === "addQuestion" ? "Primary" : "Secondary"}
+          style={stage === "addAnswer" ? "Primary" : "Secondary"}
           disabled={stage !== "addAnswer"}
         />
         <Button

@@ -7,6 +7,10 @@ import {
 export default async function addQuestion(
   interaction: MessageComponentInteraction,
 ) {
+  const content =
+    interaction.message.components?.[0].type === 10
+      ? interaction.message.components[0].content
+      : "";
   await interaction.showModal(
     <>
       <ActionRow>
@@ -14,11 +18,7 @@ export default async function addQuestion(
           custom_id="question"
           label="What is the trivia question?"
           required
-          value={
-            (interaction.message.content.split("Question: ")[1] ?? "").split(
-              "\n",
-            )[0]
-          }
+          value={(content.split("Question: ")[1] ?? "").split("\n")[0]}
         />
       </ActionRow>
       <ActionRow>
@@ -26,11 +26,7 @@ export default async function addQuestion(
           custom_id="explanation"
           label="Explanation for the true answer"
           required
-          value={
-            (interaction.message.content.split("Explanation: ")[1] ?? "").split(
-              "\n",
-            )[0]
-          }
+          value={(content.split("Explanation: ")[1] ?? "").split("\n")[0]}
           style="Paragraph"
         />
       </ActionRow>
