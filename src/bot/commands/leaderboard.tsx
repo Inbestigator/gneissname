@@ -1,13 +1,7 @@
 import { CommandConfig, getUser as getDiscordUser } from "dressed";
 import { prisma } from "@/db";
 import { getUser } from "@/bot/utils";
-import {
-  CommandInteraction,
-  Container,
-  Section,
-  TextDisplay,
-  Thumbnail,
-} from "@dressed/react";
+import { CommandInteraction, Container, TextDisplay } from "@dressed/react";
 import { Fragment } from "react";
 
 export const config: CommandConfig = {
