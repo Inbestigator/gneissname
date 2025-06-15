@@ -1,15 +1,9 @@
 import {
-  ActionRow,
-  Button,
   type CommandConfig,
-  type CommandInteraction,
-  Container,
-  createMessage,
   editMessage,
   getMessage,
-  Section,
-  Separator,
-  TextDisplay,
+  TextDisplay as DressedTextDisplay,
+  Section as DressedSection,
 } from "dressed";
 import { prisma, redis } from "@/db";
 import {
@@ -19,6 +13,18 @@ import {
 } from "discord-api-types/v10";
 import { separateAnswers } from "../components/buttons/trivia-details";
 import { createHash } from "node:crypto";
+import {
+  ActionRow,
+  Button,
+  CommandInteraction,
+  Container,
+  createMessage,
+  render,
+  Section,
+  Separator,
+  TextDisplay,
+} from "@dressed/react";
+import { Answer, Trivia } from "@prisma/client";
 
 export const config: CommandConfig = {
   description: "Gives a random trivia question",
@@ -32,12 +38,14 @@ export interface TriviaResponse {
 }
 
 export interface TriviaSession {
+  game: Trivia & {
+    answers: Answer[];
+  };
   correct: {
     id: string;
     text: string;
+    hashed: string;
   };
-  answerIds: string[];
-  explanation: string;
   messageId: string;
   channelId: string;
   expiresAt: number;
@@ -63,7 +71,7 @@ export async function getTriviaSession(): Promise<{
 }
 
 export default async function trivia(interaction: CommandInteraction) {
-  const [{ session: triviaSession, responses }, questions] = await Promise.all([
+  const [{ session: currentSession, responses }, games] = await Promise.all([
     getTriviaSession(),
     prisma.trivia.findMany({
       include: { answers: true },
@@ -73,14 +81,14 @@ export default async function trivia(interaction: CommandInteraction) {
       ephemeral: true,
     }),
   ]);
-  if (triviaSession && triviaSession.replaceableAt > Date.now()) {
+  if (currentSession && currentSession.replaceableAt > Date.now()) {
     return interaction.editReply("There is already a trivia game in progress!");
-  } else if (triviaSession) {
+  } else if (currentSession) {
     try {
-      getMessage(triviaSession.channelId, triviaSession.messageId).then(
+      getMessage(currentSession.channelId, currentSession.messageId).then(
         ({ components }) => {
           if (!components) throw new Error("No components");
-          editMessage(triviaSession.channelId, triviaSession.messageId, {
+          editMessage(currentSession.channelId, currentSession.messageId, {
             components: markArchived(components),
           });
         },
@@ -90,13 +98,13 @@ export default async function trivia(interaction: CommandInteraction) {
     }
   }
 
-  const question = questions[Math.floor(Math.random() * questions.length)];
+  const game = games[Math.floor(Math.random() * games.length)];
 
-  if (!question) {
-    return interaction.editReply("Error fetching trivia question!");
+  if (!game) {
+    return interaction.editReply("Error starting trivia game!");
   }
 
-  const answers = question.answers.sort(() => Math.random() - 0.5);
+  const answers = game.answers.sort(() => Math.random() - 0.5);
   const correct = answers.find((a) => a.correct);
 
   if (!correct) {
@@ -108,69 +116,78 @@ export default async function trivia(interaction: CommandInteraction) {
     .update(correct.id)
     .digest("hex")
     .slice(0, 8);
-  const answerButtons = answers.map((answer, i) => {
-    return Button({
-      emoji: answer.emoji
-        ? {
-            name: answer.emoji,
-          }
-        : undefined,
-      label: answer.text,
-      style: "Secondary",
-      custom_id: `guess-${hashedCorrect}-${answer.id}`,
-      id: i * 3,
-    });
-  });
 
   interaction.editReply("Question sent!");
 
-  const message = await createMessage(interaction.channel.id, {
-    flags: MessageFlags.IsComponentsV2,
-    components: [
-      Container(
-        TextDisplay(`## Trivia!\n${question.question}`),
-        ActionRow(...answerButtons),
-        Separator(),
-        ResponsesSection([]),
-      ),
-    ],
-  });
-
-  const newTriviaSession: TriviaSession = {
+  const session: TriviaSession = {
+    game: { ...game, answers },
     channelId: interaction.channel.id,
-    messageId: message.id,
-    answerIds: answers.map((a) => a.id),
+    messageId: "null",
     correct: {
       id: correct.id,
       text: correct.text,
+      hashed: hashedCorrect,
     },
-    explanation: question.explanation,
     expiresAt: Date.now() + 45 * 60 * 1000,
     replaceableAt: Date.now() + 15 * 60 * 1000,
   };
 
+  const message = await createMessage(
+    interaction.channel.id,
+    <TriviaGame session={session} responses={[]} />,
+  );
+
+  session.messageId = message.id;
+
   const multi = redis.multi();
-  multi.set("currentTrivia", JSON.stringify(newTriviaSession));
+  multi.set("currentTrivia", JSON.stringify(session));
   for (const response of responses) {
     multi.del(`trivia-response:${response.userId}`);
   }
   await multi.exec();
 }
 
-function DetailsButton(
-  props = { custom_id: "trivia-details", disabled: false },
-) {
-  return Button({
-    emoji: { name: "📊" },
-    style: "Secondary",
-    ...props,
-  });
+export function TriviaGame({
+  session,
+  responses,
+  isArchived,
+}: {
+  session: TriviaSession;
+  responses: TriviaResponse[];
+  isArchived?: boolean;
+}) {
+  return (
+    <Container>
+      ## Trivia!
+      {session.game.question}
+      <ActionRow>
+        {session.game.answers.map((answer, i) => (
+          <Button
+            key={i}
+            emoji={{
+              name: answer.emoji ?? undefined,
+            }}
+            custom_id={`guess-${session.correct.hashed}-${answer.id}`}
+            label={answer.text}
+            style="Secondary"
+          />
+        ))}
+      </ActionRow>
+      <Separator />
+      <ResponsesSection responses={responses} isArchived={isArchived} />
+    </Container>
+  );
 }
 
-export function ResponsesSection(
-  responses: TriviaResponse[],
-  answerIds?: string[],
-) {
+function ResponsesSection({
+  responses,
+  answerIds,
+  isArchived,
+}: {
+  responses: TriviaResponse[];
+  answerIds?: string[];
+  isArchived?: boolean;
+}) {
   const numVoted = responses.length;
   const correctPercentage = (
     (responses.filter((a) => a.isCorrect).length / numVoted) *
@@ -184,14 +201,24 @@ export function ResponsesSection(
     ? separateAnswers(responses, answerIds)
     : [0, 0, 0, 0];
 
-  return Section(
-    [
-      `## ${numVoted === 0 ? "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" : barGraph} | ${numVoted}/15`,
-    ],
-    DetailsButton({
-      disabled: Math.max(...counts) === 0,
-      custom_id: `trivia-details-${counts ? counts.join("-") : ""}`,
-    }),
+  return (
+    <Section
+      accessory={
+        <Button
+          emoji={{ name: "📊" }}
+          style="Secondary"
+          disabled={Math.max(...counts) === 0}
+          custom_id={`trivia-details-${counts ? counts.join("-") : ""}`}
+        />
+      }
+    >
+      <TextDisplay>
+        ## ${numVoted === 0 ? "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" : barGraph} | ${numVoted}
+        /15
+      </TextDisplay>
+      {isArchived &&
+        "-# This trivia has expired. However, you can still respond"}
+    </Section>
   );
 }
 
@@ -207,16 +234,10 @@ export function markArchived(
   )
     return components;
   container.components.push(
-    TextDisplay("-# This trivia has expired. However, you can still respond"),
+    DressedTextDisplay(
+      "-# This trivia has expired. However, you can still respond",
+    ),
   );
 
   return components;
-}
-
-export function getResponsesSection(components: APIMessageTopLevelComponent[]) {
-  const row = components
-    .find((c) => c.type === ComponentType.Container)
-    ?.components.find((c) => c.type === 9);
-  if (!row) throw new Error("No responses section");
-  return row as ReturnType<typeof Section>;
 }

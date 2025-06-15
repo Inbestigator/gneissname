@@ -1,6 +1,7 @@
 import { modCredit } from "@/bot/utils";
-import { CommandConfig, CommandInteraction } from "dressed";
+import { CommandConfig } from "dressed";
 import { PermissionFlagsBits } from "discord-api-types/v10";
+import { CommandInteraction } from "@dressed/react";
 
 export const config: CommandConfig = {
   description: "Moderate some credit",
@@ -39,18 +40,21 @@ export const config: CommandConfig = {
 };
 
 export default async function moderateCredit(interaction: CommandInteraction) {
-  await interaction.deferReply({ ephemeral: true });
   if (!("options" in interaction.data) || !interaction.data.options) return;
   const { id } = interaction.getOption("user", true).user();
   if (!id) {
-    await interaction.editReply("User not found");
+    await interaction.reply("User not found");
     return;
   }
-  await modCredit(
-    id,
-    (interaction.getOption("modification", true).string() === "add" ? 1 : -1) *
-      Number(interaction.getOption("amount", true).integer()),
-    true,
-  );
+  await Promise.all([
+    modCredit(
+      id,
+      (interaction.getOption("modification", true).string() === "add"
+        ? 1
+        : -1) * Number(interaction.getOption("amount", true).integer()),
+      true,
+    ),
+    interaction.deferReply({ ephemeral: true }),
+  ]);
   await interaction.editReply("Done");
 }

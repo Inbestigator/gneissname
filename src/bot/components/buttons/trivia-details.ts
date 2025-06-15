@@ -1,6 +1,6 @@
-import { MessageComponentInteraction } from "dressed";
 import { getTriviaSession, TriviaResponse } from "@/bot/commands/trivia";
 import { Params } from "@dressed/matcher";
+import { MessageComponentInteraction } from "@dressed/react";
 
 export const pattern = "trivia-details-:a(\\d+)-:b(\\d+)-:c(\\d+)-:d(\\d+)";
 
@@ -8,15 +8,15 @@ export default async function triviaDetails(
   interaction: MessageComponentInteraction,
   args: Params<typeof pattern>,
 ) {
-  const [{ session: triviaSession, responses }] = await Promise.all([
+  const [{ session, responses }] = await Promise.all([
     getTriviaSession(),
     interaction.deferReply({ ephemeral: true }),
   ]);
 
   if (
-    !triviaSession ||
-    triviaSession.messageId !== interaction.message.id ||
-    triviaSession.expiresAt < Date.now()
+    !session ||
+    session.messageId !== interaction.message.id ||
+    session.expiresAt < Date.now()
   ) {
     const counts = [
       Number(args.a),
@@ -33,7 +33,12 @@ export default async function triviaDetails(
   }
 
   await interaction.editReply(
-    generateBarGraph(separateAnswers(responses, triviaSession.answerIds)),
+    generateBarGraph(
+      separateAnswers(
+        responses,
+        session.game.answers.map((a) => a.id),
+      ),
+    ),
   );
 }
 

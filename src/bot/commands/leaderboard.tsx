@@ -1,11 +1,14 @@
-import {
-  CommandConfig,
-  CommandInteraction,
-  getUser as getDiscordUser,
-} from "dressed";
+import { CommandConfig, getUser as getDiscordUser } from "dressed";
 import { prisma } from "@/db";
 import { getUser } from "@/bot/utils";
-import { APIEmbed } from "discord-api-types/v10";
+import {
+  CommandInteraction,
+  Container,
+  Section,
+  TextDisplay,
+  Thumbnail,
+} from "@dressed/react";
+import { Fragment } from "react";
 
 export const config: CommandConfig = {
   description: "View the users with the highest social credit",
@@ -21,7 +24,6 @@ export default async function leaderboard(interaction: CommandInteraction) {
       });
 
       const currentUser = await getUser(interaction.user.id);
-
       const userRank = prisma.user.count({
         where: {
           credit: {
@@ -37,23 +39,28 @@ export default async function leaderboard(interaction: CommandInteraction) {
   ]);
 
   try {
-    const embed: APIEmbed = {
-      title: "Leaderboard",
-      description: `Members with the highest social credit\n> You're #${userRank}`,
-      fields: await Promise.all(
-        topUsers.map(async (entry, index) => {
-          const user = await getDiscordUser(entry.id);
-          return {
-            name: `#${index + 1} - ${user.global_name}`,
-            value: entry.credit.toLocaleString(),
-          };
-        }),
-      ),
-    };
-
-    await interaction.editReply({
-      embeds: [embed],
-    });
+    await interaction.editReply(
+      <Container>
+        <>## Leaderboard</>
+        <>Members with the highest social credit</>
+        <TextDisplay>
+          You{"'"}re #{userRank}
+        </TextDisplay>
+        {await Promise.all(
+          topUsers.map(async (entry, index) => {
+            const user = await getDiscordUser(entry.id);
+            return (
+              <Fragment key={entry.id}>
+                <TextDisplay>
+                  ### {index + 1} - {user.global_name}
+                </TextDisplay>
+                <TextDisplay>{entry.credit.toLocaleString()}</TextDisplay>
+              </Fragment>
+            );
+          }),
+        )}
+      </Container>,
+    );
   } catch {
     await interaction.editReply(
       "An error occurred while fetching the leaderboard.",

@@ -1,13 +1,11 @@
+import { CommandConfig } from "dressed";
 import {
-  ActionRow,
   Button,
-  CommandConfig,
   CommandInteraction,
   Container,
   Section,
   TextDisplay,
-} from "dressed";
-import { MessageFlags } from "discord-api-types/v10";
+} from "@dressed/react";
 
 export const shopItems = [
   {
@@ -26,29 +24,31 @@ export const shopItems = [
     description: "Get your own cosmetic role.",
     price: 10000,
   },
-];
+] as const;
 
 export const config: CommandConfig = {
   description: "Use your social credit to buy things",
 };
 
 export default async function shop(interaction: CommandInteraction) {
-  await interaction.reply({
-    flags: MessageFlags.IsComponentsV2,
-    components: [
-      Container(
-        TextDisplay("## Shop"),
-        ...shopItems.map((item) =>
-          Section(
-            [`### ${item.name}`, item.description],
-            Button({
-              custom_id: `buy-${item.name.toLowerCase()}`,
-              label: `$${item.price.toLocaleString()}`,
-            }),
-          ),
-        ),
-      ),
-    ],
-    ephemeral: true,
-  });
+  await interaction.reply(
+    <Container>
+      ## Shop
+      {shopItems.map((item) => (
+        <Section
+          key={item.name}
+          accessory={
+            <Button
+              custom_id={`buy-${item.name.toLowerCase()}`}
+              label={`$${item.price.toLocaleString()}`}
+            />
+          }
+        >
+          <TextDisplay>### {item.name}</TextDisplay>
+          {item.description}
+        </Section>
+      ))}
+    </Container>,
+    { ephemeral: true },
+  );
 }

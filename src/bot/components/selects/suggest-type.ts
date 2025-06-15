@@ -1,4 +1,4 @@
-import { MessageComponentInteraction } from "dressed";
+import { MessageComponentInteraction } from "@dressed/react";
 import { openTicket } from "./ticket-open";
 
 export default async function suggestType(
@@ -6,12 +6,11 @@ export default async function suggestType(
 ) {
   if (interaction.data.component_type !== 3) return;
   const ticketName = interaction.data.values[0] ?? "Unknown";
-  const relevantStaff = "<@&1225973068141297757>";
   const thread = await openTicket(
     ticketName,
     undefined,
-    relevantStaff,
+    "<@&1225973068141297757>",
     interaction.user,
   );
-  await interaction.update({ content: `<#${thread.id}>`, components: [] });
+  await interaction.update(`<#${thread.id}>`);
 }

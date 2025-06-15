@@ -1,7 +1,12 @@
 import { prisma } from "@/db";
 import QuickChart from "chartjs-to-image";
-import { CommandConfig, CommandInteraction } from "dressed";
+import { CommandConfig } from "dressed";
 import { PermissionFlagsBits } from "discord-api-types/v10";
+import {
+  CommandInteraction,
+  MediaGallery,
+  MediaGalleryItem,
+} from "@dressed/react";
 
 export const config: CommandConfig = {
   description: "Credit history",
@@ -129,12 +134,17 @@ export default async function history(interaction: CommandInteraction) {
     },
   });
 
-  await interaction.editReply({
-    files: [
-      {
-        name: "credit-history.png",
-        data: await chart.toBinary(),
-      },
-    ],
-  });
+  await interaction.editReply(
+    <MediaGallery>
+      <MediaGalleryItem media="attachment://credit-history.png" />
+    </MediaGallery>,
+    {
+      files: [
+        {
+          name: "credit-history.png",
+          data: await chart.toBinary(),
+        },
+      ],
+    },
+  );
 }

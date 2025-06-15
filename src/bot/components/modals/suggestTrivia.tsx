@@ -3,12 +3,11 @@ import {
   Button,
   createMessage,
   ModalSubmitInteraction,
-} from "dressed";
+} from "@dressed/react";
 
 export default async function suggestTrivia(
   interaction: ModalSubmitInteraction,
 ) {
-  await interaction.deferReply({ ephemeral: true });
   const message = `Suggester: <@${interaction.user.id}>\nQuestion: ${interaction.getField(
     "question",
     true,
@@ -20,22 +19,15 @@ export default async function suggestTrivia(
     .split("\n")
     .map((i) => `> ${i}`)
     .join("\n")}`;
-  await createMessage("1205195359572328519", {
-    content: message,
-    components: [
-      ActionRow(
-        Button({
-          custom_id: "destroy",
-          label: "Deny",
-          style: "Danger",
-        }),
-        Button({
-          custom_id: "acceptTrivia",
-          label: "Accept",
-          style: "Success",
-        }),
-      ),
-    ],
-  });
-  await interaction.editReply({ content: "Thank you" });
+  await createMessage(
+    "1205195359572328519",
+    <>
+      {message}
+      <ActionRow>
+        <Button custom_id="destroy" label="Deny" style="Danger" />
+        <Button custom_id="acceptTrivia" label="Accept" style="Success" />
+      </ActionRow>
+    </>,
+  );
+  await interaction.reply("Thank you", { ephemeral: true });
 }

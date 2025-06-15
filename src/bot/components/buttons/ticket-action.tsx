@@ -1,12 +1,11 @@
-import {
-  type MessageComponentInteraction,
-  Container,
-  createMessage,
-  modifyChannel,
-  TextDisplay,
-} from "dressed";
+import { createMessage, modifyChannel } from "dressed";
 import { openTicket } from "../selects/ticket-open";
 import { Params } from "@dressed/matcher";
+import {
+  Container,
+  MessageComponentInteraction,
+  TextDisplay,
+} from "@dressed/react";
 
 export const pattern = "ticket-:action(close|open){-:ticketName{-:message}}";
 
@@ -22,16 +21,14 @@ export default async function ticketButton(
       undefined,
       interaction.user,
     );
-    await interaction.reply({ content: `<#${thread.id}>`, ephemeral: true });
+    await interaction.reply(`<#${thread.id}>`, { ephemeral: true });
   } else if (args.action === "close") {
-    interaction.update({
-      components: [
-        Container(
-          TextDisplay("## Ticket closed"),
-          TextDisplay(`Closed by ${interaction.user.username}`),
-        ),
-      ],
-    });
+    interaction.update(
+      <Container>
+        <>### Ticket closed</>
+        <TextDisplay>Closed by {interaction.user.username}</TextDisplay>
+      </Container>,
+    );
     await createMessage(
       interaction.channel.id,
       `> Closed by ${interaction.user.username}`,

@@ -1,16 +1,15 @@
 import { APIUser, MessageFlags } from "discord-api-types/v10";
+import { addThreadMember, createThread } from "dressed";
 import {
   ActionRow,
-  addThreadMember,
   Button,
   Container,
   createMessage,
-  createThread,
   MessageComponentInteraction,
   SelectMenu,
   SelectMenuOption,
   TextDisplay,
-} from "dressed";
+} from "@dressed/react";
 
 export async function openTicket(
   ticketName: string,
@@ -23,26 +22,24 @@ export async function openTicket(
     type: "Private",
   });
   addThreadMember(thread.id, user.id);
-  createMessage(thread.id, {
-    flags: MessageFlags.IsComponentsV2,
-    components: [
-      Container(
-        TextDisplay("## Ticket opened"),
-        TextDisplay(message),
-        ActionRow(
-          Button({
-            custom_id: "ticket-close",
-            label: "Close",
-            emoji: {
-              name: "🔒",
-            },
-            style: "Danger",
-          }),
-        ),
-        TextDisplay(`-# <@${user.id}> ${relevantStaff}`),
-      ),
-    ],
-  });
+  createMessage(
+    thread.id,
+    <Container>
+      ## Ticket opened
+      {message}
+      <ActionRow>
+        <Button
+          custom_id="ticket-close"
+          label="Close"
+          emoji={{ name: "🔒" }}
+          style="Danger"
+        />
+      </ActionRow>
+      <TextDisplay>
+        -# {`<@${user.id}>`} {relevantStaff}
+      </TextDisplay>
+    </Container>,
+  );
   return thread;
 }
 
@@ -55,33 +52,35 @@ export default async function openTicketSelect(
   let message;
   switch (interaction.data.values[0]) {
     case "Suggestion": {
-      await interaction.reply({
-        ephemeral: true,
-        components: [
-          ActionRow(
-            SelectMenu({
-              type: "String",
-              custom_id: "suggest-type",
-              placeholder: "What are you suggesting?",
-              options: [
-                SelectMenuOption("Video idea", "Video idea", {
-                  description: "If you have a video idea",
-                  emoji: { name: "📺" },
-                }),
-                SelectMenuOption("Discord suggestion", "Discord suggestion", {
-                  description:
-                    "If you have a suggestion for the Discord server",
-                  emoji: { name: "💬" },
-                }),
-                SelectMenuOption("Other", "Suggestion", {
-                  description: "For anything else",
-                  emoji: { name: "❓" },
-                }),
-              ],
-            }),
-          ),
-        ],
-      });
+      await interaction.reply(
+        <ActionRow>
+          <SelectMenu
+            type="String"
+            custom_id="suggest-type"
+            placeholder="What are you suggesting?"
+          >
+            <SelectMenuOption
+              label="Video idea"
+              value="Video idea"
+              description="If you have a video idea"
+              emoji={{ name: "📺" }}
+            />
+            <SelectMenuOption
+              label="Discord suggestion"
+              value="Discord suggestion"
+              description="If you have a suggestion for the Discord server"
+              emoji={{ name: "💬" }}
+            />
+            <SelectMenuOption
+              label="Other"
+              value="Suggestion"
+              description="For anything else"
+              emoji={{ name: "❓" }}
+            />
+          </SelectMenu>
+        </ActionRow>,
+        { ephemeral: true },
+      );
       return;
     }
     case "Mc server": {
@@ -104,5 +103,5 @@ export default async function openTicketSelect(
     relevantStaff,
     interaction.user,
   );
-  await interaction.reply({ content: `<#${thread.id}>`, ephemeral: true });
+  await interaction.reply(`<#${thread.id}>`, { ephemeral: true });
 }

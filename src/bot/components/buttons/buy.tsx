@@ -1,14 +1,14 @@
-import { MessageComponentInteraction } from "dressed";
 import { getCredit, modCredit } from "@/bot/utils";
 import { shopItems } from "@/bot/commands/shop";
 import { openTicket } from "../selects/ticket-open";
 import { Params } from "@dressed/matcher";
+import { MessageComponentInteraction } from "@dressed/react";
 
 const blockedShoppers = {
   Whitelist: ["580638706805768203", "617635763974307859", "786737189965922316"],
-  "Community call topic": [] as string[],
-  "Custom role": [] as string[],
-};
+  "Community call topic": [],
+  "Custom role": [],
+} as const;
 
 export const pattern = "buy-:itemName";
 
@@ -28,9 +28,7 @@ export default async function buy(
     return await interaction.editReply("You don't have enough to buy that!");
   }
   if (
-    blockedShoppers[selectedItem.name as keyof typeof blockedShoppers].includes(
-      interaction.user.id,
-    )
+    blockedShoppers[selectedItem.name].includes(interaction.user.id as never)
   ) {
     return await interaction.editReply("You can't buy that!");
   }
