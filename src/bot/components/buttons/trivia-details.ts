@@ -2,7 +2,8 @@ import { getTriviaSession, TriviaResponse } from "@/bot/commands/trivia";
 import { Params } from "@dressed/matcher";
 import { MessageComponentInteraction } from "@dressed/react";
 
-export const pattern = "trivia-details-:a(\\d+)-:b(\\d+)-:c(\\d+)-:d(\\d+)";
+export const pattern =
+  "trivia-details-:a(\\d+){-:b(\\d+){-:c(\\d+){-:d(\\d+)}}}";
 
 export default async function triviaDetails(
   interaction: MessageComponentInteraction,
@@ -18,12 +19,16 @@ export default async function triviaDetails(
     session.messageId !== interaction.message.id ||
     session.expiresAt < Date.now()
   ) {
-    const counts = [
-      Number(args.a),
-      Number(args.b),
-      Number(args.c),
-      Number(args.d),
-    ];
+    const counts = [Number(args.a)];
+    if (args.b) {
+      counts.push(Number(args.b));
+      if (args.c) {
+        counts.push(Number(args.c));
+        if (args.d) {
+          counts.push(Number(args.d));
+        }
+      }
+    }
     await interaction.editReply(generateBarGraph(counts));
     return;
   }
