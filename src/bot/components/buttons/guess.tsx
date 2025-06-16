@@ -85,7 +85,6 @@ export default async function guess(
       redis.set(
         `trivia-response:${interaction.user.id}`,
         JSON.stringify(newResponse),
-        { expiration: { type: "PXAT", value: session.expiresAt } },
       ),
       modCredit(
         interaction.user.id,
@@ -100,9 +99,7 @@ export default async function guess(
           -# This trivia has expired, so your answer isn{"'"}t counted
         </>,
       ),
-      dressedEditMessage(interaction.channel.id, interaction.message.id, {
-        components: markArchived(interaction.message.components ?? []),
-      }),
+      markArchived(interaction.message),
     ]);
   }
 }

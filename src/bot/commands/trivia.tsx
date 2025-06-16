@@ -1,6 +1,11 @@
-import { type CommandConfig, TextDisplay as DressedTextDisplay } from "dressed";
+import {
+  type CommandConfig,
+  TextDisplay as DressedTextDisplay,
+  editMessage as dressedEditMessage,
+} from "dressed";
 import { prisma, redis } from "@/db";
 import {
+  APIMessage,
   APIMessageTopLevelComponent,
   ComponentType,
 } from "discord-api-types/v10";
@@ -212,9 +217,8 @@ function ResponsesSection({
   );
 }
 
-export function markArchived(
-  components: APIMessageTopLevelComponent[],
-): APIMessageTopLevelComponent[] {
+export async function markArchived(message: APIMessage) {
+  const { components = [] } = message;
   const container = components.find((c) => c.type === ComponentType.Container);
 
   if (
@@ -222,12 +226,11 @@ export function markArchived(
     !container.components ||
     container.components.at(-1)?.type === 10
   )
-    return components;
+    return;
   container.components.push(
     DressedTextDisplay(
       "-# This trivia has expired. However, you can still respond",
     ),
   );
-
-  return components;
+  await dressedEditMessage(message.channel_id, message.id, { components });
 }
