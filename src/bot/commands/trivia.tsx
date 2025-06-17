@@ -170,9 +170,10 @@ export function TriviaGame({
       <Separator />
       <ResponsesSection
         responses={responses}
-        isArchived={isArchived}
         answerIds={session.game.answers.map((a) => a.id)}
       />
+      {isArchived &&
+        "-# This trivia has expired. However, you can still respond"}
     </Container>
   );
 }
@@ -180,11 +181,9 @@ export function TriviaGame({
 function ResponsesSection({
   responses,
   answerIds,
-  isArchived,
 }: {
   responses: TriviaResponse[];
   answerIds: string[];
-  isArchived?: boolean;
 }) {
   const numVoted = responses.length;
   const correctPercentage = (
@@ -211,8 +210,6 @@ function ResponsesSection({
       <TextDisplay>
         ## {numVoted === 0 ? "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" : barGraph} | {numVoted}/15
       </TextDisplay>
-      {isArchived &&
-        "-# This trivia has expired. However, you can still respond"}
     </Section>
   );
 }
