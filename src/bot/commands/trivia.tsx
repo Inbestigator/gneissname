@@ -4,11 +4,7 @@ import {
   editMessage as dressedEditMessage,
 } from "dressed";
 import { prisma, redis } from "@/db";
-import {
-  APIMessage,
-  APIMessageTopLevelComponent,
-  ComponentType,
-} from "discord-api-types/v10";
+import { APIMessage, ComponentType } from "discord-api-types/v10";
 import { separateAnswers } from "../components/buttons/trivia-details";
 import { createHash } from "node:crypto";
 import {
@@ -80,14 +76,27 @@ export default async function trivia(interaction: CommandInteraction) {
     }),
   ]);
   if (currentSession && currentSession.replaceableAt > Date.now()) {
-    return interaction.editReply("There is already a trivia game in progress!");
+    return interaction.editReply(
+      <>
+        <TextDisplay>There is already a trivia game in progress!</TextDisplay>
+        -# Replaceable {"<"}t:{currentSession.replaceableAt}:R{">"}
+        <ActionRow>
+          <Button
+            url={`https://discord.com/channels/750062409364013159/${currentSession.channelId}/${currentSession.messageId}`}
+            label="See trivia"
+            emoji={{ name: "⬆️" }}
+          />
+        </ActionRow>
+      </>,
+    );
   } else if (currentSession) {
     try {
       editMessage(
         currentSession.channelId,
         currentSession.messageId,
         <TriviaGame
-          session={currentSession}
+          game={currentSession.game}
+          correctHash={currentSession.correct.hashed}
           responses={responses}
           isArchived
         />,
@@ -106,7 +115,7 @@ export default async function trivia(interaction: CommandInteraction) {
   const answers = game.answers.sort(() => Math.random() - 0.5);
   const correct = answers.find((a) => a.correct) ?? { id: "", text: "" };
 
-  const hashedCorrect = createHash("sha1")
+  const correctHash = createHash("sha1")
     .update(correct.id)
     .digest("hex")
     .slice(0, 8);
@@ -120,7 +129,7 @@ export default async function trivia(interaction: CommandInteraction) {
     correct: {
       id: correct.id,
       text: correct.text,
-      hashed: hashedCorrect,
+      hashed: correctHash,
     },
     expiresAt: Date.now() + 45 * 60 * 1000,
     replaceableAt: Date.now() + 15 * 60 * 1000,
@@ -128,7 +137,7 @@ export default async function trivia(interaction: CommandInteraction) {
 
   const message = await createMessage(
     interaction.channel.id,
-    <TriviaGame session={session} responses={[]} />,
+    <TriviaGame game={session.game} correctHash={correctHash} responses={[]} />,
   );
 
   session.messageId = message.id;
@@ -142,26 +151,28 @@ export default async function trivia(interaction: CommandInteraction) {
 }
 
 export function TriviaGame({
-  session,
+  game,
+  correctHash,
   responses,
   isArchived,
 }: {
-  session: TriviaSession;
+  game: TriviaSession["game"];
+  correctHash: string;
   responses: TriviaResponse[];
   isArchived?: boolean;
 }) {
   return (
     <Container>
       <TextDisplay>## Trivia!</TextDisplay>
-      {session.game.question}
+      {game.question}
       <ActionRow>
-        {session.game.answers.map((answer, i) => (
+        {game.answers.map((answer, i) => (
           <Button
             key={i}
             emoji={{
               name: answer.emoji ?? undefined,
             }}
-            custom_id={`guess-${session.correct.hashed}-${answer.id}`}
+            custom_id={`guess-${correctHash}-${answer.id}`}
             label={answer.text}
             style="Secondary"
           />
@@ -170,7 +181,7 @@ export function TriviaGame({
       <Separator />
       <ResponsesSection
         responses={responses}
-        answerIds={session.game.answers.map((a) => a.id)}
+        answerIds={game.answers.map((a) => a.id)}
       />
       {isArchived &&
         "-# This trivia has expired. However, you can still respond"}

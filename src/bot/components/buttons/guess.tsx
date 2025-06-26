@@ -7,7 +7,6 @@ import {
 } from "@/bot/commands/trivia";
 import { createHash } from "node:crypto";
 import { Params } from "@dressed/matcher";
-import { editMessage as dressedEditMessage } from "dressed";
 import {
   ActionRow,
   Button,
@@ -55,7 +54,8 @@ export default async function guess(
         interaction.channel.id,
         interaction.message.id,
         <TriviaGame
-          session={session}
+          game={session.game}
+          correctHash={hashed}
           responses={responses}
           isArchived={responses.length >= 15}
         />,
