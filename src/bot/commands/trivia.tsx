@@ -198,15 +198,6 @@ function ResponsesSection({
   responses: TriviaResponse[];
   answerIds: string[];
 }) {
-  // const numVoted = responses.length;
-  // const correctPercentage = (
-  //   (responses.filter((a) => a.isCorrect).length / numVoted) *
-  //   100
-  // ).toFixed(2);
-  // const incorrectPercentage = (100 - Number(correctPercentage)).toFixed(2);
-  // const barGraph =
-  //   "🟩".repeat(Math.round(Number(correctPercentage) / 10)) +
-  //   "🟥".repeat(Math.round(Number(incorrectPercentage) / 10));
   const counts = separateAnswers(responses, answerIds);
 
   return (
@@ -225,8 +216,8 @@ function ResponsesSection({
         {responses
           .sort((a, b) => a.timestamp - b.timestamp)
           .map((r) => (r.isCorrect ? "🟩" : "🟥"))
-          .concat(Array(11).fill("⬛"))
-          .slice(0, 11)
+          .concat(Array(15).fill("⬛"))
+          .slice(0, 15)
           .join("")}
       </TextDisplay>
     </Section>
