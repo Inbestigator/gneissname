@@ -223,10 +223,11 @@ function ResponsesSection({
       <TextDisplay>
         ##{" "}
         {responses
-          .sort((a, b) => b.timestamp - a.timestamp)
+          .sort((a, b) => a.timestamp - b.timestamp)
           .map((r) => (r.isCorrect ? "🟩" : "🟥"))
-          .join("")
-          .padEnd(15, "⬛")}
+          .concat(Array(11).fill("⬛"))
+          .slice(0, 11)
+          .join("")}
       </TextDisplay>
     </Section>
   );
