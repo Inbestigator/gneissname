@@ -29,6 +29,7 @@ export interface TriviaResponse {
   answerId: string;
   isCorrect: boolean;
   userId: string;
+  timestamp: number;
 }
 
 export interface TriviaSession {
@@ -220,7 +221,14 @@ function ResponsesSection({
       }
     >
       <TextDisplay>
-        ## {numVoted === 0 ? "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" : barGraph} | {numVoted}/15
+        ##{" "}
+        {numVoted === 0
+          ? responses
+              .sort((a, b) => b.timestamp - a.timestamp)
+              .map((r) => (r.isCorrect ? "🟩" : "🟥"))
+              .join("")
+              .padEnd(15, "⬛")
+          : barGraph}
       </TextDisplay>
     </Section>
   );

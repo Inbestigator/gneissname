@@ -45,6 +45,7 @@ export default async function guess(
       answerId,
       isCorrect,
       userId: interaction.user.id,
+      timestamp: Date.now(),
     };
 
     responses.push(newResponse);
