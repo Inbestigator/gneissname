@@ -214,7 +214,7 @@ function ResponsesSection({
       <TextDisplay>
         ##{" "}
         {responses
-          .sort((a, b) => a.timestamp - b.timestamp)
+          .sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect))
           .map((r) => (r.isCorrect ? "🟩" : "🟥"))
           .concat(Array(15).fill("⬛"))
           .slice(0, 15)
