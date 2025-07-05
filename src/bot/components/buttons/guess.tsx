@@ -33,7 +33,7 @@ export default async function guess(
     session &&
     session.messageId === interaction.message.id &&
     session.expiresAt > Date.now() &&
-    responses.length < 15
+    responses.length < 10
   ) {
     if (responses.some((a) => a.userId === interaction.user.id)) {
       return interaction.editReply("You have already answered!");
