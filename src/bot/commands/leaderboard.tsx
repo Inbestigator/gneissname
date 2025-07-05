@@ -1,5 +1,5 @@
-import { CommandConfig, getUser as getDiscordUser } from "dressed";
-import { prisma } from "@/db";
+import { CommandConfig } from "dressed";
+import { cache, prisma } from "@/db";
 import { getUser } from "@/bot/utils";
 import { CommandInteraction, Container, TextDisplay } from "@dressed/react";
 import { Fragment } from "react";
@@ -40,7 +40,7 @@ export default async function leaderboard(interaction: CommandInteraction) {
         You{"'"}re #{userRank}
         {await Promise.all(
           topUsers.map(async (entry, index) => {
-            const user = await getDiscordUser(entry.id);
+            const user = await cache.getUser(entry.id);
             return (
               <Fragment key={entry.id}>
                 <TextDisplay>
