@@ -58,7 +58,7 @@ export default async function guess(
           game={session.game}
           correctHash={hashed}
           responses={responses}
-          isArchived={responses.length >= 15}
+          isArchived={responses.length >= 10}
         />,
       ),
       interaction.editReply(

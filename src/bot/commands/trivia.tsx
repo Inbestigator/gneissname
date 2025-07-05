@@ -216,8 +216,8 @@ function ResponsesSection({
         {responses
           .sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect))
           .map((r) => (r.isCorrect ? "🟩" : "🟥"))
-          .concat(Array(15).fill("⬛"))
-          .slice(0, 15)
+          .concat(Array(10).fill("⬛"))
+          .slice(0, 10)
           .join("")}
       </TextDisplay>
     </Section>
