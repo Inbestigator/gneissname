@@ -8,6 +8,6 @@ export const config: CommandConfig = {
 
 export default async function disneyWorld(interaction: CommandInteraction) {
   if (interaction.user.id !== "761777382041714690") {
-    return interaction.reply("[Object object]");
+    return interaction.reply("[Object object]", { ephemeral: true });
   }
 }
