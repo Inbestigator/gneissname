@@ -5,7 +5,7 @@ import {
   TriviaResponse,
   TriviaGame,
 } from "@/bot/commands/trivia";
-import { createHash } from "node:crypto";
+import { hash } from "node:crypto";
 import { Params } from "@dressed/matcher";
 import {
   ActionRow,
@@ -27,10 +27,7 @@ export default async function guess(
     interaction.deferReply({ ephemeral: true }),
   ]);
   const isCorrect =
-    createHash("sha1")
-      .update(answerId)
-      .digest("hex")
-      .slice(0, hashed.length) === hashed;
+    hash("sha1", answerId, "hex").slice(0, hashed.length) === hashed;
 
   if (
     session &&

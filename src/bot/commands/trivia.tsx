@@ -6,7 +6,7 @@ import {
 import { prisma, redis } from "@/db";
 import { APIMessage, ComponentType } from "discord-api-types/v10";
 import { separateAnswers } from "../components/buttons/trivia-details";
-import { createHash } from "node:crypto";
+import { hash } from "node:crypto";
 import {
   ActionRow,
   Button,
@@ -117,10 +117,7 @@ export default async function trivia(interaction: CommandInteraction) {
   const answers = game.answers.sort(() => Math.random() - 0.5);
   const correct = answers.find((a) => a.correct) ?? { id: "", text: "" };
 
-  const correctHash = createHash("sha1")
-    .update(correct.id)
-    .digest("hex")
-    .slice(0, 8);
+  const correctHash = hash("sha1", correct.id, "hex").slice(0, 8);
 
   interaction.editReply("Question sent!");
 
