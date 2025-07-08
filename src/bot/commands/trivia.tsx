@@ -65,8 +65,47 @@ export async function getTriviaSession(): Promise<{
   };
 }
 
+function shuffle<T extends unknown[]>(array: T): T {
+  const result = array.slice();
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result as T;
+}
+
+async function getNextGame(): Promise<TriviaSession["game"]> {
+  async function fetchNext(list: (number | TriviaSession["game"])[]) {
+    if (list.length === 0) {
+      const games = await prisma.trivia.findMany({
+        select: { id: true },
+        cacheStrategy: { swr: 1800, ttl: 1800 },
+      });
+      list = shuffle(games.map((g) => g.id));
+    }
+    const next = list.pop();
+    if (typeof next !== "number") return;
+    const nextGame = await prisma.trivia.findFirstOrThrow({
+      where: { id: next },
+      include: { answers: true },
+      cacheStrategy: { swr: 1800, ttl: 1800 },
+    });
+    list.push(nextGame);
+    await redis.set("trivia-order", JSON.stringify(list));
+    return list;
+  }
+  let listJson = await redis.get("trivia-order");
+  if (!listJson) {
+    listJson = JSON.stringify(await fetchNext([]));
+  }
+  const list = JSON.parse(listJson!);
+  const game = list.pop();
+  fetchNext(list);
+  return game;
+}
+
 export default async function trivia(interaction: CommandInteraction) {
-  const [{ session: currentSession, responses }, games] = await Promise.all([
+  const [{ session: currentSession, responses }] = await Promise.all([
     getTriviaSession(),
     prisma.trivia.findMany({
       include: { answers: true },
@@ -86,7 +125,6 @@ export default async function trivia(interaction: CommandInteraction) {
           <Button
             url={`https://discord.com/channels/750062409364013159/${currentSession.channelId}/${currentSession.messageId}`}
             label="See trivia"
-            emoji={{ name: "⬆️" }}
           />
         </ActionRow>
       </>,
@@ -108,7 +146,7 @@ export default async function trivia(interaction: CommandInteraction) {
     }
   }
 
-  const game = games[Math.floor(Math.random() * games.length)];
+  const game = await getNextGame();
 
   if (!game) {
     return interaction.editReply("Error starting trivia game!");
