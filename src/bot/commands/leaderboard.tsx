@@ -1,6 +1,5 @@
 import { CommandConfig } from "dressed";
 import { cache, prisma } from "@/db";
-import { getUser } from "@/bot/utils";
 import { CommandInteraction, Container, TextDisplay } from "@dressed/react";
 import { Fragment } from "react";
 
@@ -17,11 +16,11 @@ export default async function leaderboard(interaction: CommandInteraction) {
         cacheStrategy: { swr: 300, ttl: 300 },
       });
 
-      const currentUser = await getUser(interaction.user.id);
+      const credit = await cache.getCredit(interaction.user.id);
       const userRank = prisma.user.count({
         where: {
           credit: {
-            gte: currentUser.credit,
+            gte: credit,
           },
         },
         cacheStrategy: { swr: 300, ttl: 300 },

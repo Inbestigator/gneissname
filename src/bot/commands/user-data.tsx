@@ -1,7 +1,7 @@
-import { getUser } from "@/bot/utils";
 import { CommandConfig, CommandOption } from "dressed";
 import { PermissionFlagsBits } from "discord-api-types/v10";
 import { CommandInteraction, Container, TextDisplay } from "@dressed/react";
+import { cache } from "@/db";
 
 export const config: CommandConfig = {
   description: "Snoop a user",
@@ -19,7 +19,7 @@ export const config: CommandConfig = {
 
 export default async function userData(interaction: CommandInteraction) {
   const [user] = await Promise.all([
-    getUser(interaction.getOption("user", true).user().id ?? "0"),
+    cache.getDBUser(interaction.getOption("user", true).user().id ?? "0"),
     interaction.deferReply({ ephemeral: true }),
   ]);
   await interaction.editReply(

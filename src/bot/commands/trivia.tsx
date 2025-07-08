@@ -107,10 +107,6 @@ async function getNextGame(): Promise<TriviaSession["game"]> {
 export default async function trivia(interaction: CommandInteraction) {
   const [{ session: currentSession, responses }] = await Promise.all([
     getTriviaSession(),
-    prisma.trivia.findMany({
-      include: { answers: true },
-      cacheStrategy: { swr: 1800, ttl: 1800 },
-    }),
     interaction.deferReply({
       ephemeral: true,
     }),

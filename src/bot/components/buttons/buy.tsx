@@ -1,8 +1,9 @@
-import { getCredit, modCredit } from "@/bot/utils";
+import { modCredit } from "@/bot/utils";
 import { shopItems } from "@/bot/commands/shop";
 import { openTicket } from "../selects/ticket-open";
 import { Params } from "@dressed/matcher";
 import { MessageComponentInteraction } from "@dressed/react";
+import { cache } from "@/db";
 
 const blockedShoppers = {
   Whitelist: ["580638706805768203", "617635763974307859", "786737189965922316"],
@@ -23,7 +24,7 @@ export default async function buy(
   if (!selectedItem) {
     return await interaction.editReply("Item not found");
   }
-  const credit = await getCredit(interaction.user.id);
+  const credit = await cache.getCredit(interaction.user.id);
   if (credit < selectedItem.price) {
     return await interaction.editReply("You don't have enough to buy that!");
   }

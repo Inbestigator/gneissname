@@ -1,14 +1,5 @@
 import { prisma, redis } from "@/db";
 
-export async function getCredit(userId: string) {
-  try {
-    const user = await getUser(userId);
-    return user.credit;
-  } catch {
-    return 0;
-  }
-}
-
 export async function modCredit(
   userId: string,
   modifier: number,
@@ -26,7 +17,7 @@ export async function modCredit(
       }
     }
     modifier = Math.round(modifier);
-    const user = await prisma.$transaction(async (prisma) => {
+    await prisma.$transaction(async (prisma) => {
       const updatedUser = await prisma.user.upsert({
         where: { id: userId },
         create: { id: userId, credit: modifier },
@@ -47,20 +38,12 @@ export async function modCredit(
 
       return updatedUser;
     });
-    redis.set(`user:${userId}`, JSON.stringify(user), {
-      expiration: { type: "EX", value: 120 },
-    });
   } catch {
     return 0;
   }
 }
 
-export async function getUser(userId: string): Promise<{ credit: number }> {
-  const redisUser = await redis.get(`user:${userId}`);
-  if (redisUser) {
-    return JSON.parse(redisUser);
-  }
-
+export async function getDBUser(userId: string): Promise<{ credit: number }> {
   let user = await prisma.user.findFirst({
     where: { id: userId },
     cacheStrategy: { swr: 30, ttl: 30 },
@@ -74,8 +57,5 @@ export async function getUser(userId: string): Promise<{ credit: number }> {
       select: { credit: true },
     });
   }
-  redis.set(`user:${userId}`, JSON.stringify({ credit: user.credit }), {
-    expiration: { type: "EX", value: 120 },
-  });
   return user;
 }
