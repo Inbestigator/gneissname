@@ -246,8 +246,8 @@ function ResponsesSection({
         ##{" "}
         {"🟩"
           .repeat(responses.filter((r) => r.isCorrect).length)
-          .padEnd(responses.length, "🟥")
-          .padEnd(10, "⬛")}
+          .padEnd(responses.length * 2, "🟥")
+          .padEnd(10 + responses.length, "⬛")}
       </TextDisplay>
     </Section>
   );
