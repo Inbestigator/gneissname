@@ -244,12 +244,10 @@ function ResponsesSection({
     >
       <TextDisplay>
         ##{" "}
-        {responses
-          .sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect))
-          .map((r) => (r.isCorrect ? "🟩" : "🟥"))
-          .concat(Array(10).fill("⬛"))
-          .slice(0, 10)
-          .join("")}
+        {"🟩"
+          .repeat(responses.filter((r) => r.isCorrect).length)
+          .padEnd(responses.length, "🟥")
+          .padEnd(10, "⬛")}
       </TextDisplay>
     </Section>
   );
