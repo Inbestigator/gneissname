@@ -36,7 +36,7 @@ export default async function leaderboard(interaction: CommandInteraction) {
       <Container>
         ## Leaderboard
         <TextDisplay>Members with the highest social credit</TextDisplay>
-        You{"'"}re #{userRank}
+        You&apos;re #{userRank}
         {await Promise.all(
           topUsers.map(async (entry, index) => {
             const user = await cache.getUser(entry.id);

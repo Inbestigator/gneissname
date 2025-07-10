@@ -95,7 +95,7 @@ export default async function guess(
       interaction.editReply(
         <>
           <TextDisplay>## {isCorrect ? "Correct" : "Nice try"}!</TextDisplay>
-          -# This trivia has expired, so your answer isn{"'"}t counted
+          -# This trivia has expired, so your answer isn&apos;t counted
         </>,
       ),
       markArchived(interaction.message),

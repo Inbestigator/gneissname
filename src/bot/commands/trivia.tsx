@@ -115,8 +115,8 @@ export default async function trivia(interaction: CommandInteraction) {
     return interaction.editReply(
       <>
         <TextDisplay>There is already a trivia game in progress!</TextDisplay>
-        -# Replaceable {"<"}t:{Math.round(currentSession.replaceableAt / 1000)}
-        :R{">"}
+        -# Replaceable &lt;t:{Math.round(currentSession.replaceableAt / 1000)}
+        :R&gt;
         <ActionRow>
           <Button
             url={`https://discord.com/channels/750062409364013159/${currentSession.channelId}/${currentSession.messageId}`}
