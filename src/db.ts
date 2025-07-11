@@ -1,11 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { createClient } from "redis";
-import {
-  createCache,
-  getters,
-  resolveKey,
-} from "../node_modules/@dressed/ws/dist/cache";
+import { createCache, getters, resolveKey } from "@dressed/ws/cache";
 import { getDBUser } from "./bot/utils";
 
 export const prisma = new PrismaClient().$extends(withAccelerate());
