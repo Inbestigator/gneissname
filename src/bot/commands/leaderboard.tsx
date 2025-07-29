@@ -7,50 +7,46 @@ export const config: CommandConfig = {
   description: "View the users with the highest social credit",
 };
 
+function Leaderboard({
+  userRank,
+  list,
+}: {
+  userRank?: number;
+  list: { name?: string; credit: number }[];
+}) {
+  return (
+    <Container>
+      ## Leaderboard
+      <TextDisplay>Members with the highest social credit</TextDisplay>
+      You&apos;re #{userRank}
+      {list.map(({ name, credit }, i) => {
+        return (
+          <Fragment key={i}>
+            <TextDisplay>
+              ### {i + 1} {name && `- ${name}`}
+            </TextDisplay>
+            {credit.toLocaleString()}
+          </Fragment>
+        );
+      })}
+    </Container>
+  );
+}
+
 export default async function leaderboard(interaction: CommandInteraction) {
-  const [[topUsers, userRank]] = await Promise.all([
-    prisma.$transaction(async (prisma) => {
-      const topUsers = prisma.user.findMany({
-        take: 10,
-        orderBy: { credit: "desc" },
-        cacheStrategy: { swr: 300, ttl: 300 },
-      });
-
-      const credit = await cache.getCredit(interaction.user.id);
-      const userRank = prisma.user.count({
-        where: {
-          credit: {
-            gte: credit,
-          },
-        },
-        cacheStrategy: { swr: 300, ttl: 300 },
-      });
-
-      return Promise.all([topUsers, userRank]);
-    }),
-    interaction.deferReply({ ephemeral: true }),
-  ]);
-
   try {
+    const topUsers = await cache.getTopUsers();
+    const [userRank, _, ...resolvedUsers] = await Promise.all([
+      cache.getRank(interaction.user.id),
+      interaction.reply(<Leaderboard list={topUsers} />, { ephemeral: true }),
+      ...topUsers.map(async (u) => {
+        const user = await cache.getUser(u.id);
+        return { name: user.global_name ?? undefined, credit: u.credit };
+      }),
+    ]);
+
     await interaction.editReply(
-      <Container>
-        ## Leaderboard
-        <TextDisplay>Members with the highest social credit</TextDisplay>
-        You&apos;re #{userRank}
-        {await Promise.all(
-          topUsers.map(async (entry, index) => {
-            const user = await cache.getUser(entry.id);
-            return (
-              <Fragment key={entry.id}>
-                <TextDisplay>
-                  ### {index + 1} - {user.global_name}
-                </TextDisplay>
-                {entry.credit.toLocaleString()}
-              </Fragment>
-            );
-          }),
-        )}
-      </Container>,
+      <Leaderboard userRank={userRank} list={resolvedUsers} />,
     );
   } catch {
     await interaction.editReply(

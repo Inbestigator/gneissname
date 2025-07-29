@@ -15,11 +15,25 @@ export const cache = createCache(
     getDBUser,
     async getCredit(userId: string) {
       try {
-        const user = await getDBUser(userId);
-        return user.credit;
+        const { credit } = await getDBUser(userId);
+        return credit;
       } catch {
         return 0;
       }
+    },
+    async getRank(userId: string) {
+      const { credit } = await getDBUser(userId);
+      return prisma.user.count({
+        where: { credit: { gte: credit } },
+        cacheStrategy: { swr: 300, ttl: 300 },
+      });
+    },
+    getTopUsers() {
+      return prisma.user.findMany({
+        take: 10,
+        orderBy: { credit: "desc" },
+        cacheStrategy: { swr: 300, ttl: 300 },
+      });
     },
   },
   {
