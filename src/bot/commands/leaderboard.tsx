@@ -35,10 +35,13 @@ function Leaderboard({
 
 export default async function leaderboard(interaction: CommandInteraction) {
   try {
-    const topUsers = await cache.getTopUsers();
+    const [topUsers] = await Promise.all([
+      cache.getTopUsers(),
+      interaction.deferReply({ ephemeral: true }),
+    ]);
     const [userRank, _, ...resolvedUsers] = await Promise.all([
       cache.getRank(interaction.user.id),
-      interaction.reply(<Leaderboard list={topUsers} />, { ephemeral: true }),
+      interaction.editReply(<Leaderboard list={topUsers} />),
       ...topUsers.map(async (u) => {
         const user = await cache.getUser(u.id);
         return { name: user.global_name ?? undefined, credit: u.credit };
