@@ -1,4 +1,4 @@
-import { cache, prisma } from "@/db";
+import { cache } from "@/db";
 import { NextResponse } from "next/server";
 
 export async function GET() {
