@@ -38,7 +38,8 @@ export async function modCredit(
 
       return updatedUser;
     });
-  } catch {
+  } catch (e) {
+    console.error(e);
     throw new Error("Failed to update credit");
   }
 }

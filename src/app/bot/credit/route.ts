@@ -14,8 +14,7 @@ export async function POST(req: NextRequest) {
   try {
     await modCredit(userId, Number(modifier));
     return new NextResponse(null, { status: 204 });
-  } catch (e) {
-    console.error(e);
+  } catch {
     return new NextResponse(null, { status: 500 });
   }
 }
