@@ -11,5 +11,11 @@ export async function POST(req: NextRequest) {
   if (userId === null || modifier === null) {
     return new NextResponse("Incorrect params", { status: 400 });
   }
-  await modCredit(userId, Number(modifier));
+  try {
+    await modCredit(userId, Number(modifier));
+    return new NextResponse(null, { status: 204 });
+  } catch (e) {
+    console.error(e);
+    return new NextResponse(null, { status: 500 });
+  }
 }
