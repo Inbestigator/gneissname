@@ -6,6 +6,7 @@ export async function modCredit(
   exemptCap?: boolean,
 ) {
   try {
+    modifier = Math.round(modifier);
     if (!exemptCap) {
       const key = `credit-cap:${userId}`;
       await redis.set(key, 256, {

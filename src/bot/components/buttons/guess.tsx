@@ -87,7 +87,7 @@ export default async function guess(
       ),
       modCredit(
         interaction.user.id,
-        Math.round(100 + Math.random() * 100) * (isCorrect ? 1 : -1),
+        (100 + Math.random() * 100) * (isCorrect ? 1 : -1),
       ),
     ]);
   } else {
