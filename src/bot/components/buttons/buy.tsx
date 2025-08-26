@@ -38,7 +38,7 @@ export default async function buy(
     `Claim ${selectedItem.name.toLowerCase()}`,
     `${interaction.user.global_name} has purchased a ${selectedItem.name.toLowerCase()} and would like to claim it`,
     selectedItem.name.toLowerCase() === "whitelist"
-      ? "<@&1232903620421484575>"
+      ? ["1232903620421484575"]
       : undefined,
     interaction.user,
   );

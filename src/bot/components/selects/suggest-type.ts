@@ -9,7 +9,7 @@ export default async function suggestType(
   const thread = await openTicket(
     ticketName,
     undefined,
-    "<@&1225973068141297757>",
+    ["1225973068141297757"],
     interaction.user,
   );
   await interaction.update(`<#${thread.id}>`);

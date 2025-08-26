@@ -7,18 +7,19 @@ import {
   TextDisplay,
 } from "@dressed/react";
 
-export const pattern = "ticket-:action(close|open){-:ticketName{-:message}}";
+export const pattern =
+  "ticket-:action(close|open){-:ticketName{-:message}{-:staff((\\d+,?)*)}}";
 
 export default async function ticketButton(
   interaction: MessageComponentInteraction,
   args: Params<typeof pattern>,
 ) {
   if (args.action === "open") {
-    const { ticketName = "Unknown", message } = args;
+    const { ticketName = "Unknown", message, staff } = args;
     const thread = await openTicket(
       ticketName,
       message,
-      undefined,
+      staff?.split(","),
       interaction.user,
     );
     await interaction.reply(`<#${thread.id}>`, { ephemeral: true });
