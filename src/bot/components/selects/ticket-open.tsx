@@ -35,7 +35,11 @@ export async function openTicket(
           style="Danger"
         />
       </ActionRow>
-      -# {`<@${user.id}>`} {relevantStaff.map((s) => `<@&${s}>`).join(" ")}
+      -# {`<@${user.id}>`}{" "}
+      {relevantStaff
+        .filter(Boolean)
+        .map((s) => `<@&${s}>`)
+        .join(" ")}
     </Container>,
   );
   return thread;
