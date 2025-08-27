@@ -30,8 +30,8 @@ export const config: CommandConfig = {
   description: "Use your social credit to buy things",
 };
 
-export default async function shop(interaction: CommandInteraction) {
-  await interaction.reply(
+export default function shop(interaction: CommandInteraction) {
+  return interaction.reply(
     <Container>
       ## Shop
       {shopItems.map((item) => (
@@ -39,7 +39,7 @@ export default async function shop(interaction: CommandInteraction) {
           key={item.name}
           accessory={
             <Button
-              custom_id={`buy-${item.name.toLowerCase()}`}
+              custom_id={`buy-${item.name}`}
               label={`$${item.price.toLocaleString()}`}
             />
           }

@@ -5,8 +5,8 @@ export const config: CommandConfig = {
   description: "Suggest a trivia question",
 };
 
-export default async function suggest(interaction: CommandInteraction) {
-  await interaction.showModal(
+export default function suggest(interaction: CommandInteraction) {
+  return interaction.showModal(
     <>
       <ActionRow>
         <TextInput

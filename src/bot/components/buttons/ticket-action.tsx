@@ -8,7 +8,7 @@ import {
 } from "@dressed/react";
 
 export const pattern =
-  "ticket-:action(close|open){-:ticketName{-:message}{-:staff((\\d+,?)*)}}";
+  "ticket-:action(close|open){-:ticketName{-:message}{-:staff((&?\\d+,?)*)}}";
 
 export default async function ticketButton(
   interaction: MessageComponentInteraction,

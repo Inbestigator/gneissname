@@ -18,28 +18,24 @@ export default async function buy(
   { itemName }: Params<typeof pattern>,
 ) {
   await interaction.deferReply({ ephemeral: true });
-  const selectedItem = shopItems.find(
-    (item) => item.name.toLowerCase() === itemName,
-  );
+  const selectedItem = shopItems.find((item) => item.name === itemName);
   if (!selectedItem) {
-    return await interaction.editReply("Item not found");
+    return interaction.editReply("Item not found");
   }
   const credit = await cache.getCredit(interaction.user.id);
   if (credit < selectedItem.price) {
-    return await interaction.editReply("You don't have enough to buy that!");
+    return interaction.editReply("You don't have enough to buy that!");
   }
   if (
     blockedShoppers[selectedItem.name].includes(interaction.user.id as never)
   ) {
-    return await interaction.editReply("You can't buy that!");
+    return interaction.editReply("You can't buy that!");
   }
   await modCredit(interaction.user.id, selectedItem.price * -1, true);
   const thread = await openTicket(
     `Claim ${selectedItem.name.toLowerCase()}`,
     `${interaction.user.global_name} has purchased a ${selectedItem.name.toLowerCase()} and would like to claim it`,
-    selectedItem.name.toLowerCase() === "whitelist"
-      ? ["1232903620421484575"]
-      : undefined,
+    selectedItem.name === "Whitelist" ? ["&1232903620421484575"] : undefined,
     interaction.user,
   );
   await interaction.editReply(`<#${thread.id}>`);
