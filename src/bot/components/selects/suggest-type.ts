@@ -9,7 +9,7 @@ export default async function suggestType(
   const thread = await openTicket(
     ticketName,
     undefined,
-    undefined,
+    ticketName === "Video idea" ? ["490924235234213929"] : undefined,
     interaction.user,
   );
   await interaction.update(`<#${thread.id}>`);
