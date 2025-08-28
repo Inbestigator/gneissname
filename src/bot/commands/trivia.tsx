@@ -76,10 +76,11 @@ function shuffle<T extends unknown[]>(array: T): T {
 
 async function getNextGame(): Promise<TriviaSession["game"]> {
   async function fetchNext(list: (number | TriviaSession["game"])[]) {
+    const cacheTime = 12 * 60 * 60;
     if (list.length === 0) {
       const games = await prisma.trivia.findMany({
         select: { id: true },
-        cacheStrategy: { swr: 1800, ttl: 1800 },
+        cacheStrategy: { swr: cacheTime, ttl: cacheTime },
       });
       list = shuffle(games.map((g) => g.id));
     }
@@ -88,7 +89,7 @@ async function getNextGame(): Promise<TriviaSession["game"]> {
     const nextGame = await prisma.trivia.findFirstOrThrow({
       where: { id: next },
       include: { answers: true },
-      cacheStrategy: { swr: 1800, ttl: 1800 },
+      cacheStrategy: { swr: cacheTime, ttl: cacheTime },
     });
     list.push(nextGame);
     await redis.set("trivia-order", JSON.stringify(list));
