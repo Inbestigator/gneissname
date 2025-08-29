@@ -1,4 +1,4 @@
-import { MessageComponentInteraction } from "@dressed/react";
+import type { MessageComponentInteraction } from "@dressed/react";
 import { openTicket } from "./ticket-open";
 
 export default async function suggestType(
