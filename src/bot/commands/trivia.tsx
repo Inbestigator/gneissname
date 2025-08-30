@@ -74,9 +74,10 @@ function shuffle<T extends unknown[]>(array: T): T {
   return result as T;
 }
 
+const cacheTime = 12 * 60 * 60;
+
 async function getNextGame(): Promise<TriviaSession["game"]> {
   async function fetchNext(list: (number | TriviaSession["game"])[]) {
-    const cacheTime = 12 * 60 * 60;
     if (list.length === 0) {
       const games = await prisma.trivia.findMany({
         select: { id: true },
@@ -86,20 +87,24 @@ async function getNextGame(): Promise<TriviaSession["game"]> {
     }
     const next = list.pop();
     if (typeof next !== "number") return;
-    const nextGame = await prisma.trivia.findFirstOrThrow({
-      where: { id: next },
-      include: { answers: true },
-      cacheStrategy: { swr: cacheTime, ttl: cacheTime },
-    });
-    list.push(nextGame);
+    const nextGame = await redis.get(`trivia-${next}`);
+    if (!nextGame) {
+      const game = await prisma.trivia.findFirstOrThrow({
+        where: { id: next },
+        include: { answers: true },
+        cacheStrategy: { swr: cacheTime, ttl: cacheTime },
+      });
+      await redis.set(`trivia-${next}`, JSON.stringify(game));
+      list.push(game);
+    } else {
+      list.push(JSON.parse(nextGame));
+    }
     await redis.set("trivia-order", JSON.stringify(list));
     return list;
   }
-  let listJson = await redis.get("trivia-order");
-  if (!listJson) {
-    listJson = JSON.stringify(await fetchNext([]));
-  }
-  const list = JSON.parse(listJson!);
+  const listJson =
+    (await redis.get("trivia-order")) ?? JSON.stringify(await fetchNext([]));
+  const list = JSON.parse(listJson);
   const game = list.pop();
   fetchNext(list);
   return game;
