@@ -76,7 +76,9 @@ function shuffle<T extends unknown[]>(array: T): T {
 
 const cacheTime = 12 * 60 * 60;
 
-async function getNextGame(): Promise<TriviaSession["game"]> {
+async function getNextGame(): Promise<
+  TriviaSession["game"] & { next: () => Promise<void> }
+> {
   async function fetchNext(list: (number | TriviaSession["game"])[]) {
     if (list.length === 0) {
       const games = await prisma.trivia.findMany({
@@ -106,8 +108,7 @@ async function getNextGame(): Promise<TriviaSession["game"]> {
     (await redis.get("trivia-order")) ?? JSON.stringify(await fetchNext([]));
   const list = JSON.parse(listJson);
   const game = list.pop();
-  fetchNext(list);
-  return game;
+  return { ...game, next: () => fetchNext(list) };
 }
 
 export default async function trivia(interaction: CommandInteraction) {
@@ -186,7 +187,7 @@ export default async function trivia(interaction: CommandInteraction) {
   for (const response of responses) {
     multi.del(`trivia-response:${response.userId}`);
   }
-  await multi.exec();
+  await Promise.all([multi.exec(), game.next()]);
 }
 
 export function TriviaGame({
