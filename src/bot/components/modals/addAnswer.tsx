@@ -17,8 +17,8 @@ export default async function addAnswer(
       data: {
         answers: {
           create: {
-            text: interaction.getField("text", true),
-            emoji: interaction.getField("emoji", true),
+            text: interaction.getField("text", true).textInput(),
+            emoji: interaction.getField("emoji", true).textInput(),
             correct: args.isTrue == "true",
           },
         },

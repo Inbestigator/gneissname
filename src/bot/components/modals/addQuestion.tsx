@@ -6,8 +6,8 @@ export default async function addQuestion(interaction: ModalSubmitInteraction) {
   const [triviaQ] = await Promise.all([
     prisma.trivia.create({
       data: {
-        question: interaction.getField("question", true),
-        explanation: interaction.getField("explanation", true),
+        question: interaction.getField("question", true).textInput(),
+        explanation: interaction.getField("explanation", true).textInput(),
       },
     }),
     interaction.deferUpdate(),

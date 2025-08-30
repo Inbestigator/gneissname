@@ -8,14 +8,13 @@ import {
 export default async function suggestTrivia(
   interaction: ModalSubmitInteraction,
 ) {
-  const message = `Suggester: <@${interaction.user.id}>\nQuestion: ${interaction.getField(
-    "question",
-    true,
-  )}\nExplanation: ${interaction.getField(
-    "explanation",
-    true,
-  )}\nCorrect: ${interaction.getField("true", true)}\nIncorrect:\n${interaction
+  const message = `Suggester: <@${interaction.user.id}>\nQuestion: ${interaction
+    .getField("question", true)
+    .textInput()}\nExplanation: ${interaction
+    .getField("explanation", true)
+    .textInput()}\nCorrect: ${interaction.getField("true", true)}\nIncorrect:\n${interaction
     .getField("false", true)
+    .textInput()
     .split("\n")
     .map((i) => `> ${i}`)
     .join("\n")}`;
