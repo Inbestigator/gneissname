@@ -87,14 +87,14 @@ async function getNextGame(): Promise<TriviaSession["game"]> {
     }
     const next = list.pop();
     if (typeof next !== "number") return;
-    const nextGame = await redis.get(`trivia-${next}`);
+    const nextGame = await redis.get(`trivia-game:${next}`);
     if (!nextGame) {
       const game = await prisma.trivia.findFirstOrThrow({
         where: { id: next },
         include: { answers: true },
         cacheStrategy: { swr: cacheTime, ttl: cacheTime },
       });
-      await redis.set(`trivia-${next}`, JSON.stringify(game));
+      await redis.set(`trivia-game:${next}`, JSON.stringify(game));
       list.push(game);
     } else {
       list.push(JSON.parse(nextGame));
