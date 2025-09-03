@@ -57,7 +57,7 @@ export const cache = createCache(
           },
         );
       },
-      delete: redis.del,
+      delete: (k) => redis.del(k),
       resolveKey,
     },
   },
