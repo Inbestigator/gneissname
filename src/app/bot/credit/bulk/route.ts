@@ -1,4 +1,5 @@
 import { prisma } from "@/db";
+import { PrismaPromise } from "@prisma/client";
 import { botEnv } from "dressed/utils";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,18 +22,23 @@ export async function POST(req: NextRequest) {
       });
     });
     const updatedUsers = await prisma.$transaction(upserts);
-    const records = users.flatMap(({ id, entries }, idx) =>
-      entries.map((e) =>
-        prisma.creditRecord.create({
-          data: {
-            change: e.amount,
-            userId: id,
-            currentBalance: updatedUsers[idx].credit,
-            timestamp: new Date(e.time),
-          },
-        }),
-      ),
-    );
+    const records: PrismaPromise<unknown>[] = [];
+    for (const { id, entries } of users) {
+      let credit = updatedUsers.find((u) => u.id === id)!.credit;
+      for (const { amount, time } of entries.sort((a, b) => b.time - a.time)) {
+        records.push(
+          prisma.creditRecord.create({
+            data: {
+              change: amount,
+              userId: id,
+              currentBalance: credit,
+              timestamp: new Date(time),
+            },
+          }),
+        );
+        credit -= amount;
+      }
+    }
     await prisma.$transaction(records);
     return new NextResponse(null, { status: 204 });
   } catch {
