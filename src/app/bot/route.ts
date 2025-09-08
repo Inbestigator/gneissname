@@ -1,4 +1,5 @@
-import createHandler from "@dressed/next";
 import { commands, components, events, config } from "@/../.dressed";
+import { handleRequest } from "dressed/server";
 
-export const POST = createHandler(commands, components, events, config);
+export const POST = (req: Request) =>
+  handleRequest(req, commands, components, events, config);
