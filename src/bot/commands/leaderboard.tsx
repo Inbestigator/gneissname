@@ -19,16 +19,14 @@ function Leaderboard({
       ## Leaderboard
       <TextDisplay>Members with the highest social credit</TextDisplay>
       You&apos;re #{userRank}
-      {list.map(({ name, credit }, i) => {
-        return (
-          <Fragment key={i}>
-            <TextDisplay>
-              ### {i + 1} {name && `- ${name}`}
-            </TextDisplay>
-            {credit.toLocaleString()}
-          </Fragment>
-        );
-      })}
+      {list.map(({ name, credit }, i) => (
+        <Fragment key={i}>
+          <TextDisplay>
+            ### {i + 1} {name && `- ${name}`}
+          </TextDisplay>
+          {credit.toLocaleString()}
+        </Fragment>
+      ))}
     </Container>
   );
 }
