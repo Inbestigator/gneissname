@@ -15,7 +15,7 @@
         "chartjs-to-image": "^1.2.2",
         "clsx": "^2.1.1",
         "discord-api-types": "^0.38.26",
-        "dressed": "^1.10.0-canary.8.3",
+        "dressed": "^1.10.0-canary.8.4",
         "lucide-react": "0.542.0",
         "next": "^15.5.4",
         "next-auth": "^4.24.11",
@@ -433,7 +433,7 @@
 
     "dotenv": ["dotenv@17.2.2", "", {}, "sha512-Sf2LSQP+bOlhKWWyhFsn0UsfdK/kCWRv1iuA2gXAwt3dyNabr6QSj00I2V10pidqz69soatm9ZwZvpQMTIOd5Q=="],
 
-    "dressed": ["dressed@1.10.0-canary.8.3", "", { "dependencies": { "@dressed/matcher": "^1.4.0", "commander": "^14.0.1", "discord-api-types": "^0.38.25", "dotenv": "^17.2.2", "enquirer": "^2.4.1", "esbuild": "^0.25.9", "tweetnacl": "^1.0.3", "walk-it": "^6.0.1" }, "bin": { "dressed": "dist/bin/dressed.js" } }, "sha512-wd0VT5HoCbMJyR6ROZho1/ZNIw/BTlowFshS9UqD1oiGISg+cysM4Ec3xlgfWBWZfq8VFgtWbB6dFP028G3epA=="],
+    "dressed": ["dressed@1.10.0-canary.8.4", "", { "dependencies": { "@dressed/matcher": "^1.4.0", "commander": "^14.0.1", "discord-api-types": "^0.38.25", "dotenv": "^17.2.2", "enquirer": "^2.4.1", "esbuild": "^0.25.9", "walk-it": "^6.0.1" }, "bin": { "dressed": "dist/bin/dressed.js" } }, "sha512-w6VGdXrst3DDpjHyUeZM6tlWT9WuEAVFnYjOVLF0S5kwMny3Ee1B4WupJdNpyHQLmdVTaiG6WksMtAXEj0VjiA=="],
 
     "dunder-proto": ["dunder-proto@1.0.1", "", { "dependencies": { "call-bind-apply-helpers": "^1.0.1", "es-errors": "^1.3.0", "gopd": "^1.2.0" } }, "sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A=="],
 
@@ -740,8 +740,6 @@
     "ts-api-utils": ["ts-api-utils@2.1.0", "", { "peerDependencies": { "typescript": ">=4.8.4" } }, "sha512-CUgTZL1irw8u29bzrOD/nH85jqyc74D6SshFgujOIA7osm2Rz7dYH77agkx7H4FBNxDq7Cjf+IjaX/8zwFW+ZQ=="],
 
     "tslib": ["tslib@2.8.1", "", {}, "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="],
-
-    "tweetnacl": ["tweetnacl@1.0.3", "", {}, "sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw=="],
 
     "type-check": ["type-check@0.4.0", "", { "dependencies": { "prelude-ls": "^1.2.1" } }, "sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew=="],
 
