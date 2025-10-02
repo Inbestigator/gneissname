@@ -1,6 +1,15 @@
 import { modCredit } from "@/bot/utils";
+import { cache } from "@/db";
 import { botEnv } from "dressed/utils";
 import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(req: NextRequest) {
+  const userId = req.nextUrl.searchParams.get("u");
+  if (userId === null) {
+    return new NextResponse("Incorrect params", { status: 400 });
+  }
+  return new NextResponse(JSON.stringify(await cache.getCredit(userId)));
+}
 
 export async function POST(req: NextRequest) {
   if (req.headers.get("authorization") !== botEnv.DISCORD_TOKEN) {
