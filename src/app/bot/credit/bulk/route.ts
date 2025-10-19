@@ -4,7 +4,7 @@ import { botEnv } from "dressed/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  if (req.headers.get("authorization") !== botEnv.DISCORD_TOKEN) {
+  if (req.headers.get("authorization") !== `Bot ${botEnv.DISCORD_TOKEN}`) {
     return new NextResponse("Incorrect token", { status: 403 });
   }
   const users = (await req.json()) as {

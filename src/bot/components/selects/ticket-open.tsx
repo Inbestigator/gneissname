@@ -10,6 +10,7 @@ import {
   SelectMenuOption,
   TextDisplay,
 } from "@dressed/react";
+import { isMessageComponentSelectMenuInteraction } from "discord-api-types/utils/v10";
 
 export async function openTicket(
   ticketName: string,
@@ -48,7 +49,7 @@ export async function openTicket(
 export default async function openTicketSelect(
   interaction: MessageComponentInteraction,
 ) {
-  if (interaction.data.component_type !== 3) return;
+  if (!isMessageComponentSelectMenuInteraction(interaction)) return;
   let ticketName;
   let relevantStaff = undefined;
   let message;

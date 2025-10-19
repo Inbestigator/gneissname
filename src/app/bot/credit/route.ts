@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  if (req.headers.get("authorization") !== botEnv.DISCORD_TOKEN) {
+  if (req.headers.get("authorization") !== `Bot ${botEnv.DISCORD_TOKEN}`) {
     return new NextResponse("Incorrect token", { status: 403 });
   }
   const userId = req.nextUrl.searchParams.get("u");
