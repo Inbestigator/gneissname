@@ -7,7 +7,6 @@ export const config: CommandConfig = {
 };
 
 export default async function credit(interaction: CommandInteraction) {
-  console.log(interaction);
   const [credit] = await Promise.all([
     cache.getCredit(interaction.user.id),
     interaction.deferReply({ ephemeral: true }),
