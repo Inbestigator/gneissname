@@ -61,7 +61,7 @@ export default async function guess(
       ),
       interaction.editReply(
         <>
-          <TextDisplay>## {isCorrect ? "Correct" : "Nice try"}!</TextDisplay>
+          ## {isCorrect ? "Correct" : "Nice try"}!
           {!isCorrect && (
             <>
               <TextDisplay>### Answer:</TextDisplay>

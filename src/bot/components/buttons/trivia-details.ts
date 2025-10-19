@@ -29,8 +29,7 @@ export default async function triviaDetails(
         }
       }
     }
-    await interaction.editReply(generateBarGraph(counts));
-    return;
+    return interaction.editReply(generateBarGraph(counts));
   }
 
   if (!responses.some((a) => a.userId === interaction.user.id)) {

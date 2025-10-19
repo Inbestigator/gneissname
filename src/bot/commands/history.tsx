@@ -1,26 +1,25 @@
 import { prisma } from "@/db";
 import QuickChart from "chartjs-to-image";
-import { CommandConfig } from "dressed";
-import { PermissionFlagsBits } from "discord-api-types/v10";
+import { CommandConfig, CommandOption } from "dressed";
 import {
   CommandInteraction,
   MediaGallery,
   MediaGalleryItem,
 } from "@dressed/react";
 
-export const config: CommandConfig = {
+export const config = {
   description: "Credit history",
-  default_member_permissions: PermissionFlagsBits.Administrator.toString(),
+  default_member_permissions: ["Administrator"],
   options: [
-    {
-      type: 6,
+    CommandOption({
+      type: "User",
       name: "user",
       description: "User",
       required: true,
-    },
+    }),
   ],
   contexts: ["Guild"],
-};
+} satisfies CommandConfig;
 
 interface CreditRecord {
   id: string;
@@ -79,7 +78,9 @@ function aggregateHistory(history: CreditRecord[]): CreditRecord[] {
   return aggregated;
 }
 
-export default async function history(interaction: CommandInteraction) {
+export default async function history(
+  interaction: CommandInteraction<typeof config>,
+) {
   await interaction.deferReply({ ephemeral: true });
   const userId = interaction.getOption("user", true).user().id;
 

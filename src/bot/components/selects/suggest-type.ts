@@ -2,10 +2,9 @@ import type { MessageComponentInteraction } from "@dressed/react";
 import { openTicket } from "./ticket-open";
 
 export default async function suggestType(
-  interaction: MessageComponentInteraction,
+  interaction: MessageComponentInteraction<"StringSelect">,
 ) {
-  if (interaction.data.component_type !== 3) return;
-  const ticketName = interaction.data.values[0] ?? "Unknown";
+  const ticketName = interaction.getValues()[0];
   const thread = await openTicket(
     ticketName,
     undefined,

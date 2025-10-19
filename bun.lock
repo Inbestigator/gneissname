@@ -422,7 +422,7 @@
 
     "dotenv": ["dotenv@17.2.3", "", {}, "sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w=="],
 
-    "dressed": ["dressed@1.10.0-rc.2", "", { "dependencies": { "@dressed/matcher": "^1.4.0", "commander": "^14.0.1", "discord-api-types": "^0.38.30", "dotenv": "^17.2.2", "enquirer": "^2.4.1", "esbuild": "^0.25.9", "walk-it": "^6.0.1" }, "bin": { "dressed": "dist/bin/dressed.js" } }, "sha512-mOzWnuKXZoaZpqMGnv+2cLeF0R1gdWTGvqx984N1TpVNOxpcZ6qnN9YTwJoqj+/LhXtqbcbakmPZj9neaP3RuA=="],
+    "dressed": ["dressed@1.10.0-rc.3", "", { "dependencies": { "@dressed/matcher": "^1.4.0", "commander": "^14.0.1", "discord-api-types": "^0.38.30", "dotenv": "^17.2.2", "enquirer": "^2.4.1", "esbuild": "^0.25.9", "walk-it": "^6.0.1" }, "bin": { "dressed": "dist/bin/dressed.js" } }, "sha512-h2b8XNiD5fEPJ7jrwClNigyTnwdYqvfRINGtXvpUVF6K+bW/moEnaE/NWBS1nuI/9PxPcMUHAPbPLaW258L2Nw=="],
 
     "dunder-proto": ["dunder-proto@1.0.1", "", { "dependencies": { "call-bind-apply-helpers": "^1.0.1", "es-errors": "^1.3.0", "gopd": "^1.2.0" } }, "sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A=="],
 

@@ -209,9 +209,7 @@ export function TriviaGame({
         {game.answers.map((answer, i) => (
           <Button
             key={i}
-            emoji={{
-              name: answer.emoji ?? undefined,
-            }}
+            emoji={{ name: answer.emoji ?? undefined }}
             custom_id={`guess-${correctHash}-${answer.id}`}
             label={answer.text}
             style="Secondary"
@@ -237,7 +235,6 @@ function ResponsesSection({
   answerIds: string[];
 }) {
   const counts = separateAnswers(responses, answerIds);
-
   return (
     <Section
       accessory={
@@ -261,9 +258,8 @@ function ResponsesSection({
 }
 
 export async function markArchived(message: APIMessage) {
-  const { components = [] } = message;
+  const { channel_id, components = [], id } = message;
   const container = components.find((c) => c.type === ComponentType.Container);
-
   if (
     !container ||
     !container.components ||
@@ -275,5 +271,5 @@ export async function markArchived(message: APIMessage) {
       "-# This trivia has expired. However, you can still respond",
     ),
   );
-  await dressedEditMessage(message.channel_id, message.id, { components });
+  await dressedEditMessage(channel_id, id, { components });
 }

@@ -47,13 +47,12 @@ export async function openTicket(
 }
 
 export default async function openTicketSelect(
-  interaction: MessageComponentInteraction,
+  interaction: MessageComponentInteraction<"StringSelect">,
 ) {
-  if (!isMessageComponentSelectMenuInteraction(interaction)) return;
   let ticketName;
   let relevantStaff = undefined;
   let message;
-  switch (interaction.data.values[0]) {
+  switch (interaction.getValues()[0]) {
     case "Suggestion": {
       await interaction.reply(
         <ActionRow>
