@@ -3,7 +3,7 @@
   "workspaces": {
     "": {
       "dependencies": {
-        "@dressed/react": "^1.6.0-rc.1",
+        "@dressed/react": "^1.6.0-rc.1.1",
         "@dressed/ws": "0.4.4",
         "@prisma/client": "^6.17.1",
         "@prisma/extension-accelerate": "^2.0.2",
