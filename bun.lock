@@ -13,7 +13,7 @@
         "chartjs-to-image": "^1.2.2",
         "clsx": "^2.1.1",
         "discord-api-types": "^0.38.30",
-        "dressed": "^1.10.0-rc.2",
+        "dressed": "^1.10.0-rc.3",
         "lucide-react": "0.546.0",
         "next": "^15.5.6",
         "next-auth": "^4.24.11",
@@ -70,7 +70,7 @@
 
     "@dressed/matcher": ["@dressed/matcher@1.4.0", "", {}, "sha512-hAM5KaaGrhmMFr1Fd+KCQep6VnODcxInnIXATAbyJo64XN56pM20UvccWVhrIR6Hk2fFZUI69eJ0ehzK4rKxnw=="],
 
-    "@dressed/react": ["@dressed/react@1.6.0-rc.1", "", { "dependencies": { "discord-api-types": "^0.38.30", "react-reconciler": "npm:@dressed/react-reconciler" }, "peerDependencies": { "dressed": "^1.10.0-rc", "react": "^19.1.1" } }, "sha512-UAkLweaxFre1viJQW13PdUaVDcusxofzVTX+W9Z3mtaUz9LzvVAw/254aGM981bNJPUd/mnONj6XLd6m+6+ygA=="],
+    "@dressed/react": ["@dressed/react@1.6.0-rc.1.1", "", { "dependencies": { "discord-api-types": "^0.38.30", "react-reconciler": "npm:@dressed/react-reconciler" }, "peerDependencies": { "dressed": "^1.10.0-rc", "react": "^19.1.1" } }, "sha512-meG7smbhufrRvj0QaHU603XL6IG0GzXZCREiNcNIzUDT3upZCxy/XUqH9O4192JpHoatFU2bSEiWNqoJGf+y3Q=="],
 
     "@dressed/ws": ["@dressed/ws@0.4.4", "", { "dependencies": { "discord-api-types": "^0.38.22" }, "peerDependencies": { "dressed": "^1.9.0" } }, "sha512-ifTlzVzAV9pTS3xOFMmFPApOu9h3YslC6hQvWHPm37C7IRMj8NjEdEUryQOu38W4iS3HIiUgk2RF99WgTVaSVw=="],
 
