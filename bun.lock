@@ -12,8 +12,7 @@
         "@tanstack/react-query": "^5.90.5",
         "chartjs-to-image": "^1.2.2",
         "clsx": "^2.1.1",
-        "discord-api-types": "^0.38.30",
-        "dressed": "^1.10.0-canary.10.1",
+        "dressed": "^1.10.0-rc.4",
         "lucide-react": "0.546.0",
         "next": "^16.0.0",
         "next-auth": "^4.24.11",
@@ -418,7 +417,7 @@
 
     "dotenv": ["dotenv@17.2.3", "", {}, "sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w=="],
 
-    "dressed": ["dressed@1.10.0-canary.10.1", "", { "dependencies": { "@dressed/matcher": "^1.4.0", "commander": "^14.0.1", "discord-api-types": "^0.38.30", "dotenv": "^17.2.2", "enquirer": "^2.4.1", "esbuild": "^0.25.11" }, "bin": { "dressed": "dist/bin/dressed.js" } }, "sha512-DtN3RYR37VlG0uyvTjG9nzOAT85XZBCDVUv0zWxsf7k386c/YIo7SIoXPXROJbYjRfLxHGfh7a2eWWMjUVOrxA=="],
+    "dressed": ["dressed@1.10.0-rc.4", "", { "dependencies": { "@dressed/matcher": "^1.4.0", "commander": "^14.0.1", "discord-api-types": "^0.38.30", "dotenv": "^17.2.2", "enquirer": "^2.4.1", "esbuild": "^0.25.11" }, "bin": { "dressed": "dist/bin/dressed.js" } }, "sha512-9T4tfC597X2lkPgmke+qyCPGzE+jiBLzWEOxgI2hh+JDymmoLs8UY9O40mxmcCMSM+/GN1NP/IOMw4ndAfUB/A=="],
 
     "dunder-proto": ["dunder-proto@1.0.1", "", { "dependencies": { "call-bind-apply-helpers": "^1.0.1", "es-errors": "^1.3.0", "gopd": "^1.2.0" } }, "sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A=="],
 
@@ -759,6 +758,8 @@
     "@typescript-eslint/typescript-estree/minimatch": ["minimatch@9.0.5", "", { "dependencies": { "brace-expansion": "^2.0.1" } }, "sha512-G6T0ZX48xgozx7587koeX9Ys2NYy6Gmv//P89sEte9V9whIapMNF4idKxnW2QtCcLiTWlb/wfCabAtAFWhhBow=="],
 
     "c12/dotenv": ["dotenv@16.6.1", "", {}, "sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow=="],
+
+    "dressed/discord-api-types": ["discord-api-types@0.38.31", "", {}, "sha512-kC94ANsk8ackj8ENTuO8joTNEL0KtymVhHy9dyEC/s4QAZ7GCx40dYEzQaadyo8w+oP0X8QydE/nzAWRylTGtQ=="],
 
     "fast-glob/glob-parent": ["glob-parent@5.1.2", "", { "dependencies": { "is-glob": "^4.0.1" } }, "sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow=="],
 
