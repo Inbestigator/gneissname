@@ -4,10 +4,7 @@
     "dev": "bun build:bot && next dev --turbo",
     "build": "next build --turbo",
     "start": "next start --turbo",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "typecheck": "tsc --noEmit",
-    "checks": "bun typecheck && bun --bun biome check --write",
+    "checks": "tsc --noEmit && bun --bun biome check --write",
     "build:bot": "bun --bun dressed build"
   },
   "dependencies": {
