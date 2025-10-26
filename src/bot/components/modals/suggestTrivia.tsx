@@ -1,13 +1,6 @@
-import {
-  ActionRow,
-  Button,
-  createMessage,
-  ModalSubmitInteraction,
-} from "@dressed/react";
+import { ActionRow, Button, createMessage, type ModalSubmitInteraction } from "@dressed/react";
 
-export default async function suggestTrivia(
-  interaction: ModalSubmitInteraction,
-) {
+export default async function suggestTrivia(interaction: ModalSubmitInteraction) {
   const message = `Suggester: <@${interaction.user.id}>\nQuestion: ${interaction
     .getField("question", true)
     .textInput()}\nExplanation: ${interaction

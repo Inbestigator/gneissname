@@ -1,17 +1,10 @@
 "use server";
 
+import { Container, createMessage, editMessage, listMessages, modifyChannel, TextDisplay } from "dressed";
+import { botEnv } from "dressed/utils";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { whitelist } from "./whitelist";
-import {
-  Container,
-  createMessage,
-  editMessage,
-  listMessages,
-  modifyChannel,
-  TextDisplay,
-} from "dressed";
-import { botEnv } from "dressed/utils";
 
 export async function updateTicket(data: FormData) {
   try {
@@ -24,7 +17,7 @@ export async function updateTicket(data: FormData) {
 
     await modifyChannel(channelId, { name: tags + data.get("user") });
     return;
-  } catch (e) {
+  } catch {
     return;
   }
 }
@@ -38,20 +31,13 @@ export async function deleteTicket(data: FormData) {
 
     const channelId = data.get("ticketId")?.toString() ?? "";
     const messages = await listMessages(channelId, { limit: 100 });
-    const messageId = messages.findLast(
-      (m) => m.author.id === botEnv.DISCORD_APP_ID && !!m.components?.length,
-    )?.id;
+    const messageId = messages.findLast((m) => m.author.id === botEnv.DISCORD_APP_ID && !!m.components?.length)?.id;
 
     if (!messageId) return;
 
     await Promise.all([
       editMessage(channelId, messageId, {
-        components: [
-          Container(
-            TextDisplay("## Ticket closed"),
-            TextDisplay(`Closed by ${session.user.name}`),
-          ),
-        ],
+        components: [Container(TextDisplay("## Ticket closed"), TextDisplay(`Closed by ${session.user.name}`))],
       }),
       createMessage(channelId, `> Closed by ${session.user.name}`),
     ]);
@@ -61,7 +47,7 @@ export async function deleteTicket(data: FormData) {
       locked: true,
     });
     return;
-  } catch (e) {
+  } catch {
     return;
   }
 }

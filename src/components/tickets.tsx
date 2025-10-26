@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
+
+interface Ticket {
+  id: string;
+  name: string;
+}
 
 export default function Tickets({
   updateTicket,
@@ -20,7 +25,7 @@ export default function Tickets({
   });
 
   async function fetchTickets() {
-    const data: any[] = await (await fetch("/api/tickets")).json();
+    const data: Ticket[] = await (await fetch("/api/tickets")).json();
     data[0] && setSelectedTab(data[0].id);
     return data;
   }
@@ -52,20 +57,20 @@ export default function Tickets({
       <div className="card-body overflow-x-scroll">
         <h2 className="card-title">Tickets</h2>
         <div role="tablist" className="tabs-boxed tabs flex flex-wrap">
-          {data.map((ticket: any) => (
-            <a
-              role="tab"
+          {data.map((ticket) => (
+            <button
+              type="button"
               key={ticket.id}
               onClick={() => setSelectedTab(ticket.id)}
-              className={cn("tab", selectedTab == ticket.id && "tab-active")}
+              className={cn("tab", selectedTab === ticket.id && "tab-active")}
             >
               {ticket.name.replace(/\[.*?\]/g, "")}
-            </a>
+            </button>
           ))}
         </div>
         {selectedTab && (
           <EditTicket
-            ticket={data.find((ticket: any) => ticket.id == selectedTab)}
+            ticket={data.find((ticket) => ticket.id === selectedTab) as Ticket}
             updateTicket={updateTicket}
             deleteTicket={deleteTicket}
           />
@@ -86,7 +91,7 @@ function EditTicket({
   updateTicket,
   deleteTicket,
 }: {
-  ticket: any;
+  ticket: Ticket;
   updateTicket: (data: FormData) => Promise<void>;
   deleteTicket: (data: FormData) => Promise<void>;
 }) {
@@ -122,17 +127,9 @@ function EditTicket({
             onChange={(e) => setTags(e.target.value.split(/,[ ]*/))}
             className="input w-full max-w-xs"
           />
-          <input
-            type="hidden"
-            name="tags"
-            value={tags.map((tag) => `[${tag}] `).join("")}
-          />
+          <input type="hidden" name="tags" value={tags.map((tag) => `[${tag}] `).join("")} />
           <input type="hidden" name="ticketId" value={ticket.id} />
-          <input
-            type="hidden"
-            name="user"
-            value={ticket.name.replace(/\[.*?\][ ]*/g, "")}
-          />
+          <input type="hidden" name="user" value={ticket.name.replace(/\[.*?\][ ]*/g, "")} />
           <button className="btn btn-primary mt-2" type="submit">
             Submit tags
           </button>

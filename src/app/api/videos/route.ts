@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { Video } from "@/components/latest-videos";
+import type { Video } from "@/components/latest-videos";
 
 export async function GET() {
   try {
@@ -14,19 +14,28 @@ export async function GET() {
 
     const data = await response.json();
 
-    const videos: Video[] = data.items.map((item: any, index: number) => ({
-      thumbnail: item.snippet.thumbnails.high.url,
-      index,
-      description: item.snippet.description,
-      id: item.id.videoId,
-      title: item.snippet.title,
-    }));
+    const videos: Video[] = data.items.map(
+      (
+        item: {
+          snippet: {
+            thumbnails: { high: { url: string } };
+            description: string;
+            title: string;
+          };
+          id: { videoId: string };
+        },
+        index: number,
+      ) => ({
+        thumbnail: item.snippet.thumbnails.high.url,
+        index,
+        description: item.snippet.description,
+        id: item.id.videoId,
+        title: item.snippet.title,
+      }),
+    );
 
     return NextResponse.json(videos);
-  } catch (e) {
-    return NextResponse.json(
-      { error: "Error fetching videos" },
-      { status: 500 },
-    );
+  } catch {
+    return NextResponse.json({ error: "Error fetching videos" }, { status: 500 });
   }
 }

@@ -1,14 +1,11 @@
+import type { Params } from "@dressed/matcher";
+import type { ModalSubmitInteraction } from "@dressed/react";
 import { prisma } from "@/db";
-import { Params } from "@dressed/matcher";
-import { ModalSubmitInteraction } from "@dressed/react";
 import { ProposalStage } from "./addQuestion";
 
 export const pattern = "addAnswer-:isTrue-:questionId";
 
-export default async function addAnswer(
-  interaction: ModalSubmitInteraction,
-  args: Params<typeof pattern>,
-) {
+export default async function addAnswer(interaction: ModalSubmitInteraction, args: Params<typeof pattern>) {
   const [triviaQ] = await Promise.all([
     prisma.trivia.update({
       where: {
@@ -19,7 +16,7 @@ export default async function addAnswer(
           create: {
             text: interaction.getField("text", true).textInput(),
             emoji: interaction.getField("emoji", true).textInput(),
-            correct: args.isTrue == "true",
+            correct: args.isTrue === "true",
           },
         },
       },

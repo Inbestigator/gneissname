@@ -1,11 +1,7 @@
-import { prisma } from "@/db";
+import { type CommandInteraction, MediaGallery, MediaGalleryItem } from "@dressed/react";
 import QuickChart from "chartjs-to-image";
-import { CommandConfig, CommandOption } from "dressed";
-import {
-  CommandInteraction,
-  MediaGallery,
-  MediaGalleryItem,
-} from "@dressed/react";
+import { type CommandConfig, CommandOption } from "dressed";
+import { prisma } from "@/db";
 
 export const config = {
   description: "Credit history",
@@ -52,8 +48,7 @@ function aggregateHistory(history: CreditRecord[]): CreditRecord[] {
           id: `${curr.id}-${next.id}`,
           change: combinedChange,
           currentBalance: averageBalance,
-          timestamp:
-            curr.timestamp < next.timestamp ? curr.timestamp : next.timestamp,
+          timestamp: curr.timestamp < next.timestamp ? curr.timestamp : next.timestamp,
           userId: curr.userId,
         });
 
@@ -78,9 +73,7 @@ function aggregateHistory(history: CreditRecord[]): CreditRecord[] {
   return aggregated;
 }
 
-export default async function history(
-  interaction: CommandInteraction<typeof config>,
-) {
+export default async function history(interaction: CommandInteraction<typeof config>) {
   await interaction.deferReply({ ephemeral: true });
   const userId = interaction.getOption("user", true).user().id;
 
@@ -117,9 +110,7 @@ export default async function history(
     options: {
       title: {
         display: true,
-        text: `${
-          interaction.getOption("user", true).user().global_name
-        }'s Credit History`,
+        text: `${interaction.getOption("user", true).user().global_name}'s Credit History`,
       },
       scales: {
         xAxes: [

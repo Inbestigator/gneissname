@@ -1,16 +1,15 @@
-import type { APIUser } from "discord-api-types/v10";
-import { addThreadMember, createThread } from "dressed";
 import {
   ActionRow,
   Button,
   Container,
   createMessage,
-  MessageComponentInteraction,
+  type MessageComponentInteraction,
   SelectMenu,
   SelectMenuOption,
   TextDisplay,
 } from "@dressed/react";
-import { isMessageComponentSelectMenuInteraction } from "discord-api-types/utils/v10";
+import type { APIUser } from "discord-api-types/v10";
+import { addThreadMember, createThread } from "dressed";
 
 export async function openTicket(
   ticketName: string,
@@ -29,12 +28,7 @@ export async function openTicket(
       ## Ticket opened
       <TextDisplay>{message}</TextDisplay>
       <ActionRow>
-        <Button
-          custom_id="ticket-close"
-          label="Close"
-          emoji={{ name: "🔒" }}
-          style="Danger"
-        />
+        <Button custom_id="ticket-close" label="Close" emoji={{ name: "🔒" }} style="Danger" />
       </ActionRow>
       -# {`<@${user.id}>`}{" "}
       {relevantStaff
@@ -46,21 +40,15 @@ export async function openTicket(
   return thread;
 }
 
-export default async function openTicketSelect(
-  interaction: MessageComponentInteraction<"StringSelect">,
-) {
-  let ticketName;
-  let relevantStaff = undefined;
-  let message;
+export default async function openTicketSelect(interaction: MessageComponentInteraction<"StringSelect">) {
+  let ticketName: string;
+  let relevantStaff: string[] | undefined;
+  let message: string | undefined;
   switch (interaction.getValues()[0]) {
     case "Suggestion": {
       await interaction.reply(
         <ActionRow>
-          <SelectMenu
-            type="String"
-            custom_id="suggest-type"
-            placeholder="What are you suggesting?"
-          >
+          <SelectMenu type="String" custom_id="suggest-type" placeholder="What are you suggesting?">
             <SelectMenuOption
               label="Video idea"
               value="Video idea"
@@ -73,12 +61,7 @@ export default async function openTicketSelect(
               description="If you have a suggestion for the Discord server"
               emoji={{ name: "💬" }}
             />
-            <SelectMenuOption
-              label="Other"
-              value="Suggestion"
-              description="For anything else"
-              emoji={{ name: "❓" }}
-            />
+            <SelectMenuOption label="Other" value="Suggestion" description="For anything else" emoji={{ name: "❓" }} />
           </SelectMenu>
         </ActionRow>,
         { ephemeral: true },
@@ -98,11 +81,6 @@ export default async function openTicketSelect(
     }
   }
 
-  const thread = await openTicket(
-    ticketName ?? "Unknown",
-    message ?? undefined,
-    relevantStaff,
-    interaction.user,
-  );
+  const thread = await openTicket(ticketName ?? "Unknown", message ?? undefined, relevantStaff, interaction.user);
   await interaction.reply(`<#${thread.id}>`, { ephemeral: true });
 }

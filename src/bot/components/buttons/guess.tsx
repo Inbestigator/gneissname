@@ -1,20 +1,9 @@
-import { redis } from "@/db";
-import {
-  markArchived,
-  getTriviaSession,
-  TriviaResponse,
-  TriviaGame,
-} from "@/bot/commands/trivia";
 import { hash } from "node:crypto";
-import { Params } from "@dressed/matcher";
-import {
-  ActionRow,
-  Button,
-  editMessage,
-  MessageComponentInteraction,
-  TextDisplay,
-} from "@dressed/react";
+import type { Params } from "@dressed/matcher";
+import { ActionRow, Button, editMessage, type MessageComponentInteraction, TextDisplay } from "@dressed/react";
+import { getTriviaSession, markArchived, TriviaGame, type TriviaResponse } from "@/bot/commands/trivia";
 import { modCredit } from "@/bot/utils";
+import { redis } from "@/db";
 
 export const pattern = "guess-:hashed-:answerId";
 
@@ -22,12 +11,8 @@ export default async function guess(
   interaction: MessageComponentInteraction,
   { answerId, hashed }: Params<typeof pattern>,
 ) {
-  const [{ session, responses }] = await Promise.all([
-    getTriviaSession(),
-    interaction.deferReply({ ephemeral: true }),
-  ]);
-  const isCorrect =
-    hash("sha1", answerId, "hex").slice(0, hashed.length) === hashed;
+  const [{ session, responses }] = await Promise.all([getTriviaSession(), interaction.deferReply({ ephemeral: true })]);
+  const isCorrect = hash("sha1", answerId, "hex").slice(0, hashed.length) === hashed;
 
   if (
     session &&
@@ -81,14 +66,8 @@ export default async function guess(
           )}
         </>,
       ),
-      redis.set(
-        `trivia-response:${interaction.user.id}`,
-        JSON.stringify(newResponse),
-      ),
-      modCredit(
-        interaction.user.id,
-        (100 + Math.random() * 100) * (isCorrect ? 1 : -1),
-      ),
+      redis.set(`trivia-response:${interaction.user.id}`, JSON.stringify(newResponse)),
+      modCredit(interaction.user.id, (100 + Math.random() * 100) * (isCorrect ? 1 : -1)),
     ]);
   } else {
     await Promise.all([

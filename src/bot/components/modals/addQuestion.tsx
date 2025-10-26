@@ -1,6 +1,6 @@
+import { ActionRow, Button, type ModalSubmitInteraction } from "@dressed/react";
+import type { APIMessageTopLevelComponent } from "discord-api-types/v10";
 import { prisma } from "@/db";
-import { ActionRow, Button, ModalSubmitInteraction } from "@dressed/react";
-import { APIMessageTopLevelComponent } from "discord-api-types/v10";
 
 export default async function addQuestion(interaction: ModalSubmitInteraction) {
   const [triviaQ] = await Promise.all([
@@ -13,12 +13,7 @@ export default async function addQuestion(interaction: ModalSubmitInteraction) {
     interaction.deferUpdate(),
   ]);
   await interaction.editReply(
-    <ProposalStage
-      components={interaction.message?.components}
-      id={triviaQ.id}
-      isCorrect
-      stage="addAnswer"
-    />,
+    <ProposalStage components={interaction.message?.components} id={triviaQ.id} isCorrect stage="addAnswer" />,
   );
 }
 

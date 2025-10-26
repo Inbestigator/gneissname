@@ -1,16 +1,9 @@
 import type { Params } from "@dressed/matcher";
-import {
-  ActionRow,
-  MessageComponentInteraction,
-  TextInput,
-} from "@dressed/react";
+import { ActionRow, type MessageComponentInteraction, TextInput } from "@dressed/react";
 
 export const pattern = "addAnswer-:isTrue-:questionId";
 
-export default async function addAnswer(
-  interaction: MessageComponentInteraction,
-  args: Params<typeof pattern>,
-) {
+export default async function addAnswer(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
   await interaction.showModal(
     <>
       <ActionRow>

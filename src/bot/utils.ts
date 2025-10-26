@@ -1,10 +1,6 @@
 import { prisma, redis } from "@/db";
 
-export async function modCredit(
-  userId: string,
-  modifier: number,
-  exemptCap?: boolean,
-) {
+export async function modCredit(userId: string, modifier: number, exemptCap?: boolean) {
   try {
     modifier = Math.round(modifier);
     if (!exemptCap) {

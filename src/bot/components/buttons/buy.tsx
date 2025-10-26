@@ -1,9 +1,9 @@
-import { modCredit } from "@/bot/utils";
+import type { Params } from "@dressed/matcher";
+import type { MessageComponentInteraction } from "@dressed/react";
 import { shopItems } from "@/bot/commands/shop";
-import { openTicket } from "../selects/ticket-open";
-import { Params } from "@dressed/matcher";
-import { MessageComponentInteraction } from "@dressed/react";
+import { modCredit } from "@/bot/utils";
 import { cache } from "@/db";
+import { openTicket } from "../selects/ticket-open";
 
 const blockedShoppers = {
   Whitelist: ["580638706805768203", "617635763974307859", "786737189965922316"],
@@ -13,10 +13,7 @@ const blockedShoppers = {
 
 export const pattern = "buy-:itemName";
 
-export default async function buy(
-  interaction: MessageComponentInteraction,
-  { itemName }: Params<typeof pattern>,
-) {
+export default async function buy(interaction: MessageComponentInteraction, { itemName }: Params<typeof pattern>) {
   await interaction.deferReply({ ephemeral: true });
   const selectedItem = shopItems.find((item) => item.name === itemName);
   if (!selectedItem) {
@@ -26,9 +23,7 @@ export default async function buy(
   if (credit < selectedItem.price) {
     return interaction.editReply("You don't have enough to buy that!");
   }
-  if (
-    blockedShoppers[selectedItem.name].includes(interaction.user.id as never)
-  ) {
+  if (blockedShoppers[selectedItem.name].includes(interaction.user.id as never)) {
     return interaction.editReply("You can't buy that!");
   }
   await modCredit(interaction.user.id, selectedItem.price * -1, true);

@@ -1,11 +1,10 @@
-import { CommandConfig, CommandOption } from "dressed";
-import { PermissionFlagsBits } from "discord-api-types/v10";
-import { CommandInteraction, Container, TextDisplay } from "@dressed/react";
+import { type CommandInteraction, Container, TextDisplay } from "@dressed/react";
+import { type CommandConfig, CommandOption } from "dressed";
 import { cache } from "@/db";
 
-export const config: CommandConfig = {
+export const config = {
   description: "Snoop a user",
-  default_member_permissions: PermissionFlagsBits.Administrator.toString(),
+  default_member_permissions: ["Administrator"],
   options: [
     CommandOption({
       name: "user",
@@ -15,7 +14,7 @@ export const config: CommandConfig = {
     }),
   ],
   contexts: ["Guild"],
-};
+} satisfies CommandConfig;
 
 export default async function userData(interaction: CommandInteraction) {
   const [user] = await Promise.all([
@@ -24,7 +23,7 @@ export default async function userData(interaction: CommandInteraction) {
   ]);
   await interaction.editReply(
     <Container>
-      ## {interaction.getOption("user", true).user().global_name + "'"}s data
+      ## {interaction.getOption("user", true).user().global_name}&apos;s data
       <TextDisplay>### Credit</TextDisplay>
       {user.credit.toLocaleString()}
     </Container>,

@@ -1,7 +1,7 @@
-import { prisma } from "@/db";
-import { PrismaPromise } from "@prisma/client";
+import type { PrismaPromise } from "@prisma/client";
 import { botEnv } from "dressed/utils";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/db";
 
 export async function POST(req: NextRequest) {
   if (req.headers.get("authorization") !== `Bot ${botEnv.DISCORD_TOKEN}`) {
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     const updatedUsers = await prisma.$transaction(upserts);
     const records: PrismaPromise<unknown>[] = [];
     for (const { id, entries } of users) {
-      let credit = updatedUsers.find((u) => u.id === id)!.credit;
+      let credit = updatedUsers.find((u) => u.id === id)?.credit ?? 0;
       for (const { amount, time } of entries.sort((a, b) => b.time - a.time)) {
         records.push(
           prisma.creditRecord.create({

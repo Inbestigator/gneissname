@@ -1,12 +1,11 @@
 import "./globals.css";
-import { Suspense } from "react";
-import { Metadata, Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 
 import { SiteFooter } from "@/components/site-footer";
-
-import { Providers } from "./providers";
 import { cn } from "@/lib/utils";
+import { Providers } from "./providers";
 
 export const viewport: Viewport[] = [
   { themeColor: "(prefers-color-scheme: light)", colorScheme: "light" },

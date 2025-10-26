@@ -1,11 +1,5 @@
-import { CommandConfig } from "dressed";
-import {
-  Button,
-  CommandInteraction,
-  Container,
-  Section,
-  TextDisplay,
-} from "@dressed/react";
+import { Button, type CommandInteraction, Container, Section, TextDisplay } from "@dressed/react";
+import type { CommandConfig } from "dressed";
 
 export const shopItems = [
   {
@@ -15,8 +9,7 @@ export const shopItems = [
   },
   {
     name: "Community call topic",
-    description:
-      "Pick a game/topic to be featured in the weekly community call.",
+    description: "Pick a game/topic to be featured in the weekly community call.",
     price: 6000,
   },
   {
@@ -26,9 +19,9 @@ export const shopItems = [
   },
 ] as const;
 
-export const config: CommandConfig = {
+export const config = {
   description: "Use your social credit to buy things",
-};
+} satisfies CommandConfig;
 
 export default function shop(interaction: CommandInteraction) {
   return interaction.reply(
@@ -37,12 +30,7 @@ export default function shop(interaction: CommandInteraction) {
       {shopItems.map((item) => (
         <Section
           key={item.name}
-          accessory={
-            <Button
-              custom_id={`buy-${item.name}`}
-              label={`$${item.price.toLocaleString()}`}
-            />
-          }
+          accessory={<Button custom_id={`buy-${item.name}`} label={`$${item.price.toLocaleString()}`} />}
         >
           <TextDisplay>### {item.name}</TextDisplay>
           {item.description}

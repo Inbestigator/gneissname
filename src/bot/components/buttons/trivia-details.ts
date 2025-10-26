@@ -1,24 +1,13 @@
-import { getTriviaSession, TriviaResponse } from "@/bot/commands/trivia";
-import { Params } from "@dressed/matcher";
-import { MessageComponentInteraction } from "@dressed/react";
+import type { Params } from "@dressed/matcher";
+import type { MessageComponentInteraction } from "@dressed/react";
+import { getTriviaSession, type TriviaResponse } from "@/bot/commands/trivia";
 
-export const pattern =
-  "trivia-details-:a(\\d+){-:b(\\d+){-:c(\\d+){-:d(\\d+)}}}";
+export const pattern = "trivia-details-:a(\\d+){-:b(\\d+){-:c(\\d+){-:d(\\d+)}}}";
 
-export default async function triviaDetails(
-  interaction: MessageComponentInteraction,
-  args: Params<typeof pattern>,
-) {
-  const [{ session, responses }] = await Promise.all([
-    getTriviaSession(),
-    interaction.deferReply({ ephemeral: true }),
-  ]);
+export default async function triviaDetails(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
+  const [{ session, responses }] = await Promise.all([getTriviaSession(), interaction.deferReply({ ephemeral: true })]);
 
-  if (
-    !session ||
-    session.messageId !== interaction.message.id ||
-    session.expiresAt < Date.now()
-  ) {
+  if (!session || session.messageId !== interaction.message.id || session.expiresAt < Date.now()) {
     const counts = [Number(args.a)];
     if (args.b) {
       counts.push(Number(args.b));
@@ -51,10 +40,7 @@ function generateBarGraph(counts: number[], height = 4): string {
 
   const total = counts.reduce((sum, value) => sum + value, 0);
 
-  const heights =
-    total === 0
-      ? [0, 0, 0, 0]
-      : counts.map((count) => Math.round((count / total) * height));
+  const heights = total === 0 ? [0, 0, 0, 0] : counts.map((count) => Math.round((count / total) * height));
 
   const rows: string[] = [];
   for (let row = height - 1; row >= 0; row--) {
@@ -68,10 +54,7 @@ function generateBarGraph(counts: number[], height = 4): string {
   return rows.join("\n");
 }
 
-export function separateAnswers(
-  responses: TriviaResponse[],
-  order: string[],
-): number[] {
+export function separateAnswers(responses: TriviaResponse[], order: string[]): number[] {
   const countsMap = responses.reduce(
     (acc, entry) => {
       if (!acc[entry.answerId]) {

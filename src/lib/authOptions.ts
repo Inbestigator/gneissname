@@ -1,6 +1,6 @@
-import { prisma } from "@/db";
-import { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
+import { prisma } from "@/db";
 
 export const authOptions: NextAuthOptions = {
   providers: [

@@ -1,20 +1,15 @@
-import { ActionRow, CommandInteraction, TextInput } from "@dressed/react";
-import { CommandConfig } from "dressed";
+import { ActionRow, type CommandInteraction, TextInput } from "@dressed/react";
+import type { CommandConfig } from "dressed";
 
-export const config: CommandConfig = {
+export const config = {
   description: "Suggest a trivia question",
-};
+} satisfies CommandConfig;
 
 export default function suggest(interaction: CommandInteraction) {
   return interaction.showModal(
     <>
       <ActionRow>
-        <TextInput
-          custom_id="question"
-          label="What is the trivia question?"
-          required
-          max_length={100}
-        />
+        <TextInput custom_id="question" label="What is the trivia question?" required max_length={100} />
       </ActionRow>
       <ActionRow>
         <TextInput
@@ -26,21 +21,10 @@ export default function suggest(interaction: CommandInteraction) {
         />
       </ActionRow>
       <ActionRow>
-        <TextInput
-          custom_id="true"
-          label="True answer"
-          required
-          max_length={50}
-        />
+        <TextInput custom_id="true" label="True answer" required max_length={50} />
       </ActionRow>
       <ActionRow>
-        <TextInput
-          custom_id="false"
-          label="3 false answers"
-          style="Paragraph"
-          required
-          max_length={200}
-        />
+        <TextInput custom_id="false" label="3 false answers" style="Paragraph" required max_length={200} />
       </ActionRow>
     </>,
     {

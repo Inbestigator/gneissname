@@ -1,16 +1,8 @@
-import {
-  type CommandConfig,
-  TextDisplay as DressedTextDisplay,
-  editMessage as dressedEditMessage,
-} from "dressed";
-import { prisma, redis } from "@/db";
-import { APIMessage, ComponentType } from "discord-api-types/v10";
-import { separateAnswers } from "../components/buttons/trivia-details";
 import { hash } from "node:crypto";
 import {
   ActionRow,
   Button,
-  CommandInteraction,
+  type CommandInteraction,
   Container,
   createMessage,
   editMessage,
@@ -18,12 +10,16 @@ import {
   Separator,
   TextDisplay,
 } from "@dressed/react";
-import { Answer, Trivia } from "@prisma/client";
+import type { Answer, Trivia } from "@prisma/client";
+import { type APIMessage, ComponentType } from "discord-api-types/v10";
+import { type CommandConfig, TextDisplay as DressedTextDisplay, editMessage as dressedEditMessage } from "dressed";
+import { prisma, redis } from "@/db";
+import { separateAnswers } from "../components/buttons/trivia-details";
 
-export const config: CommandConfig = {
+export const config = {
   description: "Gives a random trivia question",
   contexts: ["Guild"],
-};
+} satisfies CommandConfig;
 
 export interface TriviaResponse {
   answerId: string;
@@ -53,9 +49,7 @@ export async function getTriviaSession(): Promise<{
 }> {
   const sessionJson = await redis.get("currentTrivia");
   const keys = await redis.keys("trivia-response:*");
-  const responses = keys.length
-    ? (await redis.mGet(keys)).map((v) => JSON.parse(v ?? ""))
-    : [];
+  const responses = keys.length ? (await redis.mGet(keys)).map((v) => JSON.parse(v ?? "")) : [];
   if (!sessionJson) {
     return { responses };
   }
@@ -76,9 +70,7 @@ function shuffle<T extends unknown[]>(array: T): T {
 
 const cacheTime = 12 * 60 * 60;
 
-async function getNextGame(): Promise<
-  TriviaSession["game"] & { next: () => Promise<void> }
-> {
+async function getNextGame(): Promise<TriviaSession["game"] & { next: () => Promise<void> }> {
   async function fetchNext(list: (number | TriviaSession["game"])[]) {
     if (list.length === 0) {
       const games = await prisma.trivia.findMany({
@@ -104,8 +96,7 @@ async function getNextGame(): Promise<
     await redis.set("trivia-order", JSON.stringify(list));
     return list;
   }
-  const listJson =
-    (await redis.get("trivia-order")) ?? JSON.stringify(await fetchNext([]));
+  const listJson = (await redis.get("trivia-order")) ?? JSON.stringify(await fetchNext([]));
   const list = JSON.parse(listJson);
   const game = list.pop();
   return { ...game, next: () => fetchNext(list) };
@@ -206,9 +197,9 @@ export function TriviaGame({
       <TextDisplay>## Trivia!</TextDisplay>
       {game.question}
       <ActionRow>
-        {game.answers.map((answer, i) => (
+        {game.answers.map((answer) => (
           <Button
-            key={i}
+            key={answer.id}
             emoji={{ name: answer.emoji ?? undefined }}
             custom_id={`guess-${correctHash}-${answer.id}`}
             label={answer.text}
@@ -217,23 +208,13 @@ export function TriviaGame({
         ))}
       </ActionRow>
       <Separator />
-      <ResponsesSection
-        responses={responses}
-        answerIds={game.answers.map((a) => a.id)}
-      />
-      {isArchived &&
-        "-# This trivia has expired. However, you can still respond"}
+      <ResponsesSection responses={responses} answerIds={game.answers.map((a) => a.id)} />
+      {isArchived && "-# This trivia has expired. However, you can still respond"}
     </Container>
   );
 }
 
-function ResponsesSection({
-  responses,
-  answerIds,
-}: {
-  responses: TriviaResponse[];
-  answerIds: string[];
-}) {
+function ResponsesSection({ responses, answerIds }: { responses: TriviaResponse[]; answerIds: string[] }) {
   const counts = separateAnswers(responses, answerIds);
   return (
     <Section
@@ -260,16 +241,7 @@ function ResponsesSection({
 export async function markArchived(message: APIMessage) {
   const { channel_id, components = [], id } = message;
   const container = components.find((c) => c.type === ComponentType.Container);
-  if (
-    !container ||
-    !container.components ||
-    container.components.at(-1)?.type === 10
-  )
-    return;
-  container.components.push(
-    DressedTextDisplay(
-      "-# This trivia has expired. However, you can still respond",
-    ),
-  );
+  if (!container || !container.components || container.components.at(-1)?.type === 10) return;
+  container.components.push(DressedTextDisplay("-# This trivia has expired. However, you can still respond"));
   await dressedEditMessage(channel_id, id, { components });
 }
