@@ -12,7 +12,7 @@
         "@tanstack/react-query": "^5.90.7",
         "chartjs-to-image": "^1.2.2",
         "clsx": "^2.1.1",
-        "dressed": "^1.10.1-canary.1.8",
+        "dressed": "^1.10.1-canary.2",
         "lucide-react": "0.553.0",
         "next": "^16.0.1",
         "next-auth": "^4.24.13",
@@ -325,7 +325,7 @@
 
     "dotenv": ["dotenv@17.2.3", "", {}, "sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w=="],
 
-    "dressed": ["dressed@1.10.1-canary.2", "", { "dependencies": { "@dressed/matcher": "^1.4.0", "commander": "^14.0.2", "discord-api-types": "^0.38.32", "dotenv": "^17.2.3", "enquirer": "^2.4.1", "esbuild": "^0.25.12" }, "bin": { "dressed": "dist/bin/dressed.js" } }, "sha512-j8mYkKHGFlWPAMOTwDJOWbCpPuXljluonxhLw5EZJTlNUD9p9E+OI1UuQXxJB5BTNAYI26emRHY81E9Jhmrz4w=="],
+    "dressed": ["dressed@1.10.1-canary.2.3", "", { "dependencies": { "@dressed/matcher": "^1.4.0", "commander": "^14.0.2", "discord-api-types": "^0.38.32", "dotenv": "^17.2.3", "enquirer": "^2.4.1", "esbuild": "^0.25.12" }, "bin": { "dressed": "dist/bin/dressed.js" } }, "sha512-j6sfqT0i1PxOwbVpICCQf18dGt3ZwAph6ZUu1l0A8MnwioHmXvn/HP0bDRYiBEPPGfMYPdXDT2/giPB30wUvVA=="],
 
     "dunder-proto": ["dunder-proto@1.0.1", "", { "dependencies": { "call-bind-apply-helpers": "^1.0.1", "es-errors": "^1.3.0", "gopd": "^1.2.0" } }, "sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A=="],
 
