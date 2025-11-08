@@ -17,7 +17,7 @@
     "@tanstack/react-query": "^5.90.7",
     "chartjs-to-image": "^1.2.2",
     "clsx": "^2.1.1",
-    "dressed": "^1.10.1-canary.1.8",
+    "dressed": "^1.10.1-canary.2",
     "lucide-react": "0.553.0",
     "next": "^16.0.1",
     "next-auth": "^4.24.13",
