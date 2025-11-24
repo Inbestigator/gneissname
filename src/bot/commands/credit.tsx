@@ -7,8 +7,8 @@ export const config = {
 } satisfies CommandConfig;
 
 export default async function credit(interaction: CommandInteraction) {
-  const [credit] = await Promise.all([
-    cache.getCredit(interaction.user.id),
+  const [{ credit }] = await Promise.all([
+    cache.getDBUser(interaction.user.id),
     interaction.deferReply({ ephemeral: true }),
   ]);
   await interaction.editReply(`Your current social credit is **${credit.toLocaleString()}**!`);

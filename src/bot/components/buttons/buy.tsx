@@ -19,7 +19,7 @@ export default async function buy(interaction: MessageComponentInteraction, { it
   if (!selectedItem) {
     return interaction.editReply("Item not found");
   }
-  const credit = await cache.getCredit(interaction.user.id);
+  const { credit } = await cache.getDBUser(interaction.user.id);
   if (credit < selectedItem.price) {
     return interaction.editReply("You don't have enough to buy that!");
   }

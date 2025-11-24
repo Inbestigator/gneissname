@@ -13,14 +13,6 @@ export const cache = createCache(
   {
     ...getters,
     getDBUser,
-    async getCredit(userId: string) {
-      try {
-        const { credit } = await getDBUser(userId);
-        return credit;
-      } catch {
-        return 0;
-      }
-    },
     async getRank(userId: string) {
       const { credit } = await getDBUser(userId);
       return prisma.user.count({

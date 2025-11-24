@@ -17,15 +17,13 @@ export const config = {
 } satisfies CommandConfig;
 
 export default async function userData(interaction: CommandInteraction) {
-  const [user] = await Promise.all([
-    cache.getDBUser(interaction.getOption("user", true).user().id ?? "0"),
-    interaction.deferReply({ ephemeral: true }),
-  ]);
+  const user = interaction.getOption("user", true).user();
+  const [{ credit }] = await Promise.all([cache.getDBUser(user.id), interaction.deferReply({ ephemeral: true })]);
   await interaction.editReply(
     <Container>
-      ## {interaction.getOption("user", true).user().global_name}&apos;s data
+      ## {user.global_name}&apos;s data
       <TextDisplay>### Credit</TextDisplay>
-      {user.credit.toLocaleString()}
+      {credit.toLocaleString()}
     </Container>,
   );
 }
