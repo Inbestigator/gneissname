@@ -1,10 +1,13 @@
 import { createCache, getters, resolveKey } from "@dressed/ws/cache";
+import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "@prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { createClient } from "redis";
 import { getDBUser } from "./bot/utils";
 
-export const prisma = new PrismaClient().$extends(withAccelerate());
+const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
+
+export const prisma = new PrismaClient({ adapter }).$extends(withAccelerate());
 export const redis = await createClient({
   url: process.env.REDIS_URL,
 }).connect();
