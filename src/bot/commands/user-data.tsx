@@ -22,7 +22,7 @@ export default async function userData(interaction: CommandInteraction) {
   await interaction.editReply(
     <Container>
       ## {user.global_name}&apos;s data{"\n"}
-      ### Credit&nl;
+      ### Credit{"\n"}
       {credit.toLocaleString()}
     </Container>,
   );

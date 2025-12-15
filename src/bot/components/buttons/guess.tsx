@@ -46,7 +46,7 @@ export default async function guess(
       ),
       interaction.editReply(
         <>
-          ## {isCorrect ? "Correct" : "Nice try"}!
+          ## {isCorrect ? "Correct" : "Nice try"}!{"\n"}
           {!isCorrect && (
             <>
               ### Answer:{"\n"}
