@@ -1,3 +1,4 @@
+import type { User } from "@prisma/client";
 import { prisma, redis } from "@/db";
 
 export async function modCredit(userId: string, modifier: number, exemptCap?: boolean) {
@@ -40,13 +41,12 @@ export async function modCredit(userId: string, modifier: number, exemptCap?: bo
   }
 }
 
-export async function getDBUser(userId: string): Promise<{ credit: number }> {
-  let user = await prisma.user.findFirst({
-    where: { id: userId },
-    cacheStrategy: { swr: 30, ttl: 30 },
-    select: { credit: true },
-  });
-  if (!user) {
+export async function getDBUser<T extends boolean = true>(
+  userId: string,
+  upsert?: T,
+): Promise<T extends false ? User | undefined : User> {
+  let user = await prisma.user.findFirst({ where: { id: userId }, select: { credit: true } });
+  if (!user && upsert !== false) {
     user = await prisma.user.upsert({
       where: { id: userId },
       create: { id: userId, credit: 0 },
@@ -54,5 +54,5 @@ export async function getDBUser(userId: string): Promise<{ credit: number }> {
       select: { credit: true },
     });
   }
-  return user;
+  return user as User;
 }

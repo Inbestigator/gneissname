@@ -1,16 +1,13 @@
 import { createCache, getters, resolveKey } from "@dressed/ws/cache";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "@prisma/client";
-import { withAccelerate } from "@prisma/extension-accelerate";
 import { createClient } from "redis";
 import { getDBUser } from "./bot/utils";
 
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
 
-export const prisma = new PrismaClient({ adapter }).$extends(withAccelerate());
-export const redis = await createClient({
-  url: process.env.REDIS_URL,
-}).connect();
+export const prisma = new PrismaClient({ adapter });
+export const redis = await createClient({ url: process.env.REDIS_URL }).connect();
 
 export const cache = createCache(
   {
@@ -18,18 +15,9 @@ export const cache = createCache(
     getDBUser,
     async getRank(userId: string) {
       const { credit } = await getDBUser(userId);
-      return prisma.user.count({
-        where: { credit: { gte: credit } },
-        cacheStrategy: { swr: 300, ttl: 300 },
-      });
+      return prisma.user.count({ where: { credit: { gte: credit } } });
     },
-    getTopUsers() {
-      return prisma.user.findMany({
-        take: 10,
-        orderBy: { credit: "desc" },
-        cacheStrategy: { swr: 300, ttl: 300 },
-      });
-    },
+    getTopUsers: () => prisma.user.findMany({ take: 10, orderBy: { credit: "desc" } }),
   },
   {
     desiredProps: { getUser: ["global_name"] },

@@ -1,18 +1,14 @@
 import { botEnv } from "dressed/utils";
 import { type NextRequest, NextResponse } from "next/server";
 import { modCredit } from "@/bot/utils";
-import { prisma } from "@/db";
+import { cache } from "@/db";
 
 export async function GET(req: NextRequest) {
   const userId = req.nextUrl.searchParams.get("u");
   if (userId === null) {
     return new NextResponse("Incorrect params", { status: 400 });
   }
-  const user = await prisma.user.findFirst({
-    where: { id: userId },
-    cacheStrategy: { swr: 30, ttl: 30 },
-    select: { credit: true },
-  });
+  const user = await cache.getDBUser(userId, false);
   if (!user) return new NextResponse("Unknown user", { status: 404 });
   return new NextResponse(JSON.stringify(user.credit));
 }
