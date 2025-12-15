@@ -1,6 +1,5 @@
 import { type CommandInteraction, Container, TextDisplay } from "@dressed/react";
 import type { CommandConfig } from "dressed";
-import { Fragment } from "react";
 import { cache } from "@/db";
 
 export const config = {
@@ -11,15 +10,14 @@ function Leaderboard({ userRank, list }: { userRank?: number; list: { name?: str
   return (
     <Container>
       ## Leaderboard
-      <TextDisplay>Members with the highest social credit</TextDisplay>
-      You&apos;re #{userRank}
+      {"\n"}
+      Members with the highest social credit You&apos;re #{userRank}
       {list.map(({ name, credit, id }, i) => (
-        <Fragment key={id}>
-          <TextDisplay>
-            ### {i + 1} {name && `- ${name}`}
-          </TextDisplay>
+        <TextDisplay key={id}>
+          ### {i + 1} {name && `- ${name}`}
+          {"\n"}
           {credit.toLocaleString()}
-        </Fragment>
+        </TextDisplay>
       ))}
     </Container>
   );

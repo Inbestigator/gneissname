@@ -103,7 +103,8 @@ export default async function trivia(interaction: CommandInteraction) {
   if (currentSession && currentSession.replaceableAt > Date.now()) {
     return interaction.editReply(
       <>
-        <TextDisplay>There is already a trivia game in progress!</TextDisplay>
+        There is already a trivia game in progress!
+        {"\n"}
         -# Replaceable &lt;t:{Math.round(currentSession.replaceableAt / 1000)}
         :R&gt;
         <ActionRow>
@@ -185,7 +186,8 @@ export function TriviaGame({
 }) {
   return (
     <Container>
-      <TextDisplay>## Trivia!</TextDisplay>
+      ## Trivia!
+      {"\n"}
       {game.question}
       <ActionRow>
         {game.answers.map((answer) => (
@@ -218,13 +220,11 @@ function ResponsesSection({ responses, answerIds }: { responses: TriviaResponse[
         />
       }
     >
-      <TextDisplay>
-        ##{" "}
-        {"🟩"
-          .repeat(responses.filter((r) => r.isCorrect).length)
-          .padEnd(responses.length * 2, "🟥")
-          .padEnd(10 + responses.length, "⬛")}
-      </TextDisplay>
+      ##{" "}
+      {"🟩"
+        .repeat(responses.filter((r) => r.isCorrect).length)
+        .padEnd(responses.length * 2, "🟥")
+        .padEnd(10 + responses.length, "⬛")}
     </Section>
   );
 }

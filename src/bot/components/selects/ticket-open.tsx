@@ -26,7 +26,8 @@ export async function openTicket(
     thread.id,
     <Container>
       ## Ticket opened
-      <TextDisplay>{message}</TextDisplay>
+      {"\n"}
+      {message}
       <ActionRow>
         <Button custom_id="ticket-close" label="Close" emoji={{ name: "🔒" }} style="Danger" />
       </ActionRow>

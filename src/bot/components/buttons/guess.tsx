@@ -49,11 +49,13 @@ export default async function guess(
           ## {isCorrect ? "Correct" : "Nice try"}!
           {!isCorrect && (
             <>
-              <TextDisplay>### Answer:</TextDisplay>
+              ### Answer:
+              {"\n"}
               {session.correct.text}
             </>
           )}
-          <TextDisplay>### Explanation:</TextDisplay>
+          ### Explanation:
+          {"\n"}
           {session.game.explanation}
           {session.game.explanation.endsWith("please suggest one!") && (
             <ActionRow>
@@ -73,7 +75,7 @@ export default async function guess(
     await Promise.all([
       interaction.editReply(
         <>
-          <TextDisplay>## {isCorrect ? "Correct" : "Nice try"}!</TextDisplay>
+          ## {isCorrect ? "Correct" : "Nice try"}!{"\n"}
           -# This trivia has expired, so your answer isn&apos;t counted
         </>,
       ),

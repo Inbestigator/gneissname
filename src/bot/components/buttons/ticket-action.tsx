@@ -13,7 +13,8 @@ export default async function ticketButton(interaction: MessageComponentInteract
   } else if (args.action === "close") {
     interaction.update(
       <Container>
-        <TextDisplay>### Ticket closed</TextDisplay>
+        ### Ticket closed
+        {"\n"}
         Closed by {interaction.user.username}
       </Container>,
     );
