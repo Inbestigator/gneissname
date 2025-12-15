@@ -1,4 +1,4 @@
-import { type CommandInteraction, Container, TextDisplay } from "@dressed/react";
+import { type CommandInteraction, Container } from "@dressed/react";
 import { type CommandConfig, CommandOption } from "dressed";
 import { cache } from "@/db";
 
@@ -21,10 +21,8 @@ export default async function userData(interaction: CommandInteraction) {
   const [{ credit }] = await Promise.all([cache.getDBUser(user.id), interaction.deferReply({ ephemeral: true })]);
   await interaction.editReply(
     <Container>
-      ## {user.global_name}&apos;s data
-      {"\n"}
-      ### Credit
-      {"\n"}
+      ## {user.global_name}&apos;s data{"\n"}
+      ### Credit{"\n"}
       {credit.toLocaleString()}
     </Container>,
   );

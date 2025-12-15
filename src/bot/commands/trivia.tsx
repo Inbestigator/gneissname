@@ -8,7 +8,6 @@ import {
   editMessage,
   Section,
   Separator,
-  TextDisplay,
 } from "@dressed/react";
 import type { Answer, Trivia } from "@prisma/client";
 import { type APIMessage, ComponentType } from "discord-api-types/v10";
@@ -103,10 +102,8 @@ export default async function trivia(interaction: CommandInteraction) {
   if (currentSession && currentSession.replaceableAt > Date.now()) {
     return interaction.editReply(
       <>
-        There is already a trivia game in progress!
-        {"\n"}
-        -# Replaceable &lt;t:{Math.round(currentSession.replaceableAt / 1000)}
-        :R&gt;
+        There is already a trivia game in progress!{"\n"}
+        -# Replaceable &lt;t:{Math.round(currentSession.replaceableAt / 1000)}:R&gt;
         <ActionRow>
           <Button
             url={`https://discord.com/channels/750062409364013159/${currentSession.channelId}/${currentSession.messageId}`}
@@ -186,8 +183,7 @@ export function TriviaGame({
 }) {
   return (
     <Container>
-      ## Trivia!
-      {"\n"}
+      ## Trivia!{"\n"}
       {game.question}
       <ActionRow>
         {game.answers.map((answer) => (

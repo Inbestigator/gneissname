@@ -1,4 +1,4 @@
-import { Button, type CommandInteraction, Container, Section, TextDisplay } from "@dressed/react";
+import { Button, type CommandInteraction, Container, Section } from "@dressed/react";
 import type { CommandConfig } from "dressed";
 
 export const shopItems = [

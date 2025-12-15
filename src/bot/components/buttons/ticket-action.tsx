@@ -1,5 +1,5 @@
 import type { Params } from "@dressed/matcher";
-import { Container, type MessageComponentInteraction, TextDisplay } from "@dressed/react";
+import { Container, type MessageComponentInteraction } from "@dressed/react";
 import { createMessage, modifyChannel } from "dressed";
 import { openTicket } from "../selects/ticket-open";
 
@@ -13,8 +13,7 @@ export default async function ticketButton(interaction: MessageComponentInteract
   } else if (args.action === "close") {
     interaction.update(
       <Container>
-        ### Ticket closed
-        {"\n"}
+        ### Ticket closed{"\n"}
         Closed by {interaction.user.username}
       </Container>,
     );

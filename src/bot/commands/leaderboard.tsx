@@ -9,8 +9,7 @@ export const config = {
 function Leaderboard({ userRank, list }: { userRank?: number; list: { name?: string; credit: number; id: string }[] }) {
   return (
     <Container>
-      ## Leaderboard
-      {"\n"}
+      ## Leaderboard{"\n"}
       Members with the highest social credit You&apos;re #{userRank}
       {list.map(({ name, credit, id }, i) => (
         <TextDisplay key={id}>

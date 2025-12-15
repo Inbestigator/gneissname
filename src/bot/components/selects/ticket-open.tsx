@@ -6,7 +6,6 @@ import {
   type MessageComponentInteraction,
   SelectMenu,
   SelectMenuOption,
-  TextDisplay,
 } from "@dressed/react";
 import type { APIUser } from "discord-api-types/v10";
 import { addThreadMember, createThread } from "dressed";
@@ -25,8 +24,7 @@ export async function openTicket(
   createMessage(
     thread.id,
     <Container>
-      ## Ticket opened
-      {"\n"}
+      ## Ticket opened{"\n"}
       {message}
       <ActionRow>
         <Button custom_id="ticket-close" label="Close" emoji={{ name: "🔒" }} style="Danger" />

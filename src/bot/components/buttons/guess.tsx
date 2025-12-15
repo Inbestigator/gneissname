@@ -1,6 +1,6 @@
 import { hash } from "node:crypto";
 import type { Params } from "@dressed/matcher";
-import { ActionRow, Button, editMessage, type MessageComponentInteraction, TextDisplay } from "@dressed/react";
+import { ActionRow, Button, editMessage, type MessageComponentInteraction } from "@dressed/react";
 import { getTriviaSession, markArchived, TriviaGame, type TriviaResponse } from "@/bot/commands/trivia";
 import { modCredit } from "@/bot/utils";
 import { redis } from "@/db";
@@ -49,13 +49,11 @@ export default async function guess(
           ## {isCorrect ? "Correct" : "Nice try"}!
           {!isCorrect && (
             <>
-              ### Answer:
-              {"\n"}
+              ### Answer:{"\n"}
               {session.correct.text}
             </>
           )}
-          ### Explanation:
-          {"\n"}
+          ### Explanation:{"\n"}
           {session.game.explanation}
           {session.game.explanation.endsWith("please suggest one!") && (
             <ActionRow>
