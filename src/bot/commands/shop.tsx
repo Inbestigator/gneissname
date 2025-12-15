@@ -33,7 +33,7 @@ export default function shop(interaction: CommandInteraction) {
           accessory={<Button custom_id={`buy-${item.name}`} label={`$${item.price.toLocaleString()}`} />}
         >
           ### {item.name}
-          {"\n"}
+          <br />
           {item.description}
         </Section>
       ))}
