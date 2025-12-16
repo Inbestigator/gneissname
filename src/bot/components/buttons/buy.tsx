@@ -6,7 +6,7 @@ import { cache } from "@/db";
 import { openTicket } from "../selects/ticket-open";
 
 const blockedShoppers = {
-  Whitelist: ["580638706805768203", "617635763974307859", "786737189965922316"],
+  Whitelist: ["580638706805768203", "786737189965922316"],
   "Community call topic": [],
   "Custom role": [],
 } as const;
@@ -14,7 +14,6 @@ const blockedShoppers = {
 export const pattern = "buy-:itemName";
 
 export default async function buy(interaction: MessageComponentInteraction, { itemName }: Params<typeof pattern>) {
-  await interaction.deferReply({ ephemeral: true });
   const selectedItem = shopItems.find((item) => item.name === itemName);
   if (!selectedItem) {
     return interaction.editReply("Item not found");
@@ -26,12 +25,15 @@ export default async function buy(interaction: MessageComponentInteraction, { it
   if (blockedShoppers[selectedItem.name].includes(interaction.user.id as never)) {
     return interaction.editReply("You can't buy that!");
   }
-  await modCredit(interaction.user.id, selectedItem.price * -1, true);
-  const thread = await openTicket(
-    `Claim ${selectedItem.name.toLowerCase()}`,
-    `${interaction.user.global_name} has purchased a ${selectedItem.name.toLowerCase()} and would like to claim it`,
-    selectedItem.name === "Whitelist" ? ["&1232903620421484575"] : undefined,
-    interaction.user,
-  );
+  const [thread] = await Promise.all([
+    openTicket(
+      `Claim ${selectedItem.name.toLowerCase()}`,
+      `${interaction.user.global_name} has purchased a ${selectedItem.name.toLowerCase()} and would like to claim it`,
+      selectedItem.name === "Whitelist" ? ["&1232903620421484575"] : undefined,
+      interaction.user,
+    ),
+    modCredit(interaction.user.id, selectedItem.price * -1, true),
+    interaction.deferReply({ ephemeral: true }),
+  ]);
   await interaction.editReply(`<#${thread.id}>`);
 }

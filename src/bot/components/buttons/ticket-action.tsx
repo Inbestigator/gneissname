@@ -3,7 +3,7 @@ import { Container, type MessageComponentInteraction } from "@dressed/react";
 import { createMessage, modifyChannel } from "dressed";
 import { openTicket } from "../selects/ticket-open";
 
-export const pattern = "ticket-:action(close|open){-:ticketName{-:message}{-:staff((&?\\d+,?)*)}}";
+export const pattern = "ticket-:action(close|open){-:ticketName{-:message}{@:staff((&?\\d+,?)*)}}";
 
 export default async function ticketButton(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
   if (args.action === "open") {

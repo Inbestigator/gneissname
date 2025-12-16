@@ -58,7 +58,7 @@ export default async function guess(
           {session.game.explanation.endsWith("please suggest one!") && (
             <ActionRow>
               <Button
-                custom_id={`ticket-open-Answer suggestion-For "${session.correct.id}"-761777382041714690`}
+                custom_id={`ticket-open-Answer suggestion-For "${session.correct.id}"@761777382041714690`}
                 label="Suggest"
                 emoji={{ name: "💡" }}
               />

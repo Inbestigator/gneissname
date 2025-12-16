@@ -29,11 +29,7 @@ export async function openTicket(
       <ActionRow>
         <Button custom_id="ticket-close" label="Close" emoji={{ name: "🔒" }} style="Danger" />
       </ActionRow>
-      -# {`<@${user.id}>`}{" "}
-      {relevantStaff
-        .filter(Boolean)
-        .map((s) => `<@${s}>`)
-        .join(" ")}
+      -# &lt;@{user.id}&gt;{relevantStaff.filter(Boolean).map((s) => ` <@${s}>`)}
     </Container>,
   );
   return thread;
