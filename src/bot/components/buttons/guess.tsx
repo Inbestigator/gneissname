@@ -51,6 +51,7 @@ export default async function guess(
             <>
               ### Answer:{"\n"}
               {session.correct.text}
+              {"\n"}
             </>
           )}
           ### Explanation:{"\n"}

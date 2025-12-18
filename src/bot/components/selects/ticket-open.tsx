@@ -71,7 +71,7 @@ export default async function openTicketSelect(interaction: MessageComponentInte
       break;
     }
     default: {
-      ticketName = interaction.data.values[0];
+      ticketName = interaction.getValues()[0];
       break;
     }
   }
