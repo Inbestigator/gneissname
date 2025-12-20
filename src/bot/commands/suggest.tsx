@@ -1,4 +1,4 @@
-import { ActionRow, type CommandInteraction, TextInput } from "@dressed/react";
+import { type CommandInteraction, Label, TextInput } from "@dressed/react";
 import type { CommandConfig } from "dressed";
 
 export const config = {
@@ -8,28 +8,19 @@ export const config = {
 export default function suggest(interaction: CommandInteraction) {
   return interaction.showModal(
     <>
-      <ActionRow>
-        <TextInput custom_id="question" label="What is the trivia question?" required max_length={100} />
-      </ActionRow>
-      <ActionRow>
-        <TextInput
-          custom_id="explanation"
-          label="Explanation for the true answer"
-          style="Paragraph"
-          required
-          max_length={500}
-        />
-      </ActionRow>
-      <ActionRow>
-        <TextInput custom_id="true" label="True answer" required max_length={50} />
-      </ActionRow>
-      <ActionRow>
-        <TextInput custom_id="false" label="3 false answers" style="Paragraph" required max_length={200} />
-      </ActionRow>
+      <Label label="What is the trivia question?">
+        <TextInput custom_id="question" max_length={100} required />
+      </Label>
+      <Label label="Explanation for the true answer">
+        <TextInput custom_id="explanation" style="Paragraph" max_length={500} required />
+      </Label>
+      <Label label="True answer">
+        <TextInput custom_id="true" max_length={50} required />
+      </Label>
+      <Label label="3 false answers">
+        <TextInput custom_id="false" style="Paragraph" max_length={200} required />
+      </Label>
     </>,
-    {
-      custom_id: "suggestTrivia",
-      title: "Suggest a trivia question",
-    },
+    { custom_id: "suggestTrivia", title: "Suggest a trivia question" },
   );
 }

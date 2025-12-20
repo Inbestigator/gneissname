@@ -183,7 +183,7 @@ export function TriviaGame({
 }) {
   return (
     <Container>
-      ## Trivia!{"\n"}
+      <Section accessory={<Button emoji={{ name: "💡" }} custom_id="suggest" />}>## Trivia!</Section>
       {game.question}
       <ActionRow>
         {game.answers.map((answer) => (

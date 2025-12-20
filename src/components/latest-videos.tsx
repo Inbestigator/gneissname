@@ -1,7 +1,7 @@
 "use client";
 
+import { IconExternalLink } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -27,8 +27,8 @@ export function SkeletonVideos({ index }: { index: number }) {
         <p className="skeleton mb-1 h-4" />
         <p className="skeleton mb-1 h-4 w-3/4" />
         <div className="card-actions">
-          <div className="btn skeleton text-opacity-0">
-            Watch on YouTube <ExternalLink size={18} />
+          <div className="btn skeleton text-transparent">
+            Watch on YouTube <IconExternalLink className="size-5" />
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@ export default function LatestVideos() {
             <p className="wrap-break-word">{decodeHtmlEntities(video.description)}</p>
             <div className="card-actions">
               <Link target="_blank" href={`https://youtube.com/watch?v=${video.id}`} className="btn btn-neutral">
-                Watch on YouTube <ExternalLink size={18} />
+                Watch on YouTube <IconExternalLink className="size-5" />
               </Link>
             </div>
           </div>

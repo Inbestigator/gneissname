@@ -4,24 +4,18 @@ import type { Video } from "@/components/latest-videos";
 
 export async function GET() {
   try {
-    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCCk6atPf8zBPd-5C7rgEkRg&maxResults=3&order=date&type=video&key=${process.env.YOUTUBE_API_KEY}`;
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCCk6atPf8zBPd-5C7rgEkRg&maxResults=3&order=date&type=video&key=${process.env.YOUTUBE_API_KEY}`,
+    );
 
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
     const data = await response.json();
 
-    const videos: Video[] = data.items.map(
+    const videos: Video[] = data.items.slice(0, 3).map(
       (
         item: {
-          snippet: {
-            thumbnails: { high: { url: string } };
-            description: string;
-            title: string;
-          };
+          snippet: { thumbnails: { high: { url: string } }; description: string; title: string };
           id: { videoId: string };
         },
         index: number,
