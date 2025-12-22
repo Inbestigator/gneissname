@@ -13,7 +13,7 @@ function Leaderboard({ userRank, list }: { userRank?: number; list: { name?: str
       Members with the highest social credit You&apos;re #{userRank}
       {list.map(({ name, credit, id }, i) => (
         <TextDisplay key={id}>
-          ### {i + 1} {name && `- ${name}`}
+          {i + 1} {name && `**${name}**`}
           {"\n"}
           {credit.toLocaleString()}
         </TextDisplay>
@@ -33,7 +33,6 @@ export default async function leaderboard(interaction: CommandInteraction) {
         return { ...u, name: user.global_name ?? undefined };
       }),
     ]);
-
     await interaction.editReply(<Leaderboard userRank={userRank} list={resolvedUsers} />);
   } catch {
     await interaction.editReply("An error occurred while fetching the leaderboard.");
