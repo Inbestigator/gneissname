@@ -6,7 +6,10 @@ export const config = {
   description: "View the users with the highest social credit",
 } satisfies CommandConfig;
 
-function Leaderboard({ userRank, list }: { userRank?: number; list: { name?: string; credit: number; id: string }[] }) {
+function Leaderboard({
+  userRank,
+  list,
+}: Readonly<{ userRank?: number; list: { name?: string; credit: number; id: string }[] }>) {
   return (
     <Container>
       ## Leaderboard{"\n"}

@@ -5,7 +5,7 @@ export default async function suggestTrivia(interaction: ModalSubmitInteraction)
     .getField("question", true)
     .textInput()}\nExplanation: ${interaction
     .getField("explanation", true)
-    .textInput()}\nCorrect: ${interaction.getField("true", true)}\nIncorrect:\n${interaction
+    .textInput()}\nCorrect: ${interaction.getField("true", true).textInput()}\nIncorrect:\n${interaction
     .getField("false", true)
     .textInput()
     .split("\n")

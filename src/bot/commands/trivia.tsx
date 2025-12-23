@@ -76,12 +76,12 @@ async function getNextGame(): Promise<TriviaSession["game"] & { next: () => Prom
     const next = list.pop();
     if (typeof next !== "number") return;
     const nextGame = await redis.get(`trivia-game:${next}`);
-    if (!nextGame) {
+    if (nextGame) {
+      list.push(JSON.parse(nextGame));
+    } else {
       const game = await prisma.trivia.findFirstOrThrow({ where: { id: next }, include: { answers: true } });
       await redis.set(`trivia-game:${next}`, JSON.stringify(game));
       list.push(game);
-    } else {
-      list.push(JSON.parse(nextGame));
     }
     await redis.set("trivia-order", JSON.stringify(list));
     return list;
@@ -114,7 +114,7 @@ export default async function trivia(interaction: CommandInteraction) {
     );
   } else if (currentSession) {
     try {
-      editMessage(
+      await editMessage(
         currentSession.channelId,
         currentSession.messageId,
         <TriviaGame
@@ -124,9 +124,7 @@ export default async function trivia(interaction: CommandInteraction) {
           isArchived
         />,
       );
-    } catch {
-      // pass
-    }
+    } catch {}
   }
 
   const game = await getNextGame();
@@ -135,7 +133,7 @@ export default async function trivia(interaction: CommandInteraction) {
     return interaction.editReply("Error starting trivia game!");
   }
 
-  const answers = game.answers.sort(() => Math.random() - 0.5);
+  const answers = game.answers.toSorted(() => Math.random() - 0.5);
   const correct = answers.find((a) => a.correct) ?? { id: "", text: "" };
 
   const correctHash = hash("sha1", correct.id, "hex").slice(0, 8);
@@ -175,12 +173,12 @@ export function TriviaGame({
   correctHash,
   responses,
   isArchived,
-}: {
+}: Readonly<{
   game: TriviaSession["game"];
   correctHash: string;
   responses: TriviaResponse[];
   isArchived?: boolean;
-}) {
+}>) {
   return (
     <Container>
       <Section accessory={<Button emoji={{ name: "💡" }} custom_id="suggest" style="Secondary" />}>## Trivia!</Section>
@@ -203,7 +201,7 @@ export function TriviaGame({
   );
 }
 
-function ResponsesSection({ responses, answerIds }: { responses: TriviaResponse[]; answerIds: string[] }) {
+function ResponsesSection({ responses, answerIds }: Readonly<{ responses: TriviaResponse[]; answerIds: string[] }>) {
   const counts = separateAnswers(responses, answerIds);
   return (
     <Section
@@ -228,7 +226,7 @@ function ResponsesSection({ responses, answerIds }: { responses: TriviaResponse[
 export function markArchived(message: APIMessage) {
   const { channel_id, components = [], id } = message;
   const container = components.find((c) => c.type === ComponentType.Container);
-  if (!container || !container.components || container.components.at(-1)?.type === 10) return;
+  if (!container?.components || container.components.at(-1)?.type === 10) return;
   container.components.push(DressedTextDisplay("-# This trivia has expired. However, you can still respond"));
   return dressedEditMessage(channel_id, id, { components });
 }

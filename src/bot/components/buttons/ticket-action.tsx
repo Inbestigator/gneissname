@@ -8,7 +8,7 @@ export const pattern = "ticket-:action(close|open){-:ticketName{-:message}{@:sta
 export default async function ticketButton(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
   if (args.action === "open") {
     const { ticketName = "Unknown", message, staff } = args;
-    const thread = await openTicket(ticketName, message, staff?.split(","), interaction.user);
+    const thread = await openTicket(interaction.user, ticketName, message, staff?.split(","));
     await interaction.reply(`<#${thread.id}>`, { ephemeral: true });
   } else if (args.action === "close") {
     interaction.update(

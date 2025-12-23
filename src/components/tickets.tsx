@@ -13,10 +13,10 @@ interface Ticket {
 export default function Tickets({
   updateTicket,
   deleteTicket,
-}: {
+}: Readonly<{
   updateTicket: (data: FormData) => Promise<void>;
   deleteTicket: (data: FormData) => Promise<void>;
-}) {
+}>) {
   const [selectedTab, setSelectedTab] = useState("");
 
   const { isPending, isError, data, error } = useQuery({
@@ -64,7 +64,7 @@ export default function Tickets({
               onClick={() => setSelectedTab(ticket.id)}
               className={cn("tab", selectedTab === ticket.id && "tab-active")}
             >
-              {ticket.name.replace(/\[.*?\]/g, "")}
+              {ticket.name.replaceAll(/\[.*?\]/g, "")}
             </button>
           ))}
         </div>
@@ -90,11 +90,11 @@ function EditTicket({
   ticket,
   updateTicket,
   deleteTicket,
-}: {
+}: Readonly<{
   ticket: Ticket;
   updateTicket: (data: FormData) => Promise<void>;
   deleteTicket: (data: FormData) => Promise<void>;
-}) {
+}>) {
   const [tags, setTags] = useState(extractBracketContents(ticket.name));
 
   useEffect(() => {
@@ -110,7 +110,7 @@ function EditTicket({
       <div className="card-body">
         <h3 className="text-lg">
           {tags.map((tag) => `[${tag}] `)}
-          {ticket.name.replace(/\[.*?\]/g, "")}
+          {ticket.name.replaceAll(/\[.*?\]/g, "")}
         </h3>
         <form
           className="space-x-2"
@@ -124,12 +124,12 @@ function EditTicket({
             id="tags"
             placeholder="List tags here, separated by commas"
             value={tags.join(",")}
-            onChange={(e) => setTags(e.target.value.split(/,[ ]*/))}
+            onChange={(e) => setTags(e.target.value.split(/,\s*/))}
             className="input w-full max-w-xs"
           />
           <input type="hidden" name="tags" value={tags.map((tag) => `[${tag}] `).join("")} />
           <input type="hidden" name="ticketId" value={ticket.id} />
-          <input type="hidden" name="user" value={ticket.name.replace(/\[.*?\][ ]*/g, "")} />
+          <input type="hidden" name="user" value={ticket.name.replaceAll(/\[.*?\]\s*/g, "")} />
           <button className="btn btn-primary mt-2" type="submit">
             Submit tags
           </button>

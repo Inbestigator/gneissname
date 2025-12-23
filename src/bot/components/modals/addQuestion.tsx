@@ -22,12 +22,12 @@ export function ProposalStage({
   isCorrect,
   stage,
   components,
-}: {
+}: Readonly<{
   stage: "addQuestion" | "addAnswer" | "done";
   isCorrect: boolean;
   id: number | string;
   components?: APIMessageTopLevelComponent[];
-}) {
+}>) {
   return (
     <>
       {components?.[0].type === 10 && components[0].content}

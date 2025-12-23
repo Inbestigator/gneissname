@@ -27,10 +27,10 @@ export default async function buy(interaction: MessageComponentInteraction, { it
   }
   const [thread] = await Promise.all([
     openTicket(
+      interaction.user,
       `Claim ${selectedItem.name.toLowerCase()}`,
       `${interaction.user.global_name} has purchased a ${selectedItem.name.toLowerCase()} and would like to claim it`,
       selectedItem.name === "Whitelist" ? ["&1232903620421484575"] : undefined,
-      interaction.user,
     ),
     modCredit(interaction.user.id, selectedItem.price * -1, true),
     interaction.deferReply({ ephemeral: true }),

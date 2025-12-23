@@ -15,7 +15,7 @@ export type Video = {
   title: string;
 };
 
-export function SkeletonVideos({ index }: { index: number }) {
+export function SkeletonVideos({ index }: Readonly<{ index: number }>) {
   return (
     <div className={`card bg-base-200 md:col-span-1 md:block ${index === 0 ? "block" : "hidden"}`}>
       <figure className="skeleton flex aspect-video items-center overflow-hidden rounded-b-none" />
@@ -36,6 +36,12 @@ export function SkeletonVideos({ index }: { index: number }) {
   );
 }
 
+function decodeHtmlEntities(v: string) {
+  const textArea = document.createElement("textarea");
+  textArea.innerHTML = v;
+  return textArea.value;
+}
+
 export default function LatestVideos() {
   const { isPending, isError, data } = useQuery({
     queryKey: ["videos"],
@@ -47,7 +53,7 @@ export default function LatestVideos() {
     },
   });
 
-  if (isPending || isError || !data || !data.length) {
+  if (isPending || isError || !data?.length) {
     return (
       <>
         <SkeletonVideos index={0} />
@@ -55,12 +61,6 @@ export default function LatestVideos() {
         <SkeletonVideos index={2} />
       </>
     );
-  }
-
-  function decodeHtmlEntities(v: string) {
-    const textArea = document.createElement("textarea");
-    textArea.innerHTML = v;
-    return textArea.value;
   }
 
   return (

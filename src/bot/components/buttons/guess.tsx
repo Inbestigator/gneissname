@@ -12,7 +12,7 @@ export default async function guess(
   { answerId, hashed }: Params<typeof pattern>,
 ) {
   const [{ session, responses }] = await Promise.all([getTriviaSession(), interaction.deferReply({ ephemeral: true })]);
-  const isCorrect = hash("sha1", answerId, "hex").slice(0, hashed.length) === hashed;
+  const isCorrect = hash("sha1", answerId, "hex").startsWith(hashed);
 
   if (
     session &&

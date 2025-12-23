@@ -11,10 +11,10 @@ import type { APIUser } from "discord-api-types/v10";
 import { addThreadMember, createThread } from "dressed";
 
 export async function openTicket(
+  user: APIUser,
   ticketName: string,
   message = "Our staff will be with you shortly, in the meantime please state your issue.",
   relevantStaff = ["&1225973068141297757"],
-  user: APIUser,
 ) {
   const thread = await createThread("1225971091344982128", {
     name: `[${ticketName}] ${user.username}`,
@@ -76,6 +76,6 @@ export default async function openTicketSelect(interaction: MessageComponentInte
     }
   }
 
-  const thread = await openTicket(ticketName ?? "Unknown", message ?? undefined, relevantStaff, interaction.user);
+  const thread = await openTicket(interaction.user, ticketName ?? "Unknown", message ?? undefined, relevantStaff);
   await interaction.reply(`<#${thread.id}>`, { ephemeral: true });
 }
