@@ -8,8 +8,6 @@ import { crawlDir } from "./node_modules/dressed/dist/utils/build.js"; // NOSONA
 
 Object.assign(serverConfig, config);
 
-serverConfig.logger = "Warn";
-
 const files = await Promise.all(
   ["commands", "components", "events"].map(async (d) =>
     Promise.all(
