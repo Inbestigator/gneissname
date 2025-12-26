@@ -5,7 +5,7 @@ import { getTriviaSession, type TriviaResponse } from "@/bot/commands/trivia";
 export const pattern = "trivia-details-:a(\\d+){-:b(\\d+){-:c(\\d+){-:d(\\d+)}}}";
 
 export default async function triviaDetails(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
-  const [{ session, responses }] = await Promise.all([getTriviaSession(), interaction.deferReply({ ephemeral: true })]);
+  const { session, responses } = await getTriviaSession();
 
   if (!session || session.messageId !== interaction.message.id || session.expiresAt < Date.now()) {
     const counts = [Number(args.a)];
@@ -22,16 +22,17 @@ export default async function triviaDetails(interaction: MessageComponentInterac
   }
 
   if (!responses.some((a) => a.userId === interaction.user.id)) {
-    return interaction.editReply("You haven't answered yet!");
+    return interaction.reply("You haven't answered yet!", { ephemeral: true });
   }
 
-  await interaction.editReply(
+  await interaction.showModal(
     generateBarGraph(
       separateAnswers(
         responses,
         session.game.answers.map((a) => a.id),
       ),
     ),
+    { custom_id: "tmp", title: "Responses" },
   );
 }
 
@@ -44,7 +45,7 @@ function generateBarGraph(counts: number[], height = 4): string {
 
   const rows: string[] = [];
   for (let row = height - 1; row >= 0; row--) {
-    let line = "";
+    let line = "# ";
     for (let i = 0; i < counts.length; i++) {
       line += heights[i] > row ? emojis[i % emojis.length] : "⬛";
     }
