@@ -46,7 +46,7 @@ function generateBarGraph(counts: number[], height = 4): string {
 
   const rows: string[] = [];
   for (let row = height - 1; row >= 0; row--) {
-    let line = "# ";
+    let line = "";
     for (let i = 0; i < counts.length; i++) {
       line += heights[i] > row ? emojis[i % emojis.length] : "⬛";
     }
