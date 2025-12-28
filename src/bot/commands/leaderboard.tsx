@@ -1,43 +1,31 @@
 import { type CommandInteraction, Container, TextDisplay } from "@dressed/react";
 import type { CommandConfig } from "dressed";
+import { Suspense, use } from "react";
 import { cache } from "@/db";
 
 export const config = {
   description: "View the users with the highest social credit",
 } satisfies CommandConfig;
 
-function Leaderboard({
-  userRank,
-  list,
-}: Readonly<{ userRank?: number; list: { name?: string; credit: number; id: string }[] }>) {
-  return (
-    <Container>
-      ## Leaderboard{"\n"}
-      Members with the highest social credit You&apos;re #{userRank}
-      {list.map(({ name, credit, id }, i) => (
-        <TextDisplay key={id}>
-          {i + 1} {name && `**${name}**`}
-          {"\n"}
-          {credit.toLocaleString()}
-        </TextDisplay>
-      ))}
-    </Container>
-  );
+function Leaderboard({ list }: Readonly<{ list: Promise<{ credit: number; id: string }[]> }>) {
+  const ranks = use(list);
+  return ranks.map(({ credit, id }, i) => (
+    <TextDisplay key={id}>
+      {i + 1} <Suspense>**{cache.getUser(id).then((u) => u.global_name ?? "")}**</Suspense>
+      {"\n"}
+      {credit.toLocaleString()}
+    </TextDisplay>
+  ));
 }
 
-export default async function leaderboard(interaction: CommandInteraction) {
-  try {
-    const [topUsers] = await Promise.all([cache.getTopUsers(), interaction.deferReply({ ephemeral: true })]);
-    const [userRank, _, ...resolvedUsers] = await Promise.all([
-      cache.getRank(interaction.user.id),
-      interaction.editReply(<Leaderboard list={topUsers} />),
-      ...topUsers.map(async (u) => {
-        const user = await cache.getUser(u.id);
-        return { ...u, name: user.global_name ?? undefined };
-      }),
-    ]);
-    await interaction.editReply(<Leaderboard userRank={userRank} list={resolvedUsers} />);
-  } catch {
-    await interaction.editReply("An error occurred while fetching the leaderboard.");
-  }
+export default function leaderboard(interaction: CommandInteraction) {
+  return interaction.reply(
+    <Container>
+      ## Leaderboard{"\n"}
+      Members with the highest social credit You&apos;re #<Suspense>{cache.getRank(interaction.user.id)}</Suspense>
+      <Suspense>
+        <Leaderboard list={cache.getTopUsers()} />
+      </Suspense>
+    </Container>,
+  );
 }

@@ -153,10 +153,10 @@ export default async function trivia(interaction: CommandInteraction) {
     replaceableAt: Date.now() + 15 * 60 * 1000,
   };
 
-  const message = await createMessage(
+  const message = (await createMessage(
     interaction.channel.id,
     <TriviaGame game={session.game} correctHash={correctHash} responses={[]} />,
-  );
+  )) as unknown as APIMessage;
 
   session.messageId = message.id;
 
