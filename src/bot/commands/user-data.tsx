@@ -1,5 +1,6 @@
 import { type CommandInteraction, Container } from "@dressed/react";
 import { type CommandConfig, CommandOption } from "dressed";
+import { Suspense } from "react";
 import { cache } from "@/db";
 
 export const config = {
@@ -18,12 +19,12 @@ export const config = {
 
 export default async function userData(interaction: CommandInteraction) {
   const user = interaction.getOption("user", true).user();
-  const [{ credit }] = await Promise.all([cache.getDBUser(user.id), interaction.deferReply({ ephemeral: true })]);
-  await interaction.editReply(
+  await interaction.reply(
     <Container>
       ## {user.global_name}&apos;s data{"\n"}
       ### Credit{"\n"}
-      {credit.toLocaleString()}
+      <Suspense fallback="…">{cache.getDBUser(user.id).then((u) => u.credit.toLocaleString())}</Suspense>
     </Container>,
+    { ephemeral: true },
   );
 }

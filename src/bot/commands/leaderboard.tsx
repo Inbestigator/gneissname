@@ -27,5 +27,6 @@ export default function leaderboard(interaction: CommandInteraction) {
         <Leaderboard list={cache.getTopUsers()} />
       </Suspense>
     </Container>,
+    { ephemeral: true },
   );
 }

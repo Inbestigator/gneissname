@@ -9,14 +9,14 @@
     "dev:bot": "bun --watch bot-dev"
   },
   "dependencies": {
-    "@dressed/react": "^1.7.1",
+    "@dressed/react": "^1.7.4-rc.2",
     "@dressed/ws": "0.4.6",
     "@prisma/adapter-neon": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@tabler/icons-react": "^3.36.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
-    "@tanstack/react-query": "^5.90.13",
+    "@tanstack/react-query": "^5.90.14",
     "chartjs-to-image": "^1.2.2",
     "clsx": "^2.1.1",
     "dressed": "^1.10.2-canary.1.1",
