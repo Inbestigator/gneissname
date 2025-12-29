@@ -11,7 +11,7 @@ export default async function suggestTrivia(interaction: ModalSubmitInteraction)
     .split("\n")
     .map((i) => `> ${i}`)
     .join("\n")}`;
-  createMessage(
+  await createMessage(
     "1205195359572328519",
     <>
       {message}

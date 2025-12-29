@@ -4,19 +4,14 @@ import {
   Button,
   type CommandInteraction,
   Container,
+  createMessage,
   editMessage,
-  render,
   Section,
   Separator,
 } from "@dressed/react";
 import type { Answer, Trivia } from "@prisma/client";
-import { type APIMessage, type APIMessageTopLevelComponent, ComponentType, MessageFlags } from "discord-api-types/v10";
-import {
-  type CommandConfig,
-  createMessage,
-  TextDisplay as DressedTextDisplay,
-  editMessage as dressedEditMessage,
-} from "dressed";
+import { type APIMessage, ComponentType } from "discord-api-types/v10";
+import { type CommandConfig, TextDisplay as DressedTextDisplay, editMessage as dressedEditMessage } from "dressed";
 import { prisma, redis } from "@/db";
 import { separateAnswers } from "../components/buttons/trivia-details";
 
@@ -157,20 +152,10 @@ export default async function trivia(interaction: CommandInteraction) {
     expiresAt: Date.now() + 45 * 60 * 1000,
     replaceableAt: Date.now() + 15 * 60 * 1000,
   };
-
-  const message = await new Promise<APIMessage>((resolve) => {
-    let done = false;
-    render(<TriviaGame game={session.game} correctHash={correctHash} responses={[]} />, (c) => {
-      if (done) return;
-      done = true;
-      resolve(
-        createMessage(interaction.channel.id, {
-          components: c as APIMessageTopLevelComponent[],
-          flags: MessageFlags.IsComponentsV2,
-        }),
-      );
-    });
-  });
+  const message = await createMessage(
+    interaction.channel.id,
+    <TriviaGame game={session.game} correctHash={correctHash} responses={[]} />,
+  );
 
   session.messageId = message.id;
 

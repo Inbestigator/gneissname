@@ -17,14 +17,16 @@ export const config = {
   contexts: ["Guild"],
 } satisfies CommandConfig;
 
-export default async function userData(interaction: CommandInteraction) {
+export default async function userData(interaction: CommandInteraction<typeof config>) {
   const user = interaction.getOption("user", true).user();
-  await interaction.reply(
+  const userPromise = cache.getDBUser(interaction.user.id);
+  interaction.reply(
     <Container>
       ## {user.global_name}&apos;s data{"\n"}
       ### Credit{"\n"}
-      <Suspense fallback="…">{cache.getDBUser(user.id).then((u) => u.credit.toLocaleString())}</Suspense>
+      <Suspense fallback="…">{userPromise.then((u) => u.credit.toLocaleString())}</Suspense>
     </Container>,
     { ephemeral: true },
   );
+  return userPromise.then(() => new Promise((r) => setTimeout(r, 1500)));
 }

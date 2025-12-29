@@ -9,7 +9,7 @@
     "dev:bot": "bun --watch bot-dev"
   },
   "dependencies": {
-    "@dressed/react": "^1.7.4-rc.3",
+    "@dressed/react": "^1.7.4-rc.4",
     "@dressed/ws": "0.4.6",
     "@prisma/adapter-neon": "^7.2.0",
     "@prisma/client": "^7.2.0",
