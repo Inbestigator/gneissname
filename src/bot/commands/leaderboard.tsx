@@ -2,6 +2,7 @@ import { type CommandInteraction, Container, TextDisplay } from "@dressed/react"
 import type { CommandConfig } from "dressed";
 import { Suspense } from "react";
 import { cache } from "@/db";
+import { procrastinate } from "../utils";
 
 export const config = {
   description: "View the users with the highest social credit",
@@ -36,5 +37,5 @@ export default async function leaderboard(interaction: CommandInteraction) {
     </Container>,
     { ephemeral: true },
   );
-  return Promise.all([rankPromise, ...(await userPromises)]).then(() => new Promise((r) => setTimeout(r, 1500)));
+  return procrastinate(rankPromise, ...(await userPromises));
 }

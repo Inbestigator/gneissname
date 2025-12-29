@@ -56,3 +56,7 @@ export async function getDBUser<T extends boolean = true>(
   }
   return user as User;
 }
+
+export async function procrastinate<T extends Promise<unknown>[]>(...promises: T): ReturnType<typeof Promise.all<T>> {
+  return Promise.all(promises).then((...v) => new Promise((r) => setTimeout(() => r(...v), 1500)));
+}

@@ -41,10 +41,6 @@ export const config = {
 export default async function moderateCredit(interaction: CommandInteraction<typeof config>) {
   if (!("options" in interaction.data) || !interaction.data.options) return;
   const { id } = interaction.getOption("user", true).user();
-  if (!id) {
-    await interaction.reply("User not found");
-    return;
-  }
   await Promise.all([
     modCredit(
       id,
@@ -54,5 +50,5 @@ export default async function moderateCredit(interaction: CommandInteraction<typ
     ),
     interaction.deferReply({ ephemeral: true }),
   ]);
-  await interaction.editReply("Done");
+  return interaction.editReply("Done");
 }

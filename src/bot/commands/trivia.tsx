@@ -95,9 +95,7 @@ async function getNextGame(): Promise<TriviaSession["game"] & { next: () => Prom
 export default async function trivia(interaction: CommandInteraction) {
   const [{ session: currentSession, responses }] = await Promise.all([
     getTriviaSession(),
-    interaction.deferReply({
-      ephemeral: true,
-    }),
+    interaction.deferReply({ ephemeral: true }),
   ]);
   if (currentSession && currentSession.replaceableAt > Date.now()) {
     return interaction.editReply(
@@ -129,16 +127,12 @@ export default async function trivia(interaction: CommandInteraction) {
 
   const game = await getNextGame();
 
-  if (!game) {
-    return interaction.editReply("Error starting trivia game!");
-  }
+  if (!game) return interaction.editReply("Error starting trivia game!");
 
   const answers = game.answers.toSorted(() => Math.random() - 0.5);
   const correct = answers.find((a) => a.correct) ?? { id: "", text: "" };
 
   const correctHash = hash("sha1", correct.id, "hex").slice(0, 8);
-
-  interaction.editReply("Question sent!");
 
   const session: TriviaSession = {
     game: { ...game, answers },
@@ -152,10 +146,10 @@ export default async function trivia(interaction: CommandInteraction) {
     expiresAt: Date.now() + 45 * 60 * 1000,
     replaceableAt: Date.now() + 15 * 60 * 1000,
   };
-  const message = await createMessage(
-    interaction.channel.id,
-    <TriviaGame game={session.game} correctHash={correctHash} responses={[]} />,
-  );
+  const [message] = await Promise.all([
+    createMessage(interaction.channel.id, <TriviaGame game={session.game} correctHash={correctHash} responses={[]} />),
+    interaction.editReply("Question sent!"),
+  ]);
 
   session.messageId = message.id;
 

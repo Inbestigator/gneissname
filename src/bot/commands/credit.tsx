@@ -2,6 +2,7 @@ import type { CommandInteraction } from "@dressed/react";
 import type { CommandConfig } from "dressed";
 import { Suspense } from "react";
 import { cache } from "@/db";
+import { procrastinate } from "../utils";
 
 export const config = {
   description: "View your current social credit score",
@@ -16,5 +17,5 @@ export default async function credit(interaction: CommandInteraction) {
     </>,
     { ephemeral: true },
   );
-  return userPromise.then(() => new Promise((r) => setTimeout(r, 1500)));
+  return procrastinate(userPromise);
 }

@@ -2,6 +2,7 @@ import { type CommandInteraction, Container } from "@dressed/react";
 import { type CommandConfig, CommandOption } from "dressed";
 import { Suspense } from "react";
 import { cache } from "@/db";
+import { procrastinate } from "../utils";
 
 export const config = {
   description: "Snoop a user",
@@ -28,5 +29,5 @@ export default async function userData(interaction: CommandInteraction<typeof co
     </Container>,
     { ephemeral: true },
   );
-  return userPromise.then(() => new Promise((r) => setTimeout(r, 1500)));
+  return procrastinate(userPromise);
 }
