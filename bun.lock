@@ -26,7 +26,7 @@
       "devDependencies": {
         "@biomejs/biome": "^2.3.11",
         "@types/node": "^25.0.5",
-        "@types/react": "^19.2.7",
+        "@types/react": "^19.2.8",
         "@types/react-dom": "^19.2.3",
         "daisyui": "^5.5.14",
         "prisma": "^7.2.0",
@@ -72,7 +72,7 @@
 
     "@dressed/matcher": ["@dressed/matcher@1.4.0", "", {}, "sha512-hAM5KaaGrhmMFr1Fd+KCQep6VnODcxInnIXATAbyJo64XN56pM20UvccWVhrIR6Hk2fFZUI69eJ0ehzK4rKxnw=="],
 
-    "@dressed/react": ["@dressed/react@1.8.3", "", { "dependencies": { "discord-api-types": "^0.38.37", "react-reconciler": "npm:@dressed/react-reconciler" }, "peerDependencies": { "dressed": "^1.10.1", "react": "^19.2.3" } }, "sha512-SzjerdPa6jCpep+c6dxhT/ZfMkjvRR7VXLIVJPb270P8VO1ouhjJvmQyaX1TgJ9ISEJuIFltD7YuSaA0q0eNJQ=="],
+    "@dressed/react": ["@dressed/react@1.8.4", "", { "dependencies": { "discord-api-types": "^0.38.37", "react-reconciler": "npm:@dressed/react-reconciler" }, "peerDependencies": { "dressed": "^1.10.1", "react": "^19.2.3" } }, "sha512-l4oI8m1rovwfHPlNOMlcH878l/0JZWy94d3GLO2li5qEV74niprPVT+DDzW+ZQsydy9irZihJwR44ik8PQItgA=="],
 
     "@dressed/ws": ["@dressed/ws@0.4.6", "", { "dependencies": { "discord-api-types": "^0.38.32" }, "peerDependencies": { "dressed": "^1.9.1" } }, "sha512-OH2ViqOSeMcN1H+l0UiwJ9Mu1LLq0Yih2tuL3WeHa2njQlEFLcvFaieG/cQosZdHAjqRbykiEr3ujb+bmsjqqA=="],
 
@@ -302,7 +302,7 @@
 
     "@types/pg": ["@types/pg@8.15.6", "", { "dependencies": { "@types/node": "*", "pg-protocol": "*", "pg-types": "^2.2.0" } }, "sha512-NoaMtzhxOrubeL/7UZuNTrejB4MPAJ0RpxZqXQf2qXuVlTPuG6Y8p4u9dKRaue4yjmC7ZhzVO2/Yyyn25znrPQ=="],
 
-    "@types/react": ["@types/react@19.2.7", "", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-MWtvHrGZLFttgeEj28VXHxpmwYbor/ATPYbBfSFZEIRK0ecCFLl2Qo55z52Hss+UV9CRN7trSeq1zbgx7YDWWg=="],
+    "@types/react": ["@types/react@19.2.8", "", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-3MbSL37jEchWZz2p2mjntRZtPt837ij10ApxKfgmXCTuHWagYg7iA5bqPw6C8BMPfwidlvfPI/fxOc42HLhcyg=="],
 
     "@types/react-dom": ["@types/react-dom@19.2.3", "", { "peerDependencies": { "@types/react": "^19.2.0" } }, "sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ=="],
 
