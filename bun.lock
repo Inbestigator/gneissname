@@ -4,7 +4,7 @@
   "workspaces": {
     "": {
       "dependencies": {
-        "@dressed/react": "^1.8.2",
+        "@dressed/react": "^1.8.3",
         "@dressed/ws": "0.4.6",
         "@prisma/adapter-neon": "^7.2.0",
         "@prisma/client": "^7.2.0",
@@ -72,7 +72,7 @@
 
     "@dressed/matcher": ["@dressed/matcher@1.4.0", "", {}, "sha512-hAM5KaaGrhmMFr1Fd+KCQep6VnODcxInnIXATAbyJo64XN56pM20UvccWVhrIR6Hk2fFZUI69eJ0ehzK4rKxnw=="],
 
-    "@dressed/react": ["@dressed/react@1.8.2", "", { "dependencies": { "discord-api-types": "^0.38.37", "react-reconciler": "npm:@dressed/react-reconciler" }, "peerDependencies": { "dressed": "^1.10.1", "react": "^19.2.3" } }, "sha512-lrH+LBj4mdW6e87xP4FdEgd+gj/OrzujfRNR79TbsOYOd2eMrzuEPAJ9Xd9B4ljzkPRtv+wNQtFEpvTCUysoTQ=="],
+    "@dressed/react": ["@dressed/react@1.8.3", "", { "dependencies": { "discord-api-types": "^0.38.37", "react-reconciler": "npm:@dressed/react-reconciler" }, "peerDependencies": { "dressed": "^1.10.1", "react": "^19.2.3" } }, "sha512-SzjerdPa6jCpep+c6dxhT/ZfMkjvRR7VXLIVJPb270P8VO1ouhjJvmQyaX1TgJ9ISEJuIFltD7YuSaA0q0eNJQ=="],
 
     "@dressed/ws": ["@dressed/ws@0.4.6", "", { "dependencies": { "discord-api-types": "^0.38.32" }, "peerDependencies": { "dressed": "^1.9.1" } }, "sha512-OH2ViqOSeMcN1H+l0UiwJ9Mu1LLq0Yih2tuL3WeHa2njQlEFLcvFaieG/cQosZdHAjqRbykiEr3ujb+bmsjqqA=="],
 
