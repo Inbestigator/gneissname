@@ -1,9 +1,9 @@
 import type { MessageComponentInteraction } from "@dressed/react";
+import { Suspense } from "react";
 import { shopItems } from "@/bot/commands/shop";
 import { modCredit, procrastinate } from "@/bot/utils";
 import { cache } from "@/db";
 import { openTicket } from "../selects/ticket-open";
-import { Suspense } from "react";
 
 const blockedShoppers = {
   Whitelist: ["580638706805768203", "786737189965922316"],
