@@ -8,7 +8,7 @@ export const config = {
   description: "View your current social credit score",
 } satisfies CommandConfig;
 
-export default async function credit(interaction: CommandInteraction) {
+export default function credit(interaction: CommandInteraction) {
   const userPromise = cache.getDBUser(interaction.user.id);
   interaction.reply(
     <>

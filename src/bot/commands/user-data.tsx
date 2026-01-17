@@ -18,9 +18,9 @@ export const config = {
   contexts: ["Guild"],
 } satisfies CommandConfig;
 
-export default async function userData(interaction: CommandInteraction<typeof config>) {
+export default function userData(interaction: CommandInteraction<typeof config>) {
   const user = interaction.getOption("user", true).user();
-  const userPromise = cache.getDBUser(interaction.user.id);
+  const userPromise = cache.getDBUser(user.id);
   interaction.reply(
     <Container>
       ## {user.global_name}&apos;s data{"\n"}
