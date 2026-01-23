@@ -97,7 +97,7 @@ export default async function trivia(interaction: CommandInteraction) {
     getTriviaSession(),
     interaction.deferReply({ ephemeral: true }),
   ]);
-  if (currentSession && currentSession.replaceableAt > Date.now()) {
+  if (currentSession && currentSession.replaceableAt > Date.now() && responses.length < 10) {
     return interaction.editReply(
       <>
         There is already a trivia game in progress!{"\n"}
