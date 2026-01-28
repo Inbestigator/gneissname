@@ -1,12 +1,12 @@
 import { copyFileSync, watch } from "node:fs";
 import { resolve } from "node:path";
-import { parseCommands, parseComponents, parseEvents } from "dressed/build";
+import { parseCommands, parseComponents, parseEvents } from "@dressed/framework/build";
 import { createServer } from "dressed/server";
-import { serverConfig } from "dressed/utils";
+import { config as dressedConfig } from "dressed/utils";
 import config from "./dressed.config.ts";
-import { crawlDir } from "./node_modules/dressed/dist/utils/build.js"; // NOSONAR
+import { crawlDir } from "./node_modules/@dressed/framework/dist/utils.js"; // NOSONAR
 
-Object.assign(serverConfig, config);
+Object.assign(dressedConfig, config);
 
 const files = await Promise.all(
   ["commands", "components", "events"].map(async (d) =>
