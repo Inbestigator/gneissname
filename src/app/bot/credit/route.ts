@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   }
   const user = await cache.getDBUser(userId, false);
   if (!user) return new NextResponse("Unknown user", { status: 404 });
-  return new NextResponse(JSON.stringify(user.credit));
+  return NextResponse.json(user.credit);
 }
 
 export async function POST(req: NextRequest) {

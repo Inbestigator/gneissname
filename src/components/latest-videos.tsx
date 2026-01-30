@@ -17,7 +17,7 @@ export type Video = {
 
 export function SkeletonVideos({ index }: Readonly<{ index: number }>) {
   return (
-    <div className={`card bg-base-200 md:col-span-1 md:block ${index === 0 ? "block" : "hidden"}`}>
+    <div className={cn("card bg-base-200 md:col-span-1 md:block", index === 0 ? "block" : "hidden")}>
       <figure className="skeleton flex aspect-video items-center overflow-hidden rounded-b-none" />
       <div className="card-body">
         <h2 className="card-title skeleton mb-3 h-6">
@@ -43,7 +43,7 @@ function decodeHtmlEntities(v: string) {
 }
 
 export default function LatestVideos() {
-  const { isPending, isError, data } = useQuery({
+  const { data } = useQuery({
     queryKey: ["videos"],
     queryFn: async () => {
       const response = await fetch("/api/videos", {
@@ -53,7 +53,7 @@ export default function LatestVideos() {
     },
   });
 
-  if (isPending || isError || !data?.length) {
+  if (!data?.length) {
     return (
       <>
         <SkeletonVideos index={0} />
@@ -81,7 +81,7 @@ export default function LatestVideos() {
           </figure>
           <div className="card-body">
             <h2 className="card-title">{decodeHtmlEntities(video.title)}</h2>
-            <p className="wrap-break-word">{decodeHtmlEntities(video.description)}</p>
+            <p className="wrap-break-word line-clamp-3">{decodeHtmlEntities(video.description)}</p>
             <div className="card-actions">
               <Link target="_blank" href={`https://youtube.com/watch?v=${video.id}`} className="btn btn-neutral">
                 Watch on YouTube <IconExternalLink className="size-5" />

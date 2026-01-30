@@ -30,53 +30,31 @@ export default function Tickets({
     return data;
   }
 
-  if (isPending) {
-    return (
-      <div className="card bg-base-200">
-        <div className="card-body">
-          <h2 className="card-title">Tickets</h2>
-          <span>Loading tickets...</span>
-        </div>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="card bg-base-200">
-        <div className="card-body">
-          <h2 className="card-title">Tickets</h2>
-          <span>Error: {error.message}</span>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="card bg-base-200">
-      <div className="card-body overflow-x-scroll">
-        <h2 className="card-title">Tickets</h2>
-        <div role="tablist" className="tabs-boxed tabs flex flex-wrap">
-          {data.map((ticket) => (
-            <button
-              type="button"
-              key={ticket.id}
-              onClick={() => setSelectedTab(ticket.id)}
-              className={cn("tab", selectedTab === ticket.id && "tab-active")}
-            >
-              {ticket.name.replaceAll(/\[.*?\]/g, "")}
-            </button>
-          ))}
-        </div>
-        {selectedTab && (
-          <EditTicket
-            ticket={data.find((ticket) => ticket.id === selectedTab) as Ticket}
-            updateTicket={updateTicket}
-            deleteTicket={deleteTicket}
-          />
-        )}
+    <>
+      <h2 className="font-medium text-xl">Tickets</h2>
+      {isPending && "Loading tickets..."}
+      {isError && `Error: ${error.message}`}
+      <div role="tablist" className="tabs-boxed tabs flex flex-wrap">
+        {data?.map((ticket) => (
+          <button
+            type="button"
+            key={ticket.id}
+            onClick={() => setSelectedTab(ticket.id)}
+            className={cn("tab", selectedTab === ticket.id && "tab-active")}
+          >
+            {ticket.name.replaceAll(/\[.*?\]/g, "")}
+          </button>
+        ))}
       </div>
-    </div>
+      {selectedTab && (
+        <EditTicket
+          ticket={data?.find((ticket) => ticket.id === selectedTab) as Ticket}
+          updateTicket={updateTicket}
+          deleteTicket={deleteTicket}
+        />
+      )}
+    </>
   );
 }
 
@@ -98,9 +76,7 @@ function EditTicket({
   const [tags, setTags] = useState(extractBracketContents(ticket.name));
 
   useEffect(() => {
-    if (ticket) {
-      setTags(extractBracketContents(ticket.name));
-    }
+    if (ticket) setTags(extractBracketContents(ticket.name));
   }, [ticket]);
 
   const queryClient = useQueryClient();
@@ -113,7 +89,7 @@ function EditTicket({
           {ticket.name.replaceAll(/\[.*?\]/g, "")}
         </h3>
         <form
-          className="space-x-2"
+          className="flex flex-wrap gap-2"
           action={async (f) => {
             await updateTicket(f);
             queryClient.invalidateQueries({ queryKey: ["tickets"] });
@@ -130,7 +106,7 @@ function EditTicket({
           <input type="hidden" name="tags" value={tags.map((tag) => `[${tag}] `).join("")} />
           <input type="hidden" name="ticketId" value={ticket.id} />
           <input type="hidden" name="user" value={ticket.name.replaceAll(/\[.*?\]\s*/g, "")} />
-          <button className="btn btn-primary mt-2" type="submit">
+          <button className="btn btn-primary" type="submit">
             Submit tags
           </button>
         </form>

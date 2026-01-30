@@ -7,9 +7,8 @@ export default function LoginPage() {
   useEffect(() => {
     signIn("discord");
   }, []);
-
   return (
-    <div className="flex h-[calc(100dvh-6rem)] items-center justify-center md:h-[calc(100dvh-12rem)]">
+    <div className="absolute inset-0 flex items-center justify-center">
       <div className="card w-fit bg-base-200">
         <div className="card-body">
           <div className="card-title">Starting login process...</div>

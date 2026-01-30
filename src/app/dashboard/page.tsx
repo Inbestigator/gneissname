@@ -8,13 +8,7 @@ import { whitelist } from "./whitelist";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    redirect("/login");
-  }
-
-  return (
-    <div className="grid gap-4">
-      {whitelist.includes(session.user.id) && <Tickets updateTicket={updateTicket} deleteTicket={deleteTicket} />}
-    </div>
-  );
+  if (!session) redirect("/login");
+  if (!whitelist.includes(session.user.id)) redirect("/");
+  return <Tickets updateTicket={updateTicket} deleteTicket={deleteTicket} />;
 }

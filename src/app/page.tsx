@@ -5,7 +5,7 @@ import LatestVideos from "@/components/latest-videos";
 export default function IndexPage() {
   return (
     <>
-      <section className="mb-8 flex flex-col gap-6">
+      <section className="mt-4 mb-8 flex flex-col gap-6">
         <header className="flex w-full flex-col items-center gap-2 text-center">
           <h1 className="font-extrabold text-4xl tracking-tighter sm:text-7xl">Gneissname</h1>
           <p className="max-w-full text-lg text-muted-foreground md:max-w-200 md:text-xl">
