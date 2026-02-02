@@ -1,4 +1,5 @@
 import { type CommandInteraction, MediaGallery, MediaGalleryItem } from "@dressed/react";
+import type { CreditRecord } from "@prisma/client";
 import QuickChart from "chartjs-to-image";
 import { type CommandConfig, CommandOption } from "dressed";
 import { prisma } from "@/db";
@@ -16,14 +17,6 @@ export const config = {
   ],
   contexts: ["Guild"],
 } satisfies CommandConfig;
-
-interface CreditRecord {
-  id: string;
-  change: number;
-  currentBalance: number;
-  timestamp: Date;
-  userId: string;
-}
 
 function aggregateHistory(history: CreditRecord[]): CreditRecord[] {
   let aggregated: CreditRecord[] = [...history];
@@ -75,16 +68,10 @@ function aggregateHistory(history: CreditRecord[]): CreditRecord[] {
 
 export default async function history(interaction: CommandInteraction<typeof config>) {
   await interaction.deferReply({ ephemeral: true });
-  const userId = interaction.getOption("user", true).user().id;
+  const { user } = interaction.options;
 
-  const history: {
-    id: string;
-    change: number;
-    currentBalance: number;
-    timestamp: Date;
-    userId: string;
-  }[] = await prisma.creditRecord.findMany({
-    where: { userId },
+  const history = await prisma.creditRecord.findMany({
+    where: { userId: user.id },
     orderBy: { timestamp: "asc" },
   });
 
@@ -98,31 +85,11 @@ export default async function history(interaction: CommandInteraction<typeof con
     type: "line",
     data: {
       labels: timestamps,
-      datasets: [
-        {
-          label: "Credits",
-          data: balances,
-          borderColor: "red",
-          fill: false,
-        },
-      ],
+      datasets: [{ label: "Credits", data: balances, borderColor: "red", fill: false }],
     },
     options: {
-      title: {
-        display: true,
-        text: `${interaction.getOption("user", true).user().global_name}'s Credit History`,
-      },
-      scales: {
-        xAxes: [
-          {
-            type: "time",
-            time: {
-              unit: "day",
-              stepSize: 1,
-            },
-          },
-        ],
-      },
+      title: { display: true, text: `${user.global_name}'s Credit History` },
+      scales: { xAxes: [{ type: "time", time: { unit: "day", stepSize: 1 } }] },
     },
   });
 

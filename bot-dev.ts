@@ -1,10 +1,9 @@
 import { copyFileSync, watch } from "node:fs";
 import { resolve } from "node:path";
-import { parseCommands, parseComponents, parseEvents } from "@dressed/framework/build";
+import { crawlDir, parseCommands, parseComponents, parseEvents } from "@dressed/framework/build";
 import { createServer } from "dressed/server";
 import { config as dressedConfig } from "dressed/utils";
 import config from "./dressed.config.ts";
-import { crawlDir } from "./node_modules/@dressed/framework/dist/utils.js"; // NOSONAR
 
 Object.assign(dressedConfig, config);
 

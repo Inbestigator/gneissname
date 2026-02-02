@@ -39,7 +39,7 @@ export default async function openTicketSelect(interaction: MessageComponentInte
   let ticketName: string;
   let relevantStaff: string[] | undefined;
   let message: string | undefined;
-  switch (interaction.getValues()[0]) {
+  switch (interaction.values[0]) {
     case "Suggestion": {
       await interaction.reply(
         <ActionRow>
@@ -71,7 +71,7 @@ export default async function openTicketSelect(interaction: MessageComponentInte
       break;
     }
     default: {
-      ticketName = interaction.getValues()[0];
+      ticketName = interaction.values[0];
       break;
     }
   }

@@ -19,7 +19,7 @@ export const config = {
 } satisfies CommandConfig;
 
 export default function userData(interaction: CommandInteraction<typeof config>) {
-  const user = interaction.getOption("user", true).user();
+  const { user } = interaction.options;
   const userPromise = cache.getDBUser(user.id);
   interaction.reply(
     <Container>

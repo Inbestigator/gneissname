@@ -40,14 +40,9 @@ export const config = {
 
 export default async function moderateCredit(interaction: CommandInteraction<typeof config>) {
   if (!("options" in interaction.data) || !interaction.data.options) return;
-  const { id } = interaction.getOption("user", true).user();
+  const { amount, modification, user } = interaction.options;
   await Promise.all([
-    modCredit(
-      id,
-      (interaction.getOption("modification", true).string() === "add" ? 1 : -1) *
-        Number(interaction.getOption("amount", true).integer()),
-      true,
-    ),
+    modCredit(user.id, (modification === "add" ? 1 : -1) * amount, true),
     interaction.deferReply({ ephemeral: true }),
   ]);
   return interaction.editReply("Done");
