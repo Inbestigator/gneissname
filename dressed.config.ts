@@ -2,7 +2,7 @@ import type { DressedConfig } from "@dressed/framework";
 import { patchInteraction } from "@dressed/react";
 
 const config: DressedConfig = {
-  build: { root: "src/bot", extensions: ["tsx", "ts"] },
+  build: { root: "src/bot", include: ["**/*.{ts,tsx}"] },
   port: 3000,
   endpoint: "bot",
   middleware: {
