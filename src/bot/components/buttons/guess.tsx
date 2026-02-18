@@ -14,12 +14,7 @@ export default async function guess(
   const [{ session, responses }] = await Promise.all([getTriviaSession(), interaction.deferReply({ ephemeral: true })]);
   const isCorrect = hash("sha1", answerId, "hex").startsWith(hashed);
 
-  if (
-    session &&
-    session.messageId === interaction.message.id &&
-    session.expiresAt > Date.now() &&
-    responses.length < 10
-  ) {
+  if (session?.messageId === interaction.message.id && session.expiresAt > Date.now() && responses.length < 10) {
     if (responses.some((a) => a.userId === interaction.user.id)) {
       return interaction.editReply("You have already answered!");
     }
@@ -39,7 +34,7 @@ export default async function guess(
         interaction.message.id,
         <TriviaGame
           game={session.game}
-          correctHash={hashed}
+          correctHash={session.correct.hashed}
           responses={responses}
           isArchived={responses.length >= 10}
         />,
