@@ -15,7 +15,7 @@ function Leaderboard({
 }>) {
   return entries.map(({ credit, id, name }, i) => (
     <TextDisplay key={id}>
-      {i + 1}. <Suspense fallback="">**{name}**</Suspense>
+      {i + 1} **<Suspense fallback=" ">{name}</Suspense>**
       {"\n"}
       {credit.toLocaleString()}
     </TextDisplay>
@@ -32,7 +32,7 @@ export default async function leaderboard(interaction: CommandInteraction) {
       Members with the highest social credit You&apos;re #<Suspense>{rankPromise}</Suspense>
       <Suspense
         fallback={
-          <Leaderboard entries={Array.from({ length: 10 }, (_, i) => ({ credit: "", id: `${i}`, name: "" }))} />
+          <Leaderboard entries={Array.from({ length: 10 }, (_, i) => ({ credit: "", id: `${i}`, name: " " }))} />
         }
       >
         {ranksPromise.then((r) => (
