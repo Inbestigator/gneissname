@@ -11,7 +11,7 @@ export const config = {
 function Leaderboard({
   entries,
 }: Readonly<{
-  entries: { credit: number | ""; id: string; name: string | Promise<string> }[];
+  entries: { credit: number | "‎"; id: string; name: string | Promise<string> }[];
 }>) {
   return entries.map(({ credit, id, name }, i) => (
     <TextDisplay key={id}>
@@ -32,7 +32,7 @@ export default async function leaderboard(interaction: CommandInteraction) {
       Members with the highest social credit You&apos;re #<Suspense>{rankPromise}</Suspense>
       <Suspense
         fallback={
-          <Leaderboard entries={Array.from({ length: 10 }, (_, i) => ({ credit: "", id: `${i}`, name: " " }))} />
+          <Leaderboard entries={Array.from({ length: 10 }, (_, i) => ({ credit: "‎", id: `${i}`, name: " " }))} />
         }
       >
         {ranksPromise.then((r) => (
