@@ -7,14 +7,7 @@ import { prisma } from "@/db";
 export const config = {
   description: "Credit history",
   default_member_permissions: ["Administrator"],
-  options: [
-    CommandOption({
-      type: "User",
-      name: "user",
-      description: "User",
-      required: true,
-    }),
-  ],
+  options: [CommandOption({ type: "User", name: "user", description: "User", required: true })],
   contexts: ["Guild"],
 } satisfies CommandConfig;
 

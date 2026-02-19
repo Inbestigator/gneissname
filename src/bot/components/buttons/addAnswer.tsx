@@ -1,21 +1,18 @@
 import type { Params } from "@dressed/matcher";
-import { ActionRow, type MessageComponentInteraction, TextInput } from "@dressed/react";
+import { Label, type MessageComponentInteraction, TextInput } from "@dressed/react";
 
 export const pattern = "addAnswer-:isTrue-:questionId";
 
-export default async function addAnswer(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
-  await interaction.showModal(
+export default function addAnswer(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
+  return interaction.showModal(
     <>
-      <ActionRow>
-        <TextInput custom_id="text" label="Text" required />
-      </ActionRow>
-      <ActionRow>
-        <TextInput custom_id="emoji" label="Emoji (only 1)" required />
-      </ActionRow>
+      <Label label="Text">
+        <TextInput custom_id="text" required />
+      </Label>
+      <Label label="Emoji (only 1)">
+        <TextInput custom_id="emoji" required />
+      </Label>
     </>,
-    {
-      custom_id: `addAnswer-${args.isTrue}-${args.questionId}`,
-      title: `Add ${args.isTrue} answer`,
-    },
+    { custom_id: `addAnswer-${args.isTrue}-${args.questionId}`, title: `Add ${args.isTrue} answer` },
   );
 }

@@ -180,7 +180,7 @@ export function TriviaGame({
         {game.answers.map((answer) => (
           <Button
             key={answer.id}
-            emoji={{ name: answer.emoji ?? undefined }}
+            emoji={{ name: answer.emoji }}
             custom_id={`guess-${correctHash}-${answer.id}`}
             label={answer.text}
             style="Secondary"

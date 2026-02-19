@@ -3,12 +3,12 @@ import type { MessageComponentInteraction } from "@dressed/react";
 import { getTriviaSession, type TriviaResponse } from "@/bot/commands/trivia";
 
 export const pattern = "trivia-details-:a(\\d+){-:b(\\d+){-:c(\\d+){-:d(\\d+)}}}";
-const modal = { custom_id: "tmp", title: "Responses" };
+const modal = { custom_id: "noop", title: "Responses" };
 
 export default async function triviaDetails(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
   const { session, responses } = await getTriviaSession();
 
-  if (!session || session.messageId !== interaction.message.id || session.expiresAt < Date.now()) {
+  if (session?.messageId !== interaction.message.id || session.expiresAt < Date.now()) {
     const counts = [Number(args.a)];
     if (args.b) {
       counts.push(Number(args.b));

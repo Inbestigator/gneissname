@@ -31,7 +31,7 @@ model Trivia {
 model Answer {
   id       String  @id @unique @default(uuid())
   correct  Boolean
-  emoji    String?
+  emoji    String
   text     String
   triviaId Int
   question Trivia  @relation(fields: [triviaId], references: [id], onDelete: Cascade)

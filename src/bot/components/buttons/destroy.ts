@@ -1,5 +1,5 @@
 import { deleteMessage, type MessageComponentInteraction } from "dressed";
 
-export default async function destroy(interaction: MessageComponentInteraction) {
-  await deleteMessage(interaction.channel.id, interaction.message.id);
+export default function destroy(interaction: MessageComponentInteraction) {
+  return deleteMessage(interaction.channel.id, interaction.message.id);
 }

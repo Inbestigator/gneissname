@@ -7,14 +7,7 @@ import { procrastinate } from "../utils";
 export const config = {
   description: "Snoop a user",
   default_member_permissions: ["Administrator"],
-  options: [
-    CommandOption({
-      name: "user",
-      description: "User to snoop",
-      type: "User",
-      required: true,
-    }),
-  ],
+  options: [CommandOption({ name: "user", description: "User to snoop", type: "User", required: true })],
   contexts: ["Guild"],
 } satisfies CommandConfig;
 

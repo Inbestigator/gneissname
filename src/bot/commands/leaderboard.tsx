@@ -9,12 +9,13 @@ export const config = {
 } satisfies CommandConfig;
 
 function Leaderboard({
-  ranks,
-  userPromises,
-}: Readonly<{ ranks: { credit: number; id: string }[]; userPromises: Promise<ReturnType<typeof cache.getUser>[]> }>) {
-  return ranks.map(({ credit, id }, i) => (
+  entries,
+}: Readonly<{
+  entries: { credit: number | ""; id: string; name: string | Promise<string> }[];
+}>) {
+  return entries.map(({ credit, id, name }, i) => (
     <TextDisplay key={id}>
-      {i + 1} <Suspense>**{userPromises.then((p) => p[i].then((u) => u.global_name ?? ""))}**</Suspense>
+      {i + 1} <Suspense>**{name}**</Suspense>
       {"\n"}
       {credit.toLocaleString()}
     </TextDisplay>
@@ -24,14 +25,18 @@ function Leaderboard({
 export default async function leaderboard(interaction: CommandInteraction) {
   const rankPromise = cache.getRank(interaction.user.id);
   const ranksPromise = cache.getTopUsers();
-  const userPromises = ranksPromise.then((r) => r.map(({ id }) => cache.getUser(id)));
+  const userPromises = ranksPromise.then((r) => r.map(({ id }) => cache.getUser(id).then((u) => u.global_name ?? "")));
   interaction.reply(
     <Container>
       ## Leaderboard{"\n"}
       Members with the highest social credit You&apos;re #<Suspense>{rankPromise}</Suspense>
-      <Suspense>
+      <Suspense
+        fallback={
+          <Leaderboard entries={Array.from({ length: 10 }, (_, i) => ({ credit: "", id: `${i}`, name: "" }))} />
+        }
+      >
         {ranksPromise.then((r) => (
-          <Leaderboard ranks={r} userPromises={userPromises} />
+          <Leaderboard entries={r.map((u, i) => ({ ...u, name: userPromises.then((p) => p[i]) }))} />
         ))}
       </Suspense>
     </Container>,

@@ -1,8 +1,8 @@
 import { ActionRow, type MessageComponentInteraction, TextInput } from "@dressed/react";
 
-export default async function addQuestion(interaction: MessageComponentInteraction) {
+export default function addQuestion(interaction: MessageComponentInteraction) {
   const content = interaction.message.components?.[0].type === 10 ? interaction.message.components[0].content : "";
-  await interaction.showModal(
+  return interaction.showModal(
     <>
       <ActionRow>
         <TextInput

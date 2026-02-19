@@ -6,18 +6,8 @@ export const config = {
   description: "Moderate some credit",
   default_member_permissions: ["Administrator"],
   options: [
-    CommandOption({
-      type: "User",
-      name: "user",
-      description: "Who're we moderating today?",
-      required: true,
-    }),
-    CommandOption({
-      type: "Integer",
-      name: "amount",
-      description: "Amount to modify by",
-      required: true,
-    }),
+    CommandOption({ type: "User", name: "user", description: "Who're we moderating today?", required: true }),
+    CommandOption({ type: "Integer", name: "amount", description: "Amount to modify by", required: true }),
     CommandOption({
       type: "String",
       name: "modification",
@@ -28,12 +18,7 @@ export const config = {
         { name: "Remove", value: "remove" },
       ],
     }),
-    CommandOption({
-      type: "String",
-      name: "reason",
-      description: "Why?",
-      required: true,
-    }),
+    CommandOption({ type: "String", name: "reason", description: "Why?", required: true }),
   ],
   contexts: ["Guild"],
 } satisfies CommandConfig;
