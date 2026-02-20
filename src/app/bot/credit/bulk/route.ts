@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
               change: amount,
               userId: id,
               currentBalance: credit,
+              reason: `POST:/credit/bulk:${entries.length}`,
               timestamp: new Date(time),
             },
           }),

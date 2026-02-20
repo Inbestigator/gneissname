@@ -34,6 +34,7 @@ function aggregateHistory(history: CreditRecord[]): CreditRecord[] {
           id: `${curr.id}-${next.id}`,
           change: combinedChange,
           currentBalance: averageBalance,
+          reason: null,
           timestamp: new Date(Math.min(curr.timestamp.getTime(), next.timestamp.getTime())),
           userId: curr.userId,
         });

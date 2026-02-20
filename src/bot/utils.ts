@@ -1,15 +1,12 @@
 import type { User } from "@prisma/client";
 import { prisma, redis } from "@/db";
 
-export async function modCredit(userId: string, modifier: number, exemptCap?: boolean) {
+export async function modCredit(userId: string, modifier: number, reason: string, exemptCap?: boolean) {
   try {
     modifier = Math.round(modifier);
     if (!exemptCap) {
       const key = `credit-cap:${userId}`;
-      await redis.set(key, 256, {
-        expiration: { type: "EX", value: 53 * 60 },
-        condition: "NX",
-      });
+      await redis.set(key, 256, { expiration: { type: "EX", value: 53 * 60 }, condition: "NX" });
       if ((await redis.decrBy(key, modifier)) <= 0) {
         modifier /= 10;
       }
@@ -19,19 +16,12 @@ export async function modCredit(userId: string, modifier: number, exemptCap?: bo
       const updatedUser = await prisma.user.upsert({
         where: { id: userId },
         create: { id: userId, credit: modifier },
-        update: {
-          credit: { increment: modifier },
-        },
+        update: { credit: { increment: modifier } },
         select: { credit: true },
       });
 
       await prisma.creditRecord.create({
-        data: {
-          change: modifier,
-          userId,
-          currentBalance: updatedUser.credit,
-          timestamp: new Date(),
-        },
+        data: { change: modifier, userId, currentBalance: updatedUser.credit, reason, timestamp: new Date() },
       });
 
       return updatedUser;

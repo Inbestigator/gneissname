@@ -38,7 +38,7 @@ export default async function buy(
   );
   return procrastinate(
     threadPromise,
-    modCredit(interaction.user.id, selectedItem.price * -1, true),
+    modCredit(interaction.user.id, selectedItem.price * -1, `buy:${selectedItem.name}`, true),
     interaction.editReply(
       <Suspense fallback="Creating claim thread...">&lt;#{threadPromise.then((t) => t.id)}&gt;</Suspense>,
     ),

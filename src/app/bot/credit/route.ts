@@ -19,11 +19,12 @@ export async function POST(req: NextRequest) {
   }
   const userId = req.nextUrl.searchParams.get("u");
   const modifier = req.nextUrl.searchParams.get("m");
+  const reason = req.nextUrl.searchParams.get("r") ?? "POST:/credit";
   if (userId === null || modifier === null) {
     return new NextResponse("Incorrect params", { status: 400 });
   }
   try {
-    await modCredit(userId, Number(modifier));
+    await modCredit(userId, Number(modifier), reason);
     return new NextResponse(null, { status: 204 });
   } catch {
     return new NextResponse(null, { status: 500 });

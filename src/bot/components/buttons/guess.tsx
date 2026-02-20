@@ -63,7 +63,7 @@ export default async function guess(
         </>,
       ),
       redis.set(`trivia-response:${interaction.user.id}`, JSON.stringify(newResponse)),
-      modCredit(interaction.user.id, (100 + Math.random() * 100) * (isCorrect ? 1 : -1)),
+      modCredit(interaction.user.id, (100 + Math.random() * 100) * (isCorrect ? 1 : -1), `trivia:${session.messageId}`),
     ]);
   } else {
     await Promise.all([
