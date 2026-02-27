@@ -224,7 +224,10 @@ function ResponsesSection({ responses, answerIds }: Readonly<{ responses: Trivia
         />
       }
     >
-      ## {responses.sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect)).map((r) => r.symbol)}
+      ##
+      {responses
+        .sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect) || a.timestamp - b.timestamp)
+        .map((r) => r.symbol)}
       {"⚫".repeat(10 - responses.length)}
     </Section>
   );
