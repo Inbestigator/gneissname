@@ -11,7 +11,13 @@ import {
 } from "@dressed/react";
 import type { Answer, Trivia } from "@prisma/client";
 import { type APIMessage, ComponentType } from "discord-api-types/v10";
-import { type CommandConfig, TextDisplay as DressedTextDisplay, editMessage as dressedEditMessage } from "dressed";
+import {
+  type CommandConfig,
+  TextDisplay as DressedTextDisplay,
+  deleteAppEmoji,
+  editMessage as dressedEditMessage,
+  listAppEmojis,
+} from "dressed";
 import { prisma, redis } from "@/db";
 import { separateAnswers } from "../components/buttons/trivia-details";
 
@@ -25,7 +31,7 @@ export interface TriviaResponse {
   isCorrect: boolean;
   userId: string;
   timestamp: number;
-  image: string;
+  symbol: `<:${string}:${string}>`;
 }
 
 export interface TriviaSession {
@@ -159,7 +165,17 @@ export default async function trivia(interaction: CommandInteraction) {
   for (const response of responses) {
     multi.del(`trivia-response:${response.userId}`);
   }
-  await Promise.all([multi.exec(), game.next()]);
+  await Promise.all([
+    multi.exec(),
+    game.next(),
+    listAppEmojis().then(({ items }) =>
+      Promise.all(
+        items
+          .filter((i) => i.name.startsWith("ts_") && i.name !== `ts_${session.messageId}`)
+          .map((i) => deleteAppEmoji(i.id)),
+      ),
+    ),
+  ]);
 }
 
 export function TriviaGame({
@@ -208,8 +224,8 @@ function ResponsesSection({ responses, answerIds }: Readonly<{ responses: Trivia
         />
       }
     >
-      ## {responses.sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect)).map((r) => `<:avatar:${r.image}>`)}
-      {"⬛".repeat(10 - responses.length)}
+      ## {responses.sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect)).map((r) => r.symbol)}
+      {"⚫".repeat(10 - responses.length)}
     </Section>
   );
 }

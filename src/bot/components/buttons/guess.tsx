@@ -22,14 +22,14 @@ export default async function guess(
 
     const emoji = await fetch(
       `https://wsrv.nl/?url=https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}&w=128&mask=circle&tint=${isCorrect ? "green" : "red"}&encoding=base64`,
-    ).then(async (r) => createAppEmoji({ image: await r.text(), name: "avatar" }));
+    ).then(async (r) => createAppEmoji({ image: await r.text(), name: `ts_${session.messageId}` }));
 
     const newResponse: TriviaResponse = {
       answerId,
       isCorrect,
       userId: interaction.user.id,
       timestamp: Date.now(),
-      image: emoji.id,
+      symbol: `<:${emoji.name}:${emoji.id}>`,
     };
 
     responses.push(newResponse);
