@@ -1,6 +1,7 @@
 import { hash } from "node:crypto";
 import type { Params } from "@dressed/matcher";
 import { ActionRow, Button, editMessage, type MessageComponentInteraction } from "@dressed/react";
+import { createAppEmoji } from "dressed";
 import { getTriviaSession, markArchived, TriviaGame, type TriviaResponse } from "@/bot/commands/trivia";
 import { modCredit } from "@/bot/utils";
 import { redis } from "@/db";
@@ -19,11 +20,16 @@ export default async function guess(
       return interaction.editReply("You have already answered!");
     }
 
+    const emoji = await fetch(
+      `https://wsrv.nl/?url=https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}&w=128&mask=circle&tint=${isCorrect ? "green" : "red"}&encoding=base64`,
+    ).then(async (r) => createAppEmoji({ image: await r.text(), name: "avatar" }));
+
     const newResponse: TriviaResponse = {
       answerId,
       isCorrect,
       userId: interaction.user.id,
       timestamp: Date.now(),
+      image: emoji.id,
     };
 
     responses.push(newResponse);

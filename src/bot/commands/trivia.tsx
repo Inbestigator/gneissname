@@ -25,6 +25,7 @@ export interface TriviaResponse {
   isCorrect: boolean;
   userId: string;
   timestamp: number;
+  image: string;
 }
 
 export interface TriviaSession {
@@ -207,11 +208,8 @@ function ResponsesSection({ responses, answerIds }: Readonly<{ responses: Trivia
         />
       }
     >
-      ##{" "}
-      {"🟩"
-        .repeat(responses.filter((r) => r.isCorrect).length)
-        .padEnd(responses.length * 2, "🟥")
-        .padEnd(10 + responses.length, "⬛")}
+      ## {responses.sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect)).map((r) => `<:avatar:${r.image}>`)}
+      {"⬛".repeat(10 - responses.length)}
     </Section>
   );
 }
