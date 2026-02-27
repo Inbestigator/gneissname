@@ -171,7 +171,7 @@ export default async function trivia(interaction: CommandInteraction) {
     listAppEmojis().then(({ items }) =>
       Promise.all(
         items
-          .filter((i) => i.name.startsWith("ts_") && !i.name.startsWith(`ts_${session.messageId}_`))
+          .filter((i) => i.name.startsWith("ts_") && !i.name.startsWith(`ts_${session.messageId.slice(0, 12)}_`))
           .map((i) => deleteAppEmoji(i.id)),
       ),
     ),
