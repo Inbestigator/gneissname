@@ -15,7 +15,7 @@ function Leaderboard({
 }>) {
   return entries.map(({ credit, id, name }, i) => (
     <TextDisplay key={id}>
-      {i + 1} **<Suspense fallback=" ">{name}</Suspense>**
+      {i + 1}. **<Suspense fallback=" ">{name}</Suspense>**
       {"\n"}
       {credit.toLocaleString()}
     </TextDisplay>
