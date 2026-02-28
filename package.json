@@ -32,7 +32,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.4",
     "@dressed/framework": "^0.5.0",
-    "@types/node": "^25.3.2",
+    "@types/node": "^25.3.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "daisyui": "^5.5.19",

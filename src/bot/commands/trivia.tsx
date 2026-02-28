@@ -16,7 +16,6 @@ import {
   TextDisplay as DressedTextDisplay,
   deleteAppEmoji,
   editMessage as dressedEditMessage,
-  listAppEmojis,
 } from "dressed";
 import { prisma, redis } from "@/db";
 import { separateAnswers } from "../components/buttons/trivia-details";
@@ -53,16 +52,10 @@ export async function getTriviaSession(): Promise<{
   session?: TriviaSession;
   responses: TriviaResponse[];
 }> {
-  const sessionJson = await redis.get("currentTrivia");
-  const keys = await redis.keys("trivia-response:*");
+  const [sessionJson, keys] = await Promise.all([redis.get("currentTrivia"), redis.keys("trivia-response:*")]);
   const responses = keys.length ? (await redis.mGet(keys)).map((v) => JSON.parse(v ?? "")) : [];
-  if (!sessionJson) {
-    return { responses };
-  }
-  return {
-    session: JSON.parse(sessionJson),
-    responses,
-  };
+  if (!sessionJson) return { responses };
+  return { session: JSON.parse(sessionJson), responses };
 }
 
 function shuffle<T extends unknown[]>(array: T): T {
@@ -209,7 +202,7 @@ function ResponsesSection({ responses, answerIds }: Readonly<{ responses: Trivia
         <Button
           emoji={{ name: "📊" }}
           disabled={responses.length === 0}
-          custom_id={`trivia-details-${counts ? counts.join("-") : ""}`}
+          custom_id={`trivia-details-${counts.join("-")}`}
           style="Secondary"
         />
       }
