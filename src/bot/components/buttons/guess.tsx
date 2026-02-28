@@ -25,7 +25,7 @@ export default async function guess(
     ).then(async (r) =>
       createAppEmoji({
         image: await r.text(),
-        name: `${interaction.user.id}_${isCorrect ? "" : "in"}correct`,
+        name: `${interaction.user.id}_${isCorrect ? "" : "in"}correct_${BigInt(session.messageId).toString(36).slice(-4)}`,
       }),
     );
 
