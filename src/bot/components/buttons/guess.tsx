@@ -20,12 +20,12 @@ export default async function guess(
       return interaction.editReply("You have already answered!");
     }
 
-    const emoji = await fetch(
+    const { id: emoji } = await fetch(
       `https://wsrv.nl/?url=https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}&w=128&mask=circle&tint=${isCorrect ? "green" : "red"}&bg=${isCorrect ? "lightgreen" : "lightsalmon"}&encoding=base64`,
     ).then(async (r) =>
       createAppEmoji({
         image: await r.text(),
-        name: `ts_${BigInt(session.messageId).toString(36)}_${isCorrect ? "yes" : "no"}_${BigInt(interaction.user.id).toString(36)}`,
+        name: `${interaction.user.id}_${isCorrect ? "" : "in"}correct`,
       }),
     );
 
@@ -34,7 +34,7 @@ export default async function guess(
       isCorrect,
       userId: interaction.user.id,
       timestamp: Date.now(),
-      symbol: `<:${emoji.name}:${emoji.id}>`,
+      emoji,
     };
 
     responses.push(newResponse);

@@ -31,7 +31,7 @@ export interface TriviaResponse {
   isCorrect: boolean;
   userId: string;
   timestamp: number;
-  symbol: `<:${string}:${string}>`;
+  emoji: string;
 }
 
 export interface TriviaSession {
@@ -165,19 +165,7 @@ export default async function trivia(interaction: CommandInteraction) {
   for (const response of responses) {
     multi.del(`trivia-response:${response.userId}`);
   }
-  await Promise.all([
-    multi.exec(),
-    game.next(),
-    listAppEmojis().then(({ items }) =>
-      Promise.all(
-        items
-          .filter(
-            (i) => i.name.startsWith("ts_") && !i.name.startsWith(`ts_${BigInt(session.messageId).toString(36)}_`),
-          )
-          .map((i) => deleteAppEmoji(i.id)),
-      ),
-    ),
-  ]);
+  await Promise.all([multi.exec(), game.next(), Promise.all(responses.map((r) => deleteAppEmoji(r.emoji)))]);
 }
 
 export function TriviaGame({
@@ -229,7 +217,7 @@ function ResponsesSection({ responses, answerIds }: Readonly<{ responses: Trivia
       ##{" "}
       {responses
         .sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect) || a.timestamp - b.timestamp)
-        .map((r) => r.symbol)}
+        .map((r) => `<:${r.userId}_${r.isCorrect ? "" : "in"}correct:${r.emoji}>`)}
       {"⚫".repeat(10 - responses.length)}
     </Section>
   );
