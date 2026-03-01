@@ -27,13 +27,10 @@ function aggregateHistory(history: CreditRecord[]): CreditRecord[] {
 
         if (!curr || !next) continue;
 
-        const averageBalance = (curr.currentBalance + next.currentBalance) / 2;
-        const combinedChange = curr.change + next.change;
-
         newAggregated.push({
           id: `${curr.id}-${next.id}`,
-          change: combinedChange,
-          currentBalance: averageBalance,
+          change: curr.change + next.change,
+          currentBalance: (curr.currentBalance + next.currentBalance) / 2,
           reason: null,
           timestamp: new Date(Math.min(curr.timestamp.getTime(), next.timestamp.getTime())),
           userId: curr.userId,
@@ -42,13 +39,7 @@ function aggregateHistory(history: CreditRecord[]): CreditRecord[] {
         i += 2;
       } else {
         newAggregated.push(
-          aggregated[i] ?? {
-            change: 0,
-            currentBalance: 0,
-            id: "",
-            timestamp: new Date(),
-            userId: "",
-          },
+          aggregated[i] ?? { change: 0, currentBalance: 0, id: "", timestamp: new Date(), userId: "" },
         );
         i += 1;
       }

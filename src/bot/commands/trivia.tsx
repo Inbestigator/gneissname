@@ -34,14 +34,8 @@ export interface TriviaResponse {
 }
 
 export interface TriviaSession {
-  game: Trivia & {
-    answers: Answer[];
-  };
-  correct: {
-    id: string;
-    text: string;
-    hashed: string;
-  };
+  game: Trivia & { answers: Answer[] };
+  correct: { id: string; text: string; hashed: string };
   messageId: string;
   channelId: string;
   expiresAt: number;
@@ -131,34 +125,30 @@ export default async function trivia(interaction: CommandInteraction) {
 
   const answers = game.answers.toSorted(() => Math.random() - 0.5);
   const correct = answers.find((a) => a.correct) ?? { id: "", text: "" };
-
   const correctHash = hash("sha1", correct.id, "hex").slice(0, 8);
-
   const session: TriviaSession = {
     game: { ...game, answers },
     channelId: interaction.channel.id,
     messageId: "null",
-    correct: {
-      id: correct.id,
-      text: correct.text,
-      hashed: correctHash,
-    },
+    correct: { id: correct.id, text: correct.text, hashed: correctHash },
     expiresAt: Date.now() + 45 * 60 * 1000,
     replaceableAt: Date.now() + 15 * 60 * 1000,
   };
+  const multi = redis.multi();
+
   const [message] = await Promise.all([
     createMessage(interaction.channel.id, <TriviaGame game={session.game} correctHash={correctHash} responses={[]} />),
     interaction.editReply("Question sent!"),
   ]);
 
   session.messageId = message.id;
-
-  const multi = redis.multi();
   multi.set("currentTrivia", JSON.stringify(session));
+
   for (const response of responses) {
     multi.del(`trivia-response:${response.userId}`);
   }
-  await Promise.all([multi.exec(), game.next(), Promise.all(responses.map((r) => deleteAppEmoji(r.emoji)))]);
+
+  return Promise.all([multi.exec(), game.next(), Promise.all(responses.map((r) => deleteAppEmoji(r.emoji)))]);
 }
 
 export function TriviaGame({

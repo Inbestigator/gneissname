@@ -19,10 +19,12 @@ export default async function buy(
 ) {
   const selectedItem = shopItems.find((item) => item.name === itemName);
   if (!selectedItem) return interaction.reply("Item not found", { ephemeral: true });
+
   const [{ credit }] = await Promise.all([
     cache.getDBUser(interaction.user.id),
     interaction.reply("Initiating purchase...", { ephemeral: true }),
   ]);
+
   if (credit < selectedItem.price) {
     return interaction.editReply("You don't have enough to buy that!");
   }
@@ -36,6 +38,7 @@ export default async function buy(
     `${interaction.user.global_name} has purchased a ${selectedItem.name.toLowerCase()} and would like to claim it`,
     selectedItem.name === "Whitelist" ? ["&1232903620421484575"] : undefined,
   );
+
   return procrastinate(
     threadPromise,
     modCredit(interaction.user.id, selectedItem.price * -1, `buy:${selectedItem.name}`, true),
