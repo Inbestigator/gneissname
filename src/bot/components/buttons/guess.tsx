@@ -20,6 +20,30 @@ export default async function guess(
       return interaction.editReply("You have already answered!");
     }
 
+    const editPromise = interaction.editReply(
+      <>
+        ## {isCorrect ? "Correct" : "Nice try"}!{"\n"}
+        {!isCorrect && (
+          <>
+            ### Answer:{"\n"}
+            {session.correct.text}
+            {"\n"}
+          </>
+        )}
+        ### Explanation:{"\n"}
+        {session.game.explanation}
+        {session.game.explanation.endsWith("please suggest one!") && (
+          <ActionRow>
+            <Button
+              custom_id={`ticket-open-Answer suggestion-For "${session.correct.id}"@761777382041714690`}
+              label="Suggest"
+              emoji={{ name: "💡" }}
+            />
+          </ActionRow>
+        )}
+      </>,
+    );
+
     const { id: emoji } = await fetch(
       `https://wsrv.nl/?url=https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}&w=128&mask=circle&tint=${isCorrect ? "green" : "red"}&bg=${isCorrect ? "lightgreen" : "lightsalmon"}&encoding=base64`,
     ).then(async (r) =>
@@ -39,7 +63,7 @@ export default async function guess(
 
     responses.push(newResponse);
 
-    await Promise.all([
+    return Promise.all([
       editMessage(
         interaction.channel.id,
         interaction.message.id,
@@ -50,34 +74,12 @@ export default async function guess(
           isArchived={responses.length >= 10}
         />,
       ),
-      interaction.editReply(
-        <>
-          ## {isCorrect ? "Correct" : "Nice try"}!{"\n"}
-          {!isCorrect && (
-            <>
-              ### Answer:{"\n"}
-              {session.correct.text}
-              {"\n"}
-            </>
-          )}
-          ### Explanation:{"\n"}
-          {session.game.explanation}
-          {session.game.explanation.endsWith("please suggest one!") && (
-            <ActionRow>
-              <Button
-                custom_id={`ticket-open-Answer suggestion-For "${session.correct.id}"@761777382041714690`}
-                label="Suggest"
-                emoji={{ name: "💡" }}
-              />
-            </ActionRow>
-          )}
-        </>,
-      ),
+      editPromise,
       redis.set(`trivia-response:${interaction.user.id}`, JSON.stringify(newResponse)),
       modCredit(interaction.user.id, (100 + Math.random() * 100) * (isCorrect ? 1 : -1), `trivia:${session.messageId}`),
     ]);
   } else {
-    await Promise.all([
+    return Promise.all([
       interaction.editReply(
         <>
           ## {isCorrect ? "Correct" : "Nice try"}!{"\n"}
