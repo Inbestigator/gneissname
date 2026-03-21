@@ -47,10 +47,7 @@ export default async function guess(
     const { id: emoji } = await fetch(
       `https://wsrv.nl/?url=https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}&w=128&mask=circle&tint=${isCorrect ? "green" : "red"}&bg=${isCorrect ? "lightgreen" : "lightsalmon"}&encoding=base64`,
     ).then(async (r) =>
-      createAppEmoji({
-        image: await r.text(),
-        name: `${interaction.user.id}_${isCorrect ? "" : "in"}correct_${BigInt(session.messageId).toString(36).slice(-2)}`,
-      }),
+      createAppEmoji({ image: await r.text(), name: hash("md5", `${interaction.user.id}:${session.messageId}`) }),
     );
 
     const newResponse: TriviaResponse = {

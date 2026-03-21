@@ -10,13 +10,9 @@ import {
   Separator,
 } from "@dressed/react";
 import type { Answer, Trivia } from "@prisma/client";
-import { type APIMessage, ComponentType } from "discord-api-types/v10";
-import {
-  type CommandConfig,
-  TextDisplay as DressedTextDisplay,
-  deleteAppEmoji,
-  editMessage as dressedEditMessage,
-} from "dressed";
+import abseil from "abseil";
+import type { APIMessage } from "discord-api-types/v10";
+import { type CommandConfig, deleteAppEmoji, editMessage as dressedEditMessage, TextDisplay } from "dressed";
 import { prisma, redis } from "@/db";
 import { separateAnswers } from "../components/buttons/trivia-details";
 
@@ -208,8 +204,9 @@ function ResponsesSection({ responses, answerIds }: Readonly<{ responses: Trivia
 
 export function markArchived(message: APIMessage) {
   const { channel_id, components = [], id } = message;
-  const container = components.find((c) => c.type === ComponentType.Container);
-  if (!container?.components || container.components.at(-1)?.type === 10) return;
-  container.components.push(DressedTextDisplay("-# This trivia has expired. However, you can still respond"));
+  const container = abseil(message.components ?? []).initial("Container");
+  if (container.child("Section").last("TextDisplay")?.sibling) {
+    container.value.components.push(TextDisplay("-# This trivia has expired. However, you can still respond"));
+  }
   return dressedEditMessage(channel_id, id, { components });
 }
