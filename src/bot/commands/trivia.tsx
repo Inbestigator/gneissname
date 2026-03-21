@@ -205,7 +205,7 @@ function ResponsesSection({ responses, answerIds }: Readonly<{ responses: Trivia
 export function markArchived(message: APIMessage) {
   const { channel_id, components = [], id } = message;
   const container = abseil(components).initial("Container");
-  if (container.child("Section").last("Section")?.next("TextDisplay")) {
+  if (!container.child("Section").last("Section")?.next("TextDisplay")) {
     container.value.components.push(TextDisplay("-# This trivia has expired. However, you can still respond"));
   }
   return dressedEditMessage(channel_id, id, { components });
