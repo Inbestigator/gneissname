@@ -12,7 +12,7 @@
         "@tailwindcss/postcss": "^4.2.2",
         "@tailwindcss/typography": "^0.5.19",
         "@tanstack/react-query": "^5.91.3",
-        "abseil": "^0.2.0",
+        "abseil": "^0.3.0",
         "chartjs-to-image": "^1.2.2",
         "clsx": "^2.1.1",
         "discord-api-types": "^0.38.42",
@@ -323,7 +323,7 @@
 
     "@types/react-reconciler": ["@types/react-reconciler@0.33.0", "", { "peerDependencies": { "@types/react": "*" } }, "sha512-HZOXsKT0tGI9LlUw2LuedXsVeB88wFa536vVL0M6vE8zN63nI+sSr1ByxmPToP5K5bukaVscyeCJcF9guVNJ1g=="],
 
-    "abseil": ["abseil@0.2.0", "", { "dependencies": { "discord-api-types": "^0.38.42" } }, "sha512-DIEd2Q9h+8AO1/4KtJ8+3dtsaDpLJ2OW1Dku/jYGqgkinWB1VIoAbjozdsyAyH7qxyrqzZQFHOPEWYPDULzJgw=="],
+    "abseil": ["abseil@0.3.0", "", { "dependencies": { "discord-api-types": "^0.38.42" } }, "sha512-/ux/pL2foLKYxpsSNZm4kJ0mRO+Ufn0EvTt0mN3zKRUyB8zLPUEWaQ+TuQB7z6i4F2mGCtg64y5Nc4vOLewQ8Q=="],
 
     "asynckit": ["asynckit@0.4.0", "", {}, "sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q=="],
 
