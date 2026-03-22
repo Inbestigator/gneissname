@@ -207,6 +207,6 @@ export function markArchived(message: APIMessage) {
   const container = abseil(components).initial("Container");
   if (!container.child("Section").last("Section")?.next("TextDisplay")) {
     container.value.components.push(TextDisplay("-# This trivia has expired. However, you can still respond"));
+    return dressedEditMessage(channel_id, id, { components });
   }
-  return dressedEditMessage(channel_id, id, { components });
 }
