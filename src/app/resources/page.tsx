@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Resources",
+  description: "Access world downloads and resource packs featured in videos",
+};
 
 export default function DownloadsPage() {
   return (
