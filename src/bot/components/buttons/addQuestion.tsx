@@ -1,7 +1,10 @@
 import { ActionRow, type MessageComponentInteraction, TextInput } from "@dressed/react";
+import abseil from "abseil";
 
 export default function addQuestion(interaction: MessageComponentInteraction) {
-  const content = interaction.message.components?.[0].type === 10 ? interaction.message.components[0].content : "";
+  const question = abseil(interaction.message.components ?? [])
+    .initial("TextDisplay")
+    .sibling("TextDisplay");
   return interaction.showModal(
     <>
       <ActionRow>
@@ -9,7 +12,7 @@ export default function addQuestion(interaction: MessageComponentInteraction) {
           custom_id="question"
           label="What is the trivia question?"
           required
-          value={(content.split("Question: ")[1] ?? "").split("\n")[0]}
+          value={question.value.content.replace(/^Question: /, "")}
         />
       </ActionRow>
       <ActionRow>
@@ -17,7 +20,7 @@ export default function addQuestion(interaction: MessageComponentInteraction) {
           custom_id="explanation"
           label="Explanation for the true answer"
           required
-          value={(content.split("Explanation: ")[1] ?? "").split("\n")[0]}
+          value={question.sibling("TextDisplay").value.content.replace(/^Explanation: /, "")}
           style="Paragraph"
         />
       </ActionRow>

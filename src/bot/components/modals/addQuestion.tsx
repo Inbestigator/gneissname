@@ -30,7 +30,7 @@ export function ProposalStage({
 }>) {
   return (
     <>
-      {components?.[0].type === 10 && components[0].content}
+      {components?.slice(0, -1)}
       <ActionRow>
         <Button
           custom_id="addQuestion"

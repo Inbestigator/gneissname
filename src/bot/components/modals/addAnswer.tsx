@@ -2,6 +2,7 @@ import type { Params } from "@dressed/matcher";
 import type { ModalSubmitInteraction } from "@dressed/react";
 import { prisma } from "@/db";
 import { ProposalStage } from "./addQuestion";
+import abseil, { removeNode } from "abseil";
 
 export const pattern = "addAnswer-:isTrue-:questionId";
 
@@ -27,12 +28,21 @@ export default async function addAnswer(interaction: ModalSubmitInteraction, arg
 
   const isLast = triviaQ.answers.length === 4;
 
+  const components = interaction.message?.components ?? [];
+
+  const incorrect = abseil(components)
+    .initial("TextDisplay") //  Sgt
+    .sibling("TextDisplay") //  Qtn
+    .sibling("TextDisplay") //  Exp
+    .sibling("TextDisplay") //  Cor
+    .sibling("TextDisplay") //  Inc
+    .sibling("TextDisplay"); // Incn
+
+  if (!args.isTrue) {
+    removeNode(incorrect);
+  }
+
   await interaction.editReply(
-    <ProposalStage
-      components={interaction.message?.components}
-      id={triviaQ.id}
-      isCorrect={false}
-      stage={isLast ? "done" : "addAnswer"}
-    />,
+    <ProposalStage components={components} id={triviaQ.id} isCorrect={false} stage={isLast ? "done" : "addAnswer"} />,
   );
 }
