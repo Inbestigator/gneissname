@@ -1,4 +1,4 @@
-import { ActionRow, Button, type ModalSubmitInteraction } from "@dressed/react";
+import { ActionRow, Button, type ModalSubmitInteraction, reconstructElementTree } from "@dressed/react";
 import type { APIMessageTopLevelComponent } from "discord-api-types/v10";
 import { prisma } from "@/db";
 
@@ -21,7 +21,7 @@ export function ProposalStage({
   id,
   isCorrect,
   stage,
-  components,
+  components = [],
 }: Readonly<{
   stage: "addQuestion" | "addAnswer" | "done";
   isCorrect: boolean;
@@ -30,7 +30,7 @@ export function ProposalStage({
 }>) {
   return (
     <>
-      {components?.slice(0, -1)}
+      {reconstructElementTree(components.slice(0, -1))}
       <ActionRow>
         <Button
           custom_id="addQuestion"

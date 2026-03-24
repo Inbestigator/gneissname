@@ -4,7 +4,7 @@
   "workspaces": {
     "": {
       "dependencies": {
-        "@dressed/react": "^1.8.5-rc.1.1",
+        "@dressed/react": "^1.8.5-canary.2",
         "@dressed/ws": "^0.5.0-canary.1",
         "@prisma/adapter-neon": "^7.5.0",
         "@prisma/client": "^7.5.0",
@@ -77,7 +77,7 @@
 
     "@dressed/matcher": ["@dressed/matcher@1.4.0", "", {}, "sha512-hAM5KaaGrhmMFr1Fd+KCQep6VnODcxInnIXATAbyJo64XN56pM20UvccWVhrIR6Hk2fFZUI69eJ0ehzK4rKxnw=="],
 
-    "@dressed/react": ["@dressed/react@1.8.5-rc.1.1", "", { "dependencies": { "@types/react": "^19.2.14", "@types/react-reconciler": "^0.33.0", "discord-api-types": "^0.38.39", "react-reconciler": "npm:@dressed/react-reconciler" }, "peerDependencies": { "dressed": "^2.0.0-canary.2", "react": "^19.2.4" } }, "sha512-ckw0OlQ+EGEjaY+MNtZfzpGnHAhJ5u9vHJ9+vgBQrtOKPsGXGf6tZLpumzQMVb7QPvSX5rJh8lPOX5UY8l5BoQ=="],
+    "@dressed/react": ["@dressed/react@1.8.5-canary.2", "", { "dependencies": { "@types/react": "^19.2.14", "@types/react-reconciler": "^0.33.0", "discord-api-types": "^0.38.39", "react-reconciler": "npm:@dressed/react-reconciler" }, "peerDependencies": { "dressed": "^2.0.0-canary.2", "react": "^19.2.4" } }, "sha512-gqYU4UtbqjcXst4iZmaWjnEun4xL9Tj44hkZwErkSreeLiiukrDZKrFzrnakAnTKRAgRorMmE/DUusv+2pMZbg=="],
 
     "@dressed/ws": ["@dressed/ws@0.5.0-canary.1", "", { "dependencies": { "discord-api-types": "^0.38.38" }, "peerDependencies": { "dressed": "^2.0.0-canary.2" } }, "sha512-KK0ZQTGhzG3Sl0rs9ctsSfLdtnRIGkf1KZuOOXmq/Apa9DUAdZqhrg8LFJdkej2+NscrmSH82KkvxULUDys1Bw=="],
 
@@ -672,8 +672,6 @@
     "yallist": ["yallist@4.0.0", "", {}, "sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A=="],
 
     "zeptomatch": ["zeptomatch@2.1.0", "", { "dependencies": { "grammex": "^3.1.11", "graphmatch": "^1.1.0" } }, "sha512-KiGErG2J0G82LSpniV0CtIzjlJ10E04j02VOudJsPyPwNZgGnRKQy7I1R7GMyg/QswnE4l7ohSGrQbQbjXPPDA=="],
-
-    "@dressed/react/discord-api-types": ["discord-api-types@0.38.39", "", {}, "sha512-XRdDQvZvID1XvcFftjSmd4dcmMi/RL/jSy5sduBDAvCGFcNFHThdIQXCEBDZFe52lCNEzuIL0QJoKYAmRmxLUA=="],
 
     "@dressed/ws/discord-api-types": ["discord-api-types@0.38.38", "", {}, "sha512-7qcM5IeZrfb+LXW07HvoI5L+j4PQeMZXEkSm1htHAHh4Y9JSMXBWjy/r7zmUCOj4F7zNjMcm7IMWr131MT2h0Q=="],
 
