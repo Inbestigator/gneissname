@@ -4,9 +4,10 @@ import abseil, { removeNode } from "abseil";
 import { prisma } from "@/db";
 import { ProposalStage } from "./addQuestion";
 
-export const pattern = "addAnswer-:isTrue-:questionId";
+export const pattern = "addAnswer-:isCorrect-:questionId";
 
 export default async function addAnswer(interaction: ModalSubmitInteraction, args: Params<typeof pattern>) {
+  const isCorrect = args.isCorrect === "true";
   const [triviaQ] = await Promise.all([
     prisma.trivia.update({
       where: {
@@ -17,7 +18,7 @@ export default async function addAnswer(interaction: ModalSubmitInteraction, arg
           create: {
             text: interaction.getField("text", true).textInput(),
             emoji: interaction.getField("emoji", true).textInput(),
-            correct: args.isTrue === "true",
+            correct: isCorrect,
           },
         },
       },
@@ -38,7 +39,7 @@ export default async function addAnswer(interaction: ModalSubmitInteraction, arg
     .sibling("TextDisplay") //  Inc
     .sibling("TextDisplay"); // Incn
 
-  if (!args.isTrue) {
+  if (!isCorrect) {
     removeNode(incorrect);
   }
 
