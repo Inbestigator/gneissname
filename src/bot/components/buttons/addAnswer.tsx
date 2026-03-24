@@ -7,11 +7,11 @@ export const pattern = "addAnswer-:isCorrect-:questionId";
 export default function addAnswer(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
   const isCorrect = args.isCorrect === "true";
   let correct = abseil(interaction.message.components ?? [])
-    .initial("TextDisplay") //  Sgt
+    .initial("TextDisplay") //  Usr
     .sibling("TextDisplay") //  Qtn
     .sibling("TextDisplay") //  Exp
     .sibling("TextDisplay"); // Cor
-  if (!isCorrect) correct = correct.sibling("TextDisplay").sibling("TextDisplay");
+  if (!isCorrect) correct = correct.sibling("TextDisplay").next("TextDisplay") ?? ({ value: { content: "" } } as never);
   return interaction.showModal(
     <>
       <Label label="Text">

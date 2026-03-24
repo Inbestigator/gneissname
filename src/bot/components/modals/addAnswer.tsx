@@ -37,9 +37,9 @@ export default async function addAnswer(interaction: ModalSubmitInteraction, arg
     .sibling("TextDisplay") //  Exp
     .sibling("TextDisplay") //  Cor
     .sibling("TextDisplay") //  Inc
-    .sibling("TextDisplay"); // Incn
+    .next("TextDisplay"); // Incn
 
-  if (!isCorrect) {
+  if (!isCorrect && incorrect) {
     removeNode(incorrect);
   }
 
