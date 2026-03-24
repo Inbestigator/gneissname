@@ -10,7 +10,7 @@ export default function addAnswer(interaction: MessageComponentInteraction, args
     .sibling("TextDisplay") //  Qtn
     .sibling("TextDisplay") //  Exp
     .sibling("TextDisplay"); // Cor
-  if (!args.isTrue) correct = correct.sibling("TextDisplay").sibling("TextDisplay");
+  if (args.isTrue === "false") correct = correct.sibling("TextDisplay").sibling("TextDisplay");
   return interaction.showModal(
     <>
       <Label label="Text">

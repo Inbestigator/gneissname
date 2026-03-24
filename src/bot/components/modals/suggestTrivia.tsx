@@ -15,7 +15,7 @@ export default async function suggestTrivia(interaction: ModalSubmitInteraction)
         .split("\n")
         .map((i, n) => (
           <TextDisplay key={i}>
-            {n}. {i}
+            {n + 1}. {i}
           </TextDisplay>
         ))}
       <ActionRow>
