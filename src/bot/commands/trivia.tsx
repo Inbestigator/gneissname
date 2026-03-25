@@ -101,17 +101,28 @@ export default async function trivia(interaction: CommandInteraction) {
       </>,
     );
   } else if (currentSession) {
+    const multi = redis.multi();
+
+    multi.del("currentTrivia");
+    for (const response of responses) {
+      multi.del(`trivia-response:${response.userId}`);
+    }
+
     try {
-      await editMessage(
-        currentSession.channelId,
-        currentSession.messageId,
-        <TriviaGame
-          game={currentSession.game}
-          correctHash={currentSession.correct.hashed}
-          responses={responses}
-          isArchived
-        />,
-      );
+      await multi
+        .exec()
+        .then(() =>
+          editMessage(
+            currentSession.channelId,
+            currentSession.messageId,
+            <TriviaGame
+              game={currentSession.game}
+              correctHash={currentSession.correct.hashed}
+              responses={responses}
+              isArchived
+            />,
+          ),
+        );
     } catch {}
   }
 
@@ -127,24 +138,23 @@ export default async function trivia(interaction: CommandInteraction) {
     channelId: interaction.channel.id,
     messageId: "null",
     correct: { id: correct.id, text: correct.text, hashed: correctHash },
-    expiresAt: Date.now() + 45 * 60 * 1000,
-    replaceableAt: Date.now() + 15 * 60 * 1000,
+    expiresAt: Date.now() + 45 * 6e4,
+    replaceableAt: Date.now() + 15 * 6e4,
   };
-  const multi = redis.multi();
 
   const [message] = await Promise.all([
     createMessage(interaction.channel.id, <TriviaGame game={session.game} correctHash={correctHash} responses={[]} />),
+    redis.set("currentTrivia", JSON.stringify(session)),
     interaction.editReply("Question sent!"),
   ]);
 
   session.messageId = message.id;
-  multi.set("currentTrivia", JSON.stringify(session));
 
-  for (const response of responses) {
-    multi.del(`trivia-response:${response.userId}`);
-  }
-
-  return Promise.all([multi.exec(), game.next(), Promise.all(responses.map((r) => deleteAppEmoji(r.emoji)))]);
+  return Promise.all([
+    redis.set("currentTrivia", JSON.stringify(session)),
+    game.next(),
+    ...responses.map((r) => deleteAppEmoji(r.emoji)),
+  ]);
 }
 
 export function TriviaGame({
