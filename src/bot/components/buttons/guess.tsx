@@ -2,7 +2,7 @@ import { hash } from "node:crypto";
 import type { Params } from "@dressed/matcher";
 import { ActionRow, Button, editMessage, type MessageComponentInteraction } from "@dressed/react";
 import { createAppEmoji } from "dressed";
-import { getTriviaSession, markArchived, TriviaGame, type TriviaResponse } from "@/bot/commands/trivia";
+import startTrivia, { getTriviaSession, markArchived, TriviaGame, type TriviaResponse } from "@/bot/commands/trivia";
 import { modCredit } from "@/bot/utils";
 import { redis } from "@/db";
 
@@ -84,6 +84,8 @@ export default async function guess(
         </>,
       ),
       markArchived(interaction.message),
+      // @ts-expect-error
+      startTrivia({ ...interaction, deferReply() {}, editReply() {} }),
     ]);
   }
 }
