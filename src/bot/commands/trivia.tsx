@@ -132,8 +132,6 @@ export default async function trivia(interaction: CommandInteraction) {
 
   const answers = game.answers.toSorted(() => Math.random() - 0.5);
   const correct = answers.find((a) => a.correct) ?? { id: "", text: "" };
-  answers.map((a) => (a.correct = false));
-  answers[Math.floor(Math.random() * answers.length)].correct = true;
   const correctHash = hash("sha1", correct.id, "hex").slice(0, 8);
   const session: TriviaSession = {
     game: { ...game, answers },
@@ -181,7 +179,7 @@ export function TriviaGame({
             emoji={{ name: answer.emoji }}
             custom_id={`guess-${correctHash}-${answer.id}`}
             label={answer.text}
-            style={answer.correct ? "Success" : "Danger"}
+            style="Secondary"
           />
         ))}
       </ActionRow>
