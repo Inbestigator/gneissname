@@ -17,7 +17,7 @@ export type Video = {
 
 export function SkeletonVideos({ index }: Readonly<{ index: number }>) {
   return (
-    <div className={cn("card bg-base-200 md:col-span-1 md:block", index === 0 ? "block" : "hidden")}>
+    <div className={cn("card bg-base-200 md:col-span-1 md:flex", index === 0 ? "flex" : "hidden")}>
       <figure className="skeleton flex aspect-video items-center overflow-hidden rounded-b-none" />
       <div className="card-body">
         <h2 className="card-title skeleton mb-3 h-6">
@@ -66,10 +66,7 @@ export default function LatestVideos() {
   return (
     <>
       {data.map((video: Video, index: number) => (
-        <div
-          key={video.id}
-          className={cn("card bg-base-200 md:block", index < 2 && "sm:block", index !== 0 && "hidden")}
-        >
+        <div key={video.id} className={cn("card bg-base-200 md:flex", index < 2 && "sm:flex", index !== 0 && "hidden")}>
           <figure className="flex aspect-video items-center overflow-hidden">
             <Image
               src={video.thumbnail}
