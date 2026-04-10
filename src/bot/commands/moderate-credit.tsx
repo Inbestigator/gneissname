@@ -26,7 +26,7 @@ export const config = {
 export default async function moderateCredit(interaction: CommandInteraction<typeof config>) {
   const { amount, modification, user, reason } = interaction.options;
   await Promise.all([
-    modCredit(user.id, (modification === "add" ? 1 : -1) * amount, reason, true),
+    modCredit(user.id, (modification === "add" ? 1 : -1) * amount, `mod:${interaction.user.id}:${reason}`, true),
     interaction.deferReply({ ephemeral: true }),
   ]);
   return interaction.editReply("Done");
