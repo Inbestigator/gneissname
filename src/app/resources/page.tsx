@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const worldDownloads = [
   {
     title: "Gneiss Benchmark",
-    version: "1.2.3",
+    version: "26.1",
     href: "https://drive.google.com/file/d/1_GA8Quv2xf3ZqfO_5fC1w6jJQ_VeoocS",
     description: "A little benchmark world.",
   },
