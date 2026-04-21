@@ -18,7 +18,7 @@ export default function suggest(interaction: CommandInteraction) {
         <TextInput custom_id="true" max_length={50} required />
       </Label>
       <Label label="3 false answers">
-        <TextInput custom_id="false" placeholder="Foo\nBar\nBaz" style="Paragraph" max_length={200} required />
+        <TextInput custom_id="false" placeholder="Foo\\nBar\\nBaz" style="Paragraph" max_length={200} required />
       </Label>
     </>,
     { custom_id: "suggestTrivia", title: "Suggest a trivia question" },
