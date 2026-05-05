@@ -75,9 +75,13 @@ export default function DownloadsPage() {
   return (
     <div className="grid gap-4 pt-6 pb-8 sm:grid-cols-3 md:py-10">
       <h1 className="font-extrabold text-3xl sm:col-span-3">World downloads</h1>
-      {worldDownloads.map((item) => (<Card key={item.id} item={item} />))}
+      {worldDownloads.map((item) => (
+        <Card key={item.id} item={item} />
+      ))}
       <h1 className="font-extrabold text-3xl sm:col-span-3">Resource packs</h1>
-      {resourcePacks.map((item) => (<Card key={item.id} item={item} />))}
+      {resourcePacks.map((item) => (
+        <Card key={item.id} item={item} />
+      ))}
     </div>
   );
 }
