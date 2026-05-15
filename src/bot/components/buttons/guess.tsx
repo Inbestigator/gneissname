@@ -1,7 +1,8 @@
 import { hash } from "node:crypto";
 import type { Params } from "@dressed/matcher";
-import { ActionRow, Button, editMessage, type MessageComponentInteraction } from "@dressed/react";
+import { Button, editMessage, type MessageComponentInteraction, Section } from "@dressed/react";
 import { createAppEmoji } from "dressed";
+import { Fragment } from "react";
 import startTrivia, { getTriviaSession, markArchived, TriviaGame, type TriviaResponse } from "@/bot/commands/trivia";
 import { modCredit } from "@/bot/utils";
 import { redis } from "@/db";
@@ -20,6 +21,8 @@ export default async function guess(
       return interaction.editReply("You have already answered!");
     }
 
+    const ExplanationWrapper = session.game.explanation.endsWith("please suggest one!") ? Section : Fragment;
+
     const editPromise = interaction.editReply(
       <>
         ## {isCorrect ? "Correct" : "Nice try"}!{"\n"}
@@ -31,16 +34,17 @@ export default async function guess(
           </>
         )}
         ### Explanation:{"\n"}
-        {session.game.explanation}
-        {session.game.explanation.endsWith("please suggest one!") && (
-          <ActionRow>
+        <ExplanationWrapper
+          accessory={
             <Button
               custom_id={`ticket-open-Answer suggestion-For "${session.correct.id}"@761777382041714690`}
               label="Suggest"
               emoji={{ name: "💡" }}
             />
-          </ActionRow>
-        )}
+          }
+        >
+          {session.game.explanation}
+        </ExplanationWrapper>
       </>,
     );
 
