@@ -26,8 +26,8 @@ export async function modCredit(userId: string, modifier: number, reason: string
 
       return updatedUser;
     });
-  } catch {
-    throw new Error("Failed to update credit");
+  } catch (cause) {
+    throw new Error("Failed to update credit", { cause });
   }
 }
 
