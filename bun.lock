@@ -4,7 +4,7 @@
   "workspaces": {
     "": {
       "dependencies": {
-        "@dressed/react": "^1.8.5-canary.2.3",
+        "@dressed/react": "^1.8.5-canary.2.4",
         "@dressed/ws": "^0.5.0-canary.1",
         "@prisma/adapter-neon": "^7.8.0",
         "@prisma/client": "^7.8.0",
@@ -69,7 +69,7 @@
 
     "@dressed/matcher": ["@dressed/matcher@1.4.0", "", {}, "sha512-hAM5KaaGrhmMFr1Fd+KCQep6VnODcxInnIXATAbyJo64XN56pM20UvccWVhrIR6Hk2fFZUI69eJ0ehzK4rKxnw=="],
 
-    "@dressed/react": ["@dressed/react@1.8.5-canary.2.3", "", { "dependencies": { "@types/react": "^19.2.14", "@types/react-reconciler": "^0.33.0", "discord-api-types": "^0.38.39", "react-reconciler": "npm:@dressed/react-reconciler" }, "peerDependencies": { "dressed": "^2.0.0-canary.6.2", "react": "^19.2.4" } }, "sha512-wDcjU9ppVIBiDdT/KDUhz8kC1Ij3ziQBpoWsCfaeAE8ElleowdixW17aUgwtVUrqw2IPBZwqUYNfNlb4RGG0mw=="],
+    "@dressed/react": ["@dressed/react@1.8.5-canary.2.4", "", { "dependencies": { "@types/react": "^19.2.14", "@types/react-reconciler": "^0.33.0", "discord-api-types": "^0.38.39", "react-reconciler": "npm:@dressed/react-reconciler" }, "peerDependencies": { "dressed": "^2.0.0-canary.6.2", "react": "^19.2.4" } }, "sha512-s3Wz0o4Y937jtdKTPekyR8U1YhdW8R2r03MkQ75dtpFcthkELUAyzgeALNlsW2SV0dJT2Dkqpl7jPdh9eBoGdg=="],
 
     "@dressed/ws": ["@dressed/ws@0.5.0-canary.1", "", { "dependencies": { "discord-api-types": "^0.38.38" }, "peerDependencies": { "dressed": "^2.0.0-canary.2" } }, "sha512-KK0ZQTGhzG3Sl0rs9ctsSfLdtnRIGkf1KZuOOXmq/Apa9DUAdZqhrg8LFJdkej2+NscrmSH82KkvxULUDys1Bw=="],
 
