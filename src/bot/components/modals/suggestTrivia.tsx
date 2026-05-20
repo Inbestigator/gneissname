@@ -4,7 +4,7 @@ export default async function suggestTrivia(interaction: ModalSubmitInteraction)
   await createMessage(
     "1205195359572328519",
     <>
-      <TextDisplay>Suggester: &lt;@{interaction.user.id}&gt;</TextDisplay>
+      <TextDisplay>{interaction.user.id ? `Suggester: <@${interaction.user.id}>` : "Origin: API"}</TextDisplay>
       <TextDisplay>Question: {interaction.getField("question", true).textInput()}</TextDisplay>
       <TextDisplay>Explanation: {interaction.getField("explanation", true).textInput()}</TextDisplay>
       <TextDisplay>Correct: {interaction.getField("true", true).textInput()}</TextDisplay>
