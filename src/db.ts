@@ -20,7 +20,7 @@ export const cache = createCache(
     getTopUsers: () => prisma.user.findMany({ take: 10, orderBy: { credit: "desc" } }),
   },
   {
-    desiredProps: { getUser: ["global_name"] },
+    desiredProps: { getUser: ["global_name", "username"] },
     logic: {
       async get(key) {
         const res = await redis.get(key);
