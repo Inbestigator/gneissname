@@ -73,7 +73,7 @@ export default async function history(interaction: CommandInteraction<typeof con
       datasets: [{ label: "Credits", data: balances, borderColor: "red", fill: false }],
     },
     options: {
-      title: { display: true, text: `${user.global_name}'s Credit History` },
+      title: { display: true, text: `${user.global_name ?? user.username}'s Credit History` },
       scales: { xAxes: [{ type: "time", time: { unit: "day", stepSize: 1 } }] },
     },
   });

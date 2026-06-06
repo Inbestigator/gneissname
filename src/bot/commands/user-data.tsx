@@ -16,7 +16,7 @@ export default function userData(interaction: CommandInteraction<typeof config>)
   const userPromise = cache.getDBUser(user.id);
   interaction.reply(
     <Container>
-      ## {user.global_name}&apos;s data{"\n"}
+      ## {user.global_name ?? user.username}&apos;s data{"\n"}
       ### Credit{"\n"}
       <Suspense fallback="…">{userPromise.then((u) => u.credit.toLocaleString())}</Suspense>
     </Container>,

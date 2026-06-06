@@ -19,29 +19,27 @@ export default async function buy(
 ) {
   const selectedItem = shopItems.find((item) => item.name === itemName);
   if (!selectedItem) return interaction.reply("Item not found", { ephemeral: true });
+  const { user } = interaction;
 
-  const [{ credit }] = await Promise.all([
-    cache.getDBUser(interaction.user.id),
-    interaction.reply("Initiating purchase...", { ephemeral: true }),
-  ]);
+  const [{ credit }] = await Promise.all([cache.getDBUser(user.id), interaction.deferReply({ ephemeral: true })]);
 
   if (credit < selectedItem.price) {
     return interaction.editReply("You don't have enough to buy that!");
   }
-  if (blockedShoppers[selectedItem.name].includes(interaction.user.id as never)) {
+  if (blockedShoppers[selectedItem.name].includes(user.id as never)) {
     return interaction.editReply("You can't buy that!");
   }
 
   const threadPromise = openTicket(
-    interaction.user,
+    user,
     `Claim ${selectedItem.name.toLowerCase()}`,
-    `${interaction.user.global_name} has purchased a ${selectedItem.name.toLowerCase()} and would like to claim it`,
+    `${user.global_name ?? user.username} has purchased a ${selectedItem.name.toLowerCase()} and would like to claim it`,
     selectedItem.name === "Whitelist" ? ["&1232903620421484575"] : undefined,
   );
 
   return procrastinate(
     threadPromise,
-    modCredit(interaction.user.id, selectedItem.price * -1, `buy:${selectedItem.name}`, true),
+    modCredit(user.id, selectedItem.price * -1, `buy:${selectedItem.name}`, true),
     interaction.editReply(
       <Suspense fallback="Creating claim thread...">&lt;#{threadPromise.then((t) => t.id)}&gt;</Suspense>,
     ),

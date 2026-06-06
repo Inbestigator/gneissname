@@ -1,8 +1,15 @@
 import { ActionRow, Button, type ModalSubmitInteraction, reconstructElementTree } from "@dressed/react";
+import abseil from "abseil";
 import type { APIMessageTopLevelComponent } from "discord-api-types/v10";
 import { prisma } from "@/db";
 
 export default async function addQuestion(interaction: ModalSubmitInteraction) {
+  const components = interaction.message?.components ?? [];
+  let button = abseil(components).find("addQuestion", "Button");
+  while (button) {
+    button.update({ disabled: true });
+    button = button.next("Button");
+  }
   const [triviaQ] = await Promise.all([
     prisma.trivia.create({
       data: {
@@ -10,7 +17,7 @@ export default async function addQuestion(interaction: ModalSubmitInteraction) {
         explanation: interaction.getField("explanation", true).textInput(),
       },
     }),
-    interaction.deferUpdate(),
+    interaction.update(reconstructElementTree(components)),
   ]);
   await interaction.editReply(
     <ProposalStage components={interaction.message?.components} id={triviaQ.id} isCorrect stage="addAnswer" />,

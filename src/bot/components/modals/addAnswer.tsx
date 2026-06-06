@@ -28,7 +28,6 @@ export default async function addAnswer(interaction: ModalSubmitInteraction, arg
   ]);
 
   const isLast = triviaQ.answers.length === 4;
-
   const components = interaction.message?.components ?? [];
 
   const incorrect = abseil(components)

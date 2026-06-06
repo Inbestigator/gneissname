@@ -25,7 +25,9 @@ function Leaderboard({
 export default async function leaderboard(interaction: CommandInteraction) {
   const rankPromise = cache.getRank(interaction.user.id);
   const ranksPromise = cache.getTopUsers();
-  const userPromises = ranksPromise.then((r) => r.map(({ id }) => cache.getUser(id).then((u) => u.global_name ?? "")));
+  const userPromises = ranksPromise.then((r) =>
+    r.map(({ id }) => cache.getUser(id).then((u) => u.global_name ?? u.username ?? "")),
+  );
   interaction.reply(
     <Container>
       ## Leaderboard{"\n"}
