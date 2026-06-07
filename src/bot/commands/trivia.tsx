@@ -198,7 +198,7 @@ function ResponsesSection({ responses, answerIds }: Readonly<{ responses: Trivia
         <Button
           emoji={{ name: "📊" }}
           disabled={responses.length === 0}
-          custom_id={`trivia-details-${answerIds.map((id) => counts[id] || 0).join("-")}`}
+          custom_id={`trivia-details-${answerIds.map((id) => counts[id].length || 0).join("-")}`}
           style="Secondary"
         />
       }
