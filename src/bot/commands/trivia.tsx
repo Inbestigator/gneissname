@@ -12,9 +12,9 @@ import {
 import type { Answer, Trivia } from "@prisma/client";
 import abseil from "abseil";
 import type { APIMessage } from "discord-api-types/v10";
+import divise from "divise";
 import { type CommandConfig, deleteAppEmoji, editMessage as dressedEditMessage, TextDisplay } from "dressed";
 import { prisma, redis } from "@/db";
-import { separateAnswers } from "../components/buttons/trivia-details";
 
 export const config = {
   description: "Gives a random trivia question",
@@ -191,14 +191,14 @@ export function TriviaGame({
 }
 
 function ResponsesSection({ responses, answerIds }: Readonly<{ responses: TriviaResponse[]; answerIds: string[] }>) {
-  const counts = separateAnswers(responses, answerIds);
+  const counts = divise(responses, "answerId");
   return (
     <Section
       accessory={
         <Button
           emoji={{ name: "📊" }}
           disabled={responses.length === 0}
-          custom_id={`trivia-details-${counts.join("-")}`}
+          custom_id={`trivia-details-${answerIds.map((id) => counts[id] || 0).join("-")}`}
           style="Secondary"
         />
       }

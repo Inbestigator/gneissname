@@ -22,6 +22,7 @@
     "chartjs-to-image": "^1.2.2",
     "clsx": "^2.1.1",
     "discord-api-types": "^0.38.48",
+    "divise": "^0.1.0",
     "dressed": "^2.0.0-canary.6.4",
     "next": "^16.2.7",
     "next-auth": "^4.24.14",

@@ -1,6 +1,6 @@
 import type { Params } from "@dressed/matcher";
 import type { MessageComponentInteraction } from "@dressed/react";
-import { getTriviaSession, type TriviaResponse } from "@/bot/commands/trivia";
+import { getTriviaSession } from "@/bot/commands/trivia";
 
 export const pattern = "trivia-details-:a(\\d+){-:b(\\d+){-:c(\\d+){-:d(\\d+)}}}";
 
@@ -38,13 +38,4 @@ function generateBarGraph(counts: number[], height = 4) {
   }
 
   return rows.join("\n");
-}
-
-export function separateAnswers(responses: TriviaResponse[], order: string[]) {
-  const countsMap = responses.reduce<Record<string, number>>((acc, entry) => {
-    acc[entry.answerId] ||= 0;
-    ++acc[entry.answerId];
-    return acc;
-  }, {});
-  return order.map((id) => countsMap[id] || 0);
 }

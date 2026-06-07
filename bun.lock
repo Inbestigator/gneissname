@@ -17,6 +17,7 @@
         "chartjs-to-image": "^1.2.2",
         "clsx": "^2.1.1",
         "discord-api-types": "^0.38.48",
+        "divise": "^0.1.0",
         "dressed": "^2.0.0-canary.6.4",
         "next": "^16.2.7",
         "next-auth": "^4.24.14",
@@ -405,6 +406,8 @@
     "detect-libc": ["detect-libc@2.1.2", "", {}, "sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ=="],
 
     "discord-api-types": ["discord-api-types@0.38.48", "", {}, "sha512-WFUE/2o0lBlLeCQonQ+Pu2RqHAqbytBJ2RlXR91gzk05InSS6k9ShzzLYoymrA4c2oRgRKGE7/VqQJNNdGWSxQ=="],
+
+    "divise": ["divise@0.1.0", "", {}, "sha512-QoUuBe6ILb+JffmsRps9Iw8FPckXLqECxmRa98dVum9jBvrZnUJUFxJcwibjcKi26EbgKDU9s0S169f3N6iomg=="],
 
     "dotenv": ["dotenv@17.3.1", "", {}, "sha512-IO8C/dzEb6O3F9/twg6ZLXz164a2fhTnEWb95H23Dm4OuN+92NmEAlTrupP9VW6Jm3sO26tQlqyvyi4CsnY9GA=="],
 
