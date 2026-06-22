@@ -10,12 +10,14 @@ export const config = {
 
 export default function credit(interaction: CommandInteraction) {
   const userPromise = cache.getDBUser(interaction.user.id);
-  interaction.reply(
-    <>
-      Your current social credit is **
-      <Suspense fallback="…">{userPromise.then((u) => u.credit.toLocaleString())}</Suspense>**!
-    </>,
-    { ephemeral: true },
+  return procrastinate(
+    userPromise,
+    interaction.reply(
+      <>
+        Your current social credit is **
+        <Suspense fallback="…">{userPromise.then((u) => u.credit.toLocaleString())}</Suspense>**!
+      </>,
+      { ephemeral: true },
+    ),
   );
-  return procrastinate(userPromise);
 }
