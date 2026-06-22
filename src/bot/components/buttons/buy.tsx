@@ -33,7 +33,7 @@ export default async function buy(
   const threadPromise = openTicket(
     user,
     `Claim ${selectedItem.name.toLowerCase()}`,
-    `${user.global_name ?? user.username} has purchased a ${selectedItem.name.toLowerCase()} and would like to claim it`,
+    `${user.global_name ?? user.username} has purchased a ${selectedItem.name.toLowerCase()} and would like to claim it.${itemName === "Custom role" ? "\n\nPlease specify a name, colour code (`#123abc`), and optional icon emoji/image" : ""}`,
     selectedItem.name === "Whitelist" ? ["&1232903620421484575"] : undefined,
   );
 
