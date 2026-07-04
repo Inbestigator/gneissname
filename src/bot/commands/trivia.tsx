@@ -159,7 +159,7 @@ export default async function trivia(interaction: CommandInteraction) {
   ]);
 }
 
-const emojis = ["🦅", "🇺🇸", "🛢️", "🎆", "🎇", "💥", "❤️", "🤍", "💙"];
+const emojis = ["🦅", "🇺🇸", "🛢️", "🎆", "🎇", "💥"];
 
 function stringToNum(str: string) {
   let sum = 0;
@@ -217,9 +217,12 @@ function ResponsesSection({ responses, answerIds }: Readonly<{ responses: Trivia
     >
       ##{" "}
       {responses
-        .sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect) || a.timestamp - b.timestamp)
-        .map((r) => `<:${r.userId}_${r.isCorrect ? "" : "in"}correct:${r.emoji}>`)}
+        .sort((a, b) => a.timestamp - b.timestamp)
+        .map((r) => (r.isCorrect ? `<:${r.userId}_correct:${r.emoji}>` : ""))}
       {"⚪".repeat(10 - responses.length)}
+      {responses
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .map((r) => (r.isCorrect ? "" : `<:${r.userId}_incorrect:${r.emoji}>`))}
     </Section>
   );
 }
