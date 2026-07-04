@@ -159,6 +159,14 @@ export default async function trivia(interaction: CommandInteraction) {
   ]);
 }
 
+function stringTo0to3(str: string) {
+  let sum = 0;
+  for (const c of str) {
+    sum += c.charCodeAt(0);
+  }
+  return sum % 7;
+}
+
 export function TriviaGame({
   game,
   correctHash,
@@ -178,7 +186,7 @@ export function TriviaGame({
         {game.answers.map((answer) => (
           <Button
             key={answer.id}
-            emoji={{ name: ["🦅", "🇺🇸", "🛢️", "🎆"][Math.floor(Math.random() * 4)] }}
+            emoji={{ name: ["🦅", "🇺🇸", "🛢️", "🎆", "❤️", "🤍", "💙"][stringTo0to3(answer.id)] }}
             custom_id={`guess-${correctHash}-${answer.id}`}
             label={answer.text}
             style="Secondary"
