@@ -77,7 +77,11 @@ export default async function guess(
       ),
       editPromise,
       redis.set(`trivia-response:${interaction.user.id}`, JSON.stringify(newResponse)),
-      modCredit(interaction.user.id, (100 + Math.random() * 100) * (isCorrect ? 1 : -1), `trivia:${session.messageId}`),
+      modCredit(
+        interaction.user.id,
+        (100 + Math.random() * 100) * (isCorrect ? 1 : -1),
+        `trivia:${session.channelId}/${session.messageId}`,
+      ),
       // @ts-expect-error
       responses.length >= 10 && startTrivia({ ...interaction, deferReply() {}, editReply() {} }),
     ]);
