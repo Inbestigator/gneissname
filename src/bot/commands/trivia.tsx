@@ -159,12 +159,14 @@ export default async function trivia(interaction: CommandInteraction) {
   ]);
 }
 
-function stringTo0to3(str: string) {
+const emojis = ["🦅", "🇺🇸", "🛢️", "🎆", "🎇", "💥", "❤️", "🤍", "💙"];
+
+function stringToNum(str: string) {
   let sum = 0;
   for (const c of str) {
     sum += c.charCodeAt(0);
   }
-  return sum % 7;
+  return sum % emojis.length;
 }
 
 export function TriviaGame({
@@ -186,7 +188,7 @@ export function TriviaGame({
         {game.answers.map((answer) => (
           <Button
             key={answer.id}
-            emoji={{ name: ["🦅", "🇺🇸", "🛢️", "🎆", "❤️", "🤍", "💙"][stringTo0to3(answer.id)] }}
+            emoji={{ name: emojis[stringToNum(answer.id)] }}
             custom_id={`guess-${correctHash}-${answer.id}`}
             label={answer.text}
             style="Secondary"
