@@ -19,6 +19,7 @@ export default function userData(interaction: CommandInteraction<typeof config>)
     orderBy: { timestamp: "desc" },
     take: 10,
   });
+  let isFirstMsg = true;
   interaction.reply(
     <Container>
       ## {user.global_name ?? user.username}&apos;s data{"\n"}
@@ -31,7 +32,9 @@ export default function userData(interaction: CommandInteraction<typeof config>)
           r
             .map((e) => {
               if (e.reason?.startsWith("POST:/credit/bulk")) {
-                return ["💬", `Captured from \`${e.reason.split(":")[1]}\``];
+                const wasFirstMsg = isFirstMsg;
+                isFirstMsg = false;
+                return ["💬", wasFirstMsg && `Captured from \`${e.reason.split(":")[1]}\``];
               } else if (e.reason?.startsWith("POST")) {
                 return ["🔌", `\`${e.reason.split(":")[1]}\``];
               } else if (e.reason?.startsWith("trivia")) {
