@@ -30,12 +30,10 @@ export default function userData(interaction: CommandInteraction<typeof config>)
         {recordPromise.then((r) =>
           r
             .map((e) => {
-              if (e.reason?.startsWith("POST")) {
-                const messages = e.reason.slice(4).split(":")[2];
-                return [
-                  "🔌",
-                  `\`${e.reason.slice(4).split(":")[1]}\` ${messages} message${messages === "1" ? "" : "s"}`,
-                ];
+              if (e.reason?.startsWith("POST:/credit/bulk")) {
+                return ["💬", `Captured from \`${e.reason.split(":")[1]}\``];
+              } else if (e.reason?.startsWith("POST")) {
+                return ["🔌", `\`${e.reason.split(":")[1]}\``];
               } else if (e.reason?.startsWith("trivia")) {
                 return [
                   "🧠",
