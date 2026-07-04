@@ -178,7 +178,7 @@ export function TriviaGame({
         {game.answers.map((answer) => (
           <Button
             key={answer.id}
-            emoji={{ name: answer.emoji }}
+            emoji={{ name: ["🦅", "🇺🇸", "🛢️", "🎆"][Math.floor(Math.random() * 4)] }}
             custom_id={`guess-${correctHash}-${answer.id}`}
             label={answer.text}
             style="Secondary"
@@ -209,7 +209,7 @@ function ResponsesSection({ responses, answerIds }: Readonly<{ responses: Trivia
       {responses
         .sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect) || a.timestamp - b.timestamp)
         .map((r) => `<:${r.userId}_${r.isCorrect ? "" : "in"}correct:${r.emoji}>`)}
-      {"⚫".repeat(10 - responses.length)}
+      {"⚪".repeat(10 - responses.length)}
     </Section>
   );
 }
