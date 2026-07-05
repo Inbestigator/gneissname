@@ -159,16 +159,6 @@ export default async function trivia(interaction: CommandInteraction) {
   ]);
 }
 
-const emojis = ["🦅", "🇺🇸", "🛢️", "🎆", "🎇", "💥"];
-
-function stringToNum(str: string) {
-  let sum = 0;
-  for (const c of str) {
-    sum += c.charCodeAt(0);
-  }
-  return sum % emojis.length;
-}
-
 export function TriviaGame({
   game,
   correctHash,
@@ -188,7 +178,7 @@ export function TriviaGame({
         {game.answers.map((answer) => (
           <Button
             key={answer.id}
-            emoji={{ name: emojis[stringToNum(answer.id)] }}
+            emoji={{ name: ["🦅", "🇺🇸", "🛢️", "🎆"][Math.floor(Math.random() * 4)] }}
             custom_id={`guess-${correctHash}-${answer.id}`}
             label={answer.text}
             style="Secondary"
@@ -217,12 +207,9 @@ function ResponsesSection({ responses, answerIds }: Readonly<{ responses: Trivia
     >
       ##{" "}
       {responses
-        .sort((a, b) => a.timestamp - b.timestamp)
-        .map((r) => (r.isCorrect ? `<:${r.userId}_correct:${r.emoji}>` : ""))}
+        .sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect) || a.timestamp - b.timestamp)
+        .map((r) => `<:${r.userId}_${r.isCorrect ? "" : "in"}correct:${r.emoji}>`)}
       {"⚪".repeat(10 - responses.length)}
-      {responses
-        .sort((a, b) => b.timestamp - a.timestamp)
-        .map((r) => (r.isCorrect ? "" : `<:${r.userId}_incorrect:${r.emoji}>`))}
     </Section>
   );
 }
