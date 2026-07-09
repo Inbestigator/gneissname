@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.3",
-    "@dressed/framework": "^0.6.0-rc.2",
+    "@dressed/framework": "^0.6.0-rc.2.1",
     "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
