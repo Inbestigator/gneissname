@@ -1,12 +1,12 @@
 {
   "type": "module",
   "scripts": {
-    "dev": "bun build:bot && next dev --turbo",
     "build": "next build --turbo",
-    "start": "next start",
-    "checks": "tsc --noEmit && bun --bun biome check --write",
     "build:bot": "bun --bun dressed build",
-    "dev:bot": "bun --watch bot-dev"
+    "checks": "tsc --noEmit && bun --bun biome check --write",
+    "dev": "bun build:bot && next dev --turbo",
+    "dev:bot": "bun --watch bot-dev",
+    "start": "next start"
   },
   "dependencies": {
     "@dressed/react": "^1.8.5-rc.2",
@@ -18,12 +18,12 @@
     "@tailwindcss/typography": "^0.5.20",
     "@tanstack/react-query": "^5.101.2",
     "abseil": "^0.4.1",
-    "arktype": "^2.2.2",
+    "arktype": "^2.2.3",
     "chartjs-to-image": "^1.2.2",
     "clsx": "^2.1.1",
     "discord-api-types": "^0.38.49",
     "divise": "^0.1.0",
-    "dressed": "^2.0.0-rc.3",
+    "dressed": "^2.0.0-rc.4",
     "next": "^16.2.10",
     "next-auth": "^4.24.14",
     "react": "^19.2.7",
@@ -33,12 +33,12 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.2",
-    "@dressed/framework": "^0.5.0",
-    "@types/node": "^26.1.0",
+    "@biomejs/biome": "^2.5.3",
+    "@dressed/framework": "^0.6.0-rc.2",
+    "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "daisyui": "^5.6.10",
+    "daisyui": "^5.6.16",
     "prisma": "^7.8.0",
     "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3"

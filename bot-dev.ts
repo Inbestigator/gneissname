@@ -18,6 +18,10 @@ const files = await Promise.all(
   ),
 );
 
-createServer(parseCommands(files[0] ?? []), parseComponents(files[1] ?? []), parseEvents(files[2] ?? []));
+createServer(
+  parseCommands(files[0] ?? [], "src/bot/commands"),
+  parseComponents(files[1] ?? [], "src/bot/components"),
+  parseEvents(files[2] ?? [], "src/bot/events"),
+);
 
 watch("./src", { recursive: true, persistent: true }, () => copyFileSync("bot-dev.ts", "bot-dev.ts"));

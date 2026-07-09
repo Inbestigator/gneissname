@@ -2,7 +2,7 @@ import type { DressedConfig } from "@dressed/framework";
 import { patchInteraction } from "@dressed/react";
 
 const config: DressedConfig = {
-  server: { port: 3000, endpoint: "bot" },
+  server: { endpoint: "bot" },
   build: { root: "src/bot", include: ["**/*.{ts,tsx}"] },
   hooks: { onBeforeCommand: (i) => [patchInteraction(i)], onBeforeComponent: (i, a) => [patchInteraction(i), a] },
 };
