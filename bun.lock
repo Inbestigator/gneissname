@@ -18,7 +18,7 @@
         "clsx": "^2.1.1",
         "discord-api-types": "^0.38.49",
         "divise": "^0.1.0",
-        "dressed": "^2.0.0-rc.4",
+        "dressed": "^2.0.0-canary.7",
         "next": "^16.2.10",
         "next-auth": "^4.24.14",
         "react": "^19.2.7",
@@ -29,7 +29,7 @@
       },
       "devDependencies": {
         "@biomejs/biome": "^2.5.3",
-        "@dressed/framework": "^0.6.0-rc.2.1",
+        "@dressed/framework": "^0.6.0-rc.2.2",
         "@types/node": "^26.1.1",
         "@types/react": "^19.2.17",
         "@types/react-dom": "^19.2.3",
@@ -71,7 +71,7 @@
 
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.5.3", "", { "os": "win32", "cpu": "x64" }, "sha512-ExSaJWi4/u6+GXCszlSKpWSjKNbDseAYqqkCznsCsZ/4uidZ/BEqsCc5/3ctlq6dfIubdIIRSVLC/PG9xPl70Q=="],
 
-    "@dressed/framework": ["@dressed/framework@0.6.0-rc.2.1", "", { "dependencies": { "@dressed/matcher": "^1.4.0", "esbuild": "^0.28.1", "fast-glob": "^3.3.3", "sade": "^1.8.1" }, "peerDependencies": { "dressed": "^2.0.0-canary.1" }, "bin": { "dressed": "dist/bin/dressed.js" } }, "sha512-JCkficdffuhCcCsgLNesTT5OuZKSyF2uMrN/rA5h462/tsbXtaOfdNOBo/+BobUos7diPXsJ/B9MQb+kyQoxxg=="],
+    "@dressed/framework": ["@dressed/framework@0.6.0-rc.2.2", "", { "dependencies": { "@dressed/matcher": "^1.4.0", "esbuild": "^0.28.1", "fast-glob": "^3.3.3", "sade": "^1.8.1" }, "peerDependencies": { "dressed": "^2.0.0-canary.1" }, "bin": { "dressed": "dist/bin/dressed.js" } }, "sha512-CzCDM0GEuzsjR9Le9cbdMpwGjIu217XaCfJirgdCGsR79HdSQY2BXU0pmVWKFEoAvmX5VYc4wyiTdhvUl2xBIQ=="],
 
     "@dressed/matcher": ["@dressed/matcher@1.4.0", "", {}, "sha512-hAM5KaaGrhmMFr1Fd+KCQep6VnODcxInnIXATAbyJo64XN56pM20UvccWVhrIR6Hk2fFZUI69eJ0ehzK4rKxnw=="],
 
@@ -409,7 +409,7 @@
 
     "dotenv": ["dotenv@17.3.1", "", {}, "sha512-IO8C/dzEb6O3F9/twg6ZLXz164a2fhTnEWb95H23Dm4OuN+92NmEAlTrupP9VW6Jm3sO26tQlqyvyi4CsnY9GA=="],
 
-    "dressed": ["dressed@2.0.0-rc.4", "", { "dependencies": { "discord-api-types": "^0.38.49", "magic-bytes.js": "^1.12.1" } }, "sha512-Isaj4xqxsyWN7GDpgybMJLelbwYYXoKSYWVyKw9ufzMjdJxiH+t/SLg1WwaWQxC5+1gNgvDu7W8TZ+oZv16GjA=="],
+    "dressed": ["dressed@2.0.0-canary.7", "", { "dependencies": { "discord-api-types": "^0.38.49", "magic-bytes.js": "^1.12.1" } }, "sha512-OKjgpIA/ORdkfr7WWzEhVFGYDJuD+bFs1a/vFOr6BB79FjINAYAAKhelTQeM0XN/QDaWzt2C2s6fEsQmPAL/Bw=="],
 
     "dunder-proto": ["dunder-proto@1.0.1", "", { "dependencies": { "call-bind-apply-helpers": "^1.0.1", "es-errors": "^1.3.0", "gopd": "^1.2.0" } }, "sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A=="],
 
