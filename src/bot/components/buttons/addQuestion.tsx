@@ -1,7 +1,7 @@
-import { ActionRow, type MessageComponentInteraction, TextInput } from "@dressed/react";
+import { ActionRow, type ComponentInteraction, TextInput } from "@dressed/react";
 import abseil from "abseil";
 
-export default function addQuestion(interaction: MessageComponentInteraction) {
+export default function addQuestion(interaction: ComponentInteraction) {
   const question = abseil(interaction.message.components ?? [])
     .initial("TextDisplay")
     .sibling("TextDisplay");

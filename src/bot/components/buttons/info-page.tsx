@@ -1,5 +1,5 @@
 import type { Params } from "@dressed/matcher";
-import { ActionRow, Button, Container, type MessageComponentInteraction, TextDisplay } from "@dressed/react";
+import { ActionRow, Button, type ComponentInteraction, Container, TextDisplay } from "@dressed/react";
 
 const pages = {
   rules: (
@@ -72,6 +72,6 @@ const pages = {
 
 export const pattern = `info-:page(${Object.keys(pages).join("|") as keyof typeof pages})` as const;
 
-export default function infoPageButton(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
+export default function infoPageButton(interaction: ComponentInteraction, args: Params<typeof pattern>) {
   return interaction.reply(pages[args.page], { ephemeral: true });
 }

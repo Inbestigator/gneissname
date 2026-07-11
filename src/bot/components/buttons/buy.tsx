@@ -1,4 +1,4 @@
-import type { MessageComponentInteraction } from "@dressed/react";
+import type { ComponentInteraction } from "@dressed/react";
 import { Suspense } from "react";
 import { shopItems } from "@/bot/commands/shop";
 import { modCredit, procrastinate } from "@/bot/utils";
@@ -14,7 +14,7 @@ const blockedShoppers = {
 export const pattern = `buy-:itemName(${shopItems.map((i) => i.name).join("|")})`;
 
 export default async function buy(
-  interaction: MessageComponentInteraction,
+  interaction: ComponentInteraction,
   { itemName }: { itemName: (typeof shopItems)[number]["name"] },
 ) {
   const selectedItem = shopItems.find((item) => item.name === itemName);

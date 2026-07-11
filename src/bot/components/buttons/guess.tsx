@@ -1,6 +1,6 @@
 import { hash } from "node:crypto";
 import type { Params } from "@dressed/matcher";
-import { Button, editMessage, type MessageComponentInteraction, Section } from "@dressed/react";
+import { Button, type ComponentInteraction, editMessage, Section } from "@dressed/react";
 import { createAppEmoji } from "dressed";
 import { Fragment } from "react";
 import startTrivia, { getTriviaSession, markArchived, TriviaGame, type TriviaResponse } from "@/bot/commands/trivia";
@@ -9,10 +9,7 @@ import { redis } from "@/db";
 
 export const pattern = "guess-:hashed-:answerId";
 
-export default async function guess(
-  interaction: MessageComponentInteraction,
-  { answerId, hashed }: Params<typeof pattern>,
-) {
+export default async function guess(interaction: ComponentInteraction, { answerId, hashed }: Params<typeof pattern>) {
   const [{ session, responses }] = await Promise.all([getTriviaSession(), interaction.deferReply({ ephemeral: true })]);
   const isCorrect = hash("sha1", answerId, "hex").startsWith(hashed);
 

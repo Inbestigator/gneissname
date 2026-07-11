@@ -1,12 +1,12 @@
 import type { Params } from "@dressed/matcher";
-import { Label, type MessageComponentInteraction, TextInput } from "@dressed/react";
+import { type ComponentInteraction, Label, TextInput } from "@dressed/react";
 import abseil from "abseil";
 
 const emoReg = /^`(.+?)` /;
 
-export const pattern = "addAnswer-:isCorrect-:questionId";
+export const pattern = "addAnswer-:isCorrect(true|false)-:questionId";
 
-export default function addAnswer(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
+export default function addAnswer(interaction: ComponentInteraction, args: Params<typeof pattern>) {
   const isCorrect = args.isCorrect === "true";
   let answer = abseil(interaction.message.components ?? [])
     .initial("TextDisplay") //  Usr

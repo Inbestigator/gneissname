@@ -1,4 +1,4 @@
-import type { ModalSubmitInteraction } from "@dressed/react";
+import type { ModalInteraction } from "@dressed/react";
 import { type } from "arktype";
 import { type NextRequest, NextResponse } from "next/server";
 import suggestTrivia from "@/bot/components/modals/suggestTrivia";
@@ -39,6 +39,6 @@ export async function POST(req: NextRequest) {
         }
       },
     }),
-  } as unknown as ModalSubmitInteraction);
+  } as unknown as ModalInteraction);
   return new NextResponse(null, { status: 204 });
 }

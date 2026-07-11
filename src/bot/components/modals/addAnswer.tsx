@@ -1,12 +1,12 @@
 import type { Params } from "@dressed/matcher";
-import type { ModalSubmitInteraction } from "@dressed/react";
+import type { ModalInteraction } from "@dressed/react";
 import abseil, { removeNode } from "abseil";
 import { prisma } from "@/db";
 import { ProposalStage } from "./addQuestion";
 
 export const pattern = "addAnswer-:isCorrect-:questionId";
 
-export default async function addAnswer(interaction: ModalSubmitInteraction, args: Params<typeof pattern>) {
+export default async function addAnswer(interaction: ModalInteraction, args: Params<typeof pattern>) {
   const isCorrect = args.isCorrect === "true";
   const [triviaQ] = await Promise.all([
     prisma.trivia.update({

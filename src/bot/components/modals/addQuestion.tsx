@@ -1,9 +1,9 @@
-import { ActionRow, Button, type ModalSubmitInteraction, reconstructElementTree } from "@dressed/react";
+import { ActionRow, Button, type ModalInteraction, reconstructElementTree } from "@dressed/react";
 import abseil from "abseil";
 import type { APIMessageTopLevelComponent } from "discord-api-types/v10";
 import { prisma } from "@/db";
 
-export default async function addQuestion(interaction: ModalSubmitInteraction) {
+export default async function addQuestion(interaction: ModalInteraction) {
   const components = interaction.message?.components ?? [];
   let button = abseil(components).find("addQuestion", "Button");
   while (button) {

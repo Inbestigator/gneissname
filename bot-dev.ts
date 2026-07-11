@@ -12,7 +12,7 @@ const files = await Promise.all(
     Promise.all(
       (await crawlDir("src/bot", d, config.build?.include)).map(async (f) => ({
         ...f,
-        exports: await import(resolve(f.path)),
+        ...(await import(resolve(f.path))),
       })),
     ),
   ),

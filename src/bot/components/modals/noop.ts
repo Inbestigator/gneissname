@@ -1,5 +1,5 @@
-import type { ModalSubmitInteraction } from "@dressed/react";
+import type { ModalInteraction } from "@dressed/react";
 
-export default function tmpModal(interaction: ModalSubmitInteraction) {
+export default function tmpModal(interaction: ModalInteraction) {
   return interaction.deferUpdate();
 }

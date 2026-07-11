@@ -1,6 +1,6 @@
-import { ActionRow, Button, createMessage, type ModalSubmitInteraction, TextDisplay } from "@dressed/react";
+import { ActionRow, Button, createMessage, type ModalInteraction, TextDisplay } from "@dressed/react";
 
-export default async function suggestTrivia(interaction: ModalSubmitInteraction) {
+export default async function suggestTrivia(interaction: ModalInteraction) {
   await createMessage(
     "1205195359572328519",
     <>

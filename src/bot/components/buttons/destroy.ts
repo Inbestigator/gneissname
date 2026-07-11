@@ -1,5 +1,5 @@
-import { deleteMessage, type MessageComponentInteraction } from "dressed";
+import { type ComponentInteraction, deleteMessage } from "dressed";
 
-export default function destroy(interaction: MessageComponentInteraction) {
+export default function destroy(interaction: ComponentInteraction) {
   return deleteMessage(interaction.channel.id, interaction.message.id);
 }

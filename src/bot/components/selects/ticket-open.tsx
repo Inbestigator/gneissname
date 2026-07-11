@@ -1,9 +1,9 @@
 import {
   ActionRow,
   Button,
+  type ComponentInteraction,
   Container,
   createMessage,
-  type MessageComponentInteraction,
   SelectMenu,
   SelectMenuOption,
 } from "@dressed/react";
@@ -35,7 +35,7 @@ export async function openTicket(
   return thread;
 }
 
-export default async function openTicketSelect(interaction: MessageComponentInteraction<"StringSelect">) {
+export default async function openTicketSelect(interaction: ComponentInteraction<"StringSelect">) {
   let ticketName: string;
   let relevantStaff: string[] | undefined;
   let message: string | undefined;

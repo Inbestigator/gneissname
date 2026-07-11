@@ -9,8 +9,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@dressed/react": "^1.8.5-rc.2",
-    "@dressed/ws": "^0.5.0-canary.1",
+    "@dressed/react": "^2.0.0",
+    "@dressed/ws": "^0.5.0",
     "@prisma/adapter-neon": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "@tabler/icons-react": "^3.44.0",
@@ -23,7 +23,7 @@
     "clsx": "^2.1.1",
     "discord-api-types": "^0.38.49",
     "divise": "^0.1.0",
-    "dressed": "^2.0.0-canary.7",
+    "dressed": "^2.0.0",
     "next": "^16.2.10",
     "next-auth": "^4.24.14",
     "react": "^19.2.7",
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.3",
-    "@dressed/framework": "^0.6.0-rc.2.2",
+    "@dressed/framework": "^0.6.0",
     "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",

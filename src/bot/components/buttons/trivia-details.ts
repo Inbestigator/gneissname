@@ -1,10 +1,10 @@
 import type { Params } from "@dressed/matcher";
-import type { MessageComponentInteraction } from "@dressed/react";
+import type { ComponentInteraction } from "@dressed/react";
 import { getTriviaSession } from "@/bot/commands/trivia";
 
 export const pattern = "trivia-details-:a(\\d+){-:b(\\d+){-:c(\\d+){-:d(\\d+)}}}";
 
-export default async function triviaDetails(interaction: MessageComponentInteraction, args: Params<typeof pattern>) {
+export default async function triviaDetails(interaction: ComponentInteraction, args: Params<typeof pattern>) {
   const { session, responses } = await getTriviaSession();
 
   if (
