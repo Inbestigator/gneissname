@@ -1,6 +1,8 @@
 import { createCache, getters, resolveKey } from "@dressed/ws/cache";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "@prisma/client";
+import { ChannelType } from "discord-api-types/v10";
+import { listActiveThreads } from "dressed";
 import { createClient } from "redis";
 import { getDBUser } from "./bot/utils";
 
@@ -18,6 +20,10 @@ export const cache = createCache(
       return prisma.user.count({ where: { credit: { gte: credit } } });
     },
     getTopUsers: () => prisma.user.findMany({ take: 10, orderBy: { credit: "desc" } }),
+    async listTickets() {
+      const { threads } = await listActiveThreads("750062409364013159");
+      return threads.filter((t) => t.type === ChannelType.PrivateThread && t.parent_id === "1225971091344982128");
+    },
   },
   {
     desiredProps: { getUser: ["global_name", "username"] },
