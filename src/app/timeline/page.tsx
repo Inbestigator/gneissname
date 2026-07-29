@@ -39,7 +39,7 @@ export default function TimelineInfoPage() {
                 {/*<div style={{ border: '2px solid black', height: '100vh'}}> </div>*/}
                 <div className="relative h-full min-h-0 w-full">
                     <img
-                        src={"timeline/2026-07-27_21.15.25.png"}
+                        src={"timeline/2026-07-27_21.15.25-cropped.png"}
                         alt={"Wide shot of the Geologic Timeline Project (todo alts)"}
                         className="absolute inset-0 h-full object-cover mx-auto"
                         style={{borderRadius: '5px', filter: 'drop-shadow(5px 5px 10px rgba(0,0,0,0.5))'}}/>
