@@ -3,13 +3,15 @@ import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "@prisma/client";
 import { ChannelType } from "discord-api-types/v10";
 import { listActiveThreads } from "dressed";
-import { createClient } from "redis";
+import { createClient, type RedisClientType, type RedisDefaultModules } from "redis";
 import { getDBUser } from "./bot/utils";
 
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
 
 export const prisma = new PrismaClient({ adapter });
-export const redis = await createClient({ url: process.env.REDIS_URL }).connect();
+export const redis = process.env.REDIS_URL
+  ? await createClient({ url: process.env.REDIS_URL }).connect()
+  : (null as unknown as RedisClientType<RedisDefaultModules>);
 
 export const cache = createCache(
   {
