@@ -33,7 +33,7 @@ const resourcePacks = [
   {
     title: "Gneissier",
     version: "Version+",
-    id: "18zJp8MlPdZ8qK46Ge2sY8JEwFuzzF24j",
+    id: "/gneissier.zip",
     description:
       "Do you see my face everywhere but that's still not enough? Say no more rock lover. (Official resource pack of the Gneissmp)",
   },
@@ -57,7 +57,7 @@ function Card({ item }: { item: (typeof worldDownloads)[number] }) {
   return (
     <Link
       className="card card-compact bg-base-200 transition-all hover:bg-base-300/80"
-      href={`https://drive.google.com/file/d/${item.id}`}
+      href={item.id.startsWith("/") ? item.id : `https://drive.google.com/file/d/${item.id}`}
       target="_blank"
     >
       <div className="card-body">
@@ -73,12 +73,12 @@ function Card({ item }: { item: (typeof worldDownloads)[number] }) {
 
 export default function DownloadsPage() {
   return (
-    <div className="grid gap-4 pt-6 pb-8 sm:grid-cols-3 md:py-10">
-      <h1 className="font-extrabold text-3xl sm:col-span-3">World downloads</h1>
+    <div className="mt-6 mb-8 grid gap-4 sm:grid-cols-3 md:my-10">
+      <h1 className="font-semibold text-4xl tracking-tight sm:col-span-3">World downloads</h1>
       {worldDownloads.map((item) => (
         <Card key={item.id} item={item} />
       ))}
-      <h1 className="font-extrabold text-3xl sm:col-span-3">Resource packs</h1>
+      <h1 className="font-semibold text-4xl tracking-tight sm:col-span-3">Resource packs</h1>
       {resourcePacks.map((item) => (
         <Card key={item.id} item={item} />
       ))}

@@ -1,15 +1,8 @@
 export default function TimelineInfoPage() {
-    return (
-        <>
-            <section className="mt-4 mb-8 flex flex-col gap-6" style={{margin: 'auto auto 20px auto'}}>
-                <header className="flex w-full flex-col items-center gap-2 text-center">
-                    <h1 className="font-extrabold text-4xl tracking-tighter sm:text-7xl">Geologic Timeline Project</h1>
-                </header>
-            </section>
-
-            <div style={{textAlign: 'center', fontSize: '1.3rem', margin: 'auto auto 20px auto'}}>
-                It’s not time yet.
-            </div>
-        </>
-    )
+  return (
+    <div className="mt-6 mb-8 flex flex-col items-center justify-center gap-4 text-center md:my-10">
+      <h1 className="font-semibold text-4xl tracking-tight">Geologic Timeline Project</h1>
+      <div className="text-center text-xl">It’s not line time yet.</div>
+    </div>
+  );
 }
