@@ -20,14 +20,14 @@ export function SkeletonVideos({ index }: Readonly<{ index: number }>) {
     <div className={cn("card bg-base-200 md:col-span-1 md:flex", index === 0 ? "flex" : "hidden")}>
       <figure className="skeleton flex aspect-video items-center overflow-hidden rounded-b-none" />
       <div className="card-body">
-        <h2 className="card-title skeleton mb-3 h-6">
+        <h2 className="card-title skeleton mt-0.75 mb-2.25 h-4.75">
           <span className="sr-only">Loading video title</span>
         </h2>
-        <p className="skeleton mb-1 h-4" />
-        <p className="skeleton mb-1 h-4" />
-        <p className="skeleton mb-1 h-4 w-3/4" />
+        <p className="skeleton mb-px h-3.25" />
+        <p className="skeleton mb-px h-3.25" />
+        <p className="skeleton mb-0.5 h-3.25 w-3/4" />
         <div className="card-actions">
-          <div className="btn skeleton text-transparent">
+          <div className="btn btn-neutral btn-disabled text-transparent">
             Watch on YouTube <IconExternalLink className="size-5" />
           </div>
         </div>
@@ -45,11 +45,9 @@ function decodeHtmlEntities(v: string) {
 export default function LatestVideos() {
   const { data } = useQuery({
     queryKey: ["videos"],
-    queryFn: async () => {
-      const response = await fetch("/api/videos", {
-        next: { revalidate: 60 * 60 },
-      });
-      return await response.json();
+    queryFn: async (): Promise<Video[]> => {
+      const response = await fetch("/api/videos", { next: { revalidate: 60 * 60 } });
+      return response.json();
     },
   });
 
@@ -65,7 +63,7 @@ export default function LatestVideos() {
 
   return (
     <>
-      {data.map((video: Video, index: number) => (
+      {data.map((video, index) => (
         <div key={video.id} className={cn("card bg-base-200 md:flex", index < 2 && "sm:flex", index !== 0 && "hidden")}>
           <figure className="flex aspect-video items-center overflow-hidden">
             <Image
