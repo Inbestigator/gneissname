@@ -88,7 +88,7 @@ export default function TimelineInfoPage() {
             <section className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3" style={{margin: "30px 0 30px 0"}}>
                 {/*<div style={{ border: '2px solid black', height: '100vh'}}> </div>*/}
                 <div
-                    className="md:col-span-2 sm:rounded-lg bg-base-200 p-4"
+                    className="md:col-span-2 rounded-lg bg-base-200 p-4"
                     style={{
                         display: "flex",
                         alignItems: "center",
@@ -532,38 +532,6 @@ export default function TimelineInfoPage() {
                     </div>
                 </div>
             </section>
-
-            {/*<div className="grid w-full gap-4 sm:grid-cols-1 md:grid-cols-1">*/}
-            {/*    <Link href="https://discord.gg/e4sCCCzpkB" className="btn group relative mx-auto w-1/5 bg-[#5865f2] hover:bg-[#384094] text-gray-200">*/}
-            {/*        Join The Discord <IconBrandDiscord className="ml-2" />*/}
-            {/*        <div className="absolute -top-4 -right-4 size-8 rounded-full group-hover:hidden" />*/}
-            {/*        /!*<div className="absolute -top-2 -right-2 size-4 animate-ping rounded-full bg-red-100 p-1 group-hover:hidden">*!/*/}
-            {/*        /!*    <div className="size-full rounded-full bg-red-600" />*!/*/}
-            {/*        /!*</div>*!/*/}
-            {/*    </Link>*/}
-
-            {/*</div>*/}
-
-            {/*<div style={{textAlign: 'center', fontSize: '1.1rem', margin: '5px auto 5px auto'}}>*/}
-            {/*    <p>*/}
-            {/*        Or, if you've already joined*/}
-            {/*    </p>*/}
-            {/*</div>*/}
-
-            {/*<div className="grid w-full gap-4 sm:grid-cols-1 md:grid-cols-1">*/}
-            {/*    <Link href="https://discord.com/channels/750062409364013159/1293942024323596423" className="btn group relative mx-auto w-1/5 bg-[#5865f2] hover:bg-[#384094] text-gray-200">*/}
-            {/*        Jump To The Channel <IconArrowUpRight className="ml-2" />*/}
-            {/*        <div className="absolute -top-4 -right-4 size-8 rounded-full group-hover:hidden" />*/}
-            {/*        /!*<div className="absolute -top-2 -right-2 size-4 animate-ping rounded-full bg-red-100 p-1 group-hover:hidden">*!/*/}
-            {/*        /!*    <div className="size-full rounded-full bg-red-600" />*!/*/}
-            {/*        /!*</div>*!/*/}
-            {/*    </Link>*/}
-
-            {/*</div>*/}
-
-            {/*Creating a version of this was actually the original idea that got me thinking about using Minecraft to talk about geology and starting my youtube channel. Since then my skills have improved and I think that I can do a project like this justice. I have been working on it for a few years in my spare time with a few contributors. Now I’m ready to devote more time and energy to it and try to get it completed before the next geologic eon is upon us in real life.<br/><br/>*/}
-
-            {/*To make this a reality I am looking for people with skills in resource packs, datapacks, map making, and blockbench. There is also room for people to help with modeling, pixel art, graphic design and even just organizing resources. If you are interested in helping, the link below will take you to a discord channel with more details.<br/><br/>*/}
         </>
     );
 }
