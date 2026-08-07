@@ -37,7 +37,7 @@ export default function TimelineInfoPage() {
             <section className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3" style={{margin: "30px 0 30px 0"}}>
                 {/*<div style={{ border: '2px solid black', height: '100vh'}}> </div>*/}
                 {/*style={{maxHeight: "100%", maxWidth: "100%"}}*/}
-                <div className="order-2 sm:order-1 relative h-64 sm:h-full min-h-0 w-full">
+                <div className="order-2 sm:order-1 relative h-64 min-h-0 w-full">
                     <img
                         src={"timeline/2026-07-27_21.15.25-cropped.png"}
                         alt={"Gneiss Name standing in water next to a spider and crocodile"}
@@ -118,7 +118,7 @@ export default function TimelineInfoPage() {
                         {/*education.*/}
                     </p>
                 </div>
-                <div className="relative h-64 sm:h-full min-h-0 w-full">
+                <div className="relative h-64 min-h-0 w-full">
                     <img
                         src={"timeline/2026-07-27_21.12.32.png"}
                         alt={"Wide shot of the Geologic Timeline Project"}
@@ -133,7 +133,7 @@ export default function TimelineInfoPage() {
                 style={{margin: "30px 0 30px 0"}}
             >
                 {/*<div style={{ border: '2px solid black', height: '100vh'}}> </div>*/}
-                <div className="order-2 sm:order-1 relative h-64 sm:h-full min-h-0 w-full">
+                <div className="order-2 sm:order-1 relative h-64 min-h-0 w-full">
                     <img
                         src={"timeline/old-thumbnail.png"}
                         alt={"Thumbnail Image of the original geologic timeline video"}
@@ -279,7 +279,7 @@ export default function TimelineInfoPage() {
                         {/*middle 3 billion years by adding mountains, rivers, sediment, etc.*/}
                     </div>
 
-                    <div className="relative h-64 sm:h-full min-h-0 w-full">
+                    <div className="relative h-64  min-h-0 w-full">
                         <img
                             src={"timeline/2026-07-30_15.53.07.png"}
                             alt={"Wide shot of the middle ~600 million years of the Geologic Timeline, showing the simple terrain"}
@@ -290,7 +290,7 @@ export default function TimelineInfoPage() {
                 </section>
 
                 <section className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3 my-4">
-                    <div className="order-2 sm:order-1 relative h-64 sm:h-full min-h-0 w-full">
+                    <div className="order-2 sm:order-1 relative h-64  min-h-0 w-full">
                         <img
                             src={"timeline/2026-07-30_15.53.48.png"}
                             alt={"Cretaceous dinosaurs in a small scene, showing the time period on the wall behind them"}
@@ -354,7 +354,7 @@ export default function TimelineInfoPage() {
 
                     </div>
 
-                    <div className="relative h-64 sm:h-full min-h-0 w-full">
+                    <div className="relative h-64  min-h-0 w-full">
                         <img
                             src={"timeline/2026-07-30_15.52.29.png"}
                             alt={
@@ -374,7 +374,7 @@ export default function TimelineInfoPage() {
                 <hr className="border-gray-300" style={{margin: "5px 1% 5px 1%"}}/>
 
                 <section className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3">
-                    <div className="order-2 sm:order-1 relative h-64 sm:h-full min-h-0 w-full">
+                    <div className="order-2 sm:order-1 relative h-64  min-h-0 w-full">
                         <img
                             src={"timeline/2026-07-30_15.55.10.png"}
                             alt={"Many dinosaurs lined up in a dev display of their stratigraphic range"}
@@ -431,7 +431,7 @@ export default function TimelineInfoPage() {
                         facilitate exploration.
                     </div>
 
-                    <div className="relative h-64 sm:h-full min-h-0 w-full">
+                    <div className="relative h-64  min-h-0 w-full">
                         <img
                             src={"timeline/Timeline_Manual_Sample.png"}
                             alt={"Sample page from the Timeline Manual book showing species entries and information"}
@@ -442,7 +442,7 @@ export default function TimelineInfoPage() {
                 </section>
 
                 <section className="grid w-full gap-4 sm:grid-cols-2 md:grid-cols-3 my-4">
-                    <div className="order-2 sm:order-1 relative h-64 sm:h-full min-h-0 w-full">
+                    <div className="order-2 sm:order-1 relative h-64  min-h-0 w-full">
                         <img
                             src={"timeline/2026-07-30_13.55.37.png"}
                             alt={"Map of the geologic timeline composed of a long export of the chunks making it up"}
