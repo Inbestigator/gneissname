@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function TimelineInfoPage() {
   return (
     <div className="mt-6 mb-8 flex flex-col items-center justify-center gap-4 md:my-10">
-      <h1 className="font-semibold text-4xl tracking-tight">Geologic Timeline Project</h1>
+      <h1 className="text-balance text-center font-semibold text-4xl tracking-tight">Geologic Timeline Project</h1>
       <p className="max-w-7xl text-balance text-center">
         Deep time is a concept that is hard to wrap your head around, and when displayed it is often condensed like my
         own booth at{" "}
@@ -19,7 +19,7 @@ export default function TimelineInfoPage() {
           <Image
             src="/timeline/2026-07-27_21.15.25-cropped.png"
             alt="Gneiss Name standing in water next to a spider and crocodile"
-            className="max-w-sm rounded-lg shadow-2xl"
+            className="max-w-sm not-sm:max-w-full rounded-lg shadow-2xl"
             width={384}
             height={384}
           />
@@ -40,7 +40,7 @@ export default function TimelineInfoPage() {
           <Image
             src="/timeline/2026-07-27_21.12.32.png"
             alt="Wide shot of the Geologic Timeline Project"
-            className="max-w-sm rounded-lg shadow-2xl"
+            className="max-w-sm not-sm:max-w-full rounded-lg shadow-2xl"
             width={384}
             height={384}
           />
@@ -60,7 +60,7 @@ export default function TimelineInfoPage() {
           <Image
             src="/timeline/old-thumbnail.png"
             alt="Thumbnail Image of the original geologic timeline video"
-            className="max-w-sm rounded-lg shadow-2xl"
+            className="max-w-sm not-sm:max-w-full rounded-lg shadow-2xl"
             width={384}
             height={384}
           />
@@ -139,14 +139,14 @@ export default function TimelineInfoPage() {
         </div>
       </section>
       <div className="divider" />
-      <h1 className="font-semibold text-4xl tracking-tight">More details</h1>
-      <h2 className="font-medium text-2xl tracking-tight">World Building & Map Making</h2>
+      <h1 className="text-balance text-center font-semibold text-4xl tracking-tight">More details</h1>
+      <h2 className="text-balance text-center font-medium text-2xl tracking-tight">World Building & Map Making</h2>
       <section className="hero">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <Image
             src="/timeline/2026-07-30_15.53.07.png"
             alt="Wide shot of the middle ~600 million years of the Geologic Timeline, showing the simple terrain"
-            className="max-w-sm rounded-lg shadow-2xl"
+            className="max-w-sm not-sm:max-w-full rounded-lg shadow-2xl"
             width={384}
             height={384}
           />
@@ -166,7 +166,7 @@ export default function TimelineInfoPage() {
           <Image
             src="/timeline/2026-07-30_15.53.48.png"
             alt="Cretaceous dinosaurs in a small scene, showing the time period on the wall behind them"
-            className="max-w-sm rounded-lg shadow-2xl"
+            className="max-w-sm not-sm:max-w-full rounded-lg shadow-2xl"
             width={384}
             height={384}
           />
@@ -186,7 +186,7 @@ export default function TimelineInfoPage() {
           <Image
             src="/timeline/2026-07-30_15.52.29.png"
             alt="Inside the circular lobby of a museum, showing a model of the earth hung from the cieling and multiple levels of exhibit halls, with a GuideName NPC."
-            className="max-w-sm rounded-lg shadow-2xl"
+            className="max-w-sm not-sm:max-w-full rounded-lg shadow-2xl"
             width={384}
             height={384}
           />
@@ -202,13 +202,13 @@ export default function TimelineInfoPage() {
           </p>
         </div>
       </section>
-      <h2 className="font-medium text-2xl tracking-tight">Resource Pack and Assets</h2>
+      <h2 className="text-balance text-center font-medium text-2xl tracking-tight">Resource Pack and Assets</h2>
       <section className="hero">
         <div className="hero-content flex-col lg:flex-row">
           <Image
             src="/timeline/2026-07-30_15.55.10.png"
             alt="Many dinosaurs lined up in a dev display of their stratigraphic range"
-            className="max-w-sm rounded-lg shadow-2xl"
+            className="max-w-sm not-sm:max-w-full rounded-lg shadow-2xl"
             width={384}
             height={384}
           />
@@ -223,13 +223,13 @@ export default function TimelineInfoPage() {
           </p>
         </div>
       </section>
-      <h2 className="font-medium text-2xl tracking-tight">Datapack Work</h2>
+      <h2 className="text-balance text-center font-medium text-2xl tracking-tight">Datapack Work</h2>
       <section className="hero">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <Image
             src="/timeline/Timeline_Manual_Sample.png"
             alt="Sample page from the Timeline Manual book showing species entries and information"
-            className="max-w-sm rounded-lg shadow-2xl"
+            className="max-w-sm not-sm:max-w-full rounded-lg shadow-2xl"
             width={384}
             height={384}
           />
@@ -248,7 +248,7 @@ export default function TimelineInfoPage() {
           <Image
             src="/timeline/2026-07-30_13.55.37.png"
             alt="Map of the geologic timeline composed of a long export of the chunks making it up"
-            className="max-w-sm rounded-lg shadow-2xl"
+            className="max-w-sm not-sm:max-w-full rounded-lg shadow-2xl"
             width={384}
             height={384}
           />
