@@ -17,7 +17,7 @@ export default function TimelineInfoPage() {
       </p>
       <Section
         image={{
-          src: "/timeline/2026-07-27_21.15.25-cropped.png",
+          src: "/timeline/next-to-critters.png",
           alt: "Gneiss Name standing in water next to a spider and crocodile",
         }}
       >
@@ -30,10 +30,7 @@ export default function TimelineInfoPage() {
         major events in earth's history, custom models and textures for plants and animals, and animated displays all
         based on real paleontological information.
       </Section>
-      <Section
-        image={{ src: "/timeline/2026-07-27_21.12.32.png", alt: "Wide shot of the Geologic Timeline Project" }}
-        reverse
-      >
+      <Section image={{ src: "/timeline/wide-shot.png", alt: "Wide shot of the Geologic Timeline Project" }} reverse>
         So why do this in vanilla, and not with mods? Because I want anyone to be able to just own Minecraft, download
         the world, and use it without knowledge of mods.
         <br />
@@ -90,7 +87,7 @@ export default function TimelineInfoPage() {
       <h2>World Building & Map Making</h2>
       <Section
         image={{
-          src: "/timeline/2026-07-30_15.53.07.png",
+          src: "/timeline/wide-shot-middle-600.png",
           alt: "Wide shot of the middle ~600 million years of the Geologic Timeline, showing the simple terrain",
         }}
         reverse
@@ -105,7 +102,7 @@ export default function TimelineInfoPage() {
       </Section>
       <Section
         image={{
-          src: "/timeline/2026-07-30_15.53.48.png",
+          src: "/timeline/cretaceous-dinos.png",
           alt: "Cretaceous dinosaurs in a small scene, showing the time period on the wall behind them",
         }}
       >
@@ -119,7 +116,7 @@ export default function TimelineInfoPage() {
       </Section>
       <Section
         image={{
-          src: "/timeline/2026-07-30_15.52.29.png",
+          src: "/timeline/museum-lobby.png",
           alt: "Inside the circular lobby of a museum, showing a model of the earth hung from the cieling and multiple levels of exhibit halls, with a GuideName NPC.",
         }}
         reverse
@@ -136,7 +133,7 @@ export default function TimelineInfoPage() {
       <h2>Resource Pack and Assets</h2>
       <Section
         image={{
-          src: "/timeline/2026-07-30_15.55.10.png",
+          src: "/timeline/dino-lineup.png",
           alt: "Many dinosaurs lined up in a dev display of their stratigraphic range",
         }}
       >
@@ -151,7 +148,7 @@ export default function TimelineInfoPage() {
       <h2>Datapack Work</h2>
       <Section
         image={{
-          src: "/timeline/Timeline_Manual_Sample.png",
+          src: "/timeline/manual-excerpt.png",
           alt: "Sample page from the Timeline Manual book showing species entries and information",
         }}
         reverse
@@ -165,7 +162,7 @@ export default function TimelineInfoPage() {
       </Section>
       <Section
         image={{
-          src: "/timeline/2026-07-30_13.55.37.png",
+          src: "/timeline/map-wall.png",
           alt: "Map of the geologic timeline composed of a long export of the chunks making it up",
         }}
       >
@@ -179,7 +176,7 @@ export default function TimelineInfoPage() {
         after its release. There are a few future ideas that would be great to incorporate and I'm always willing to
         hear new ones too.
       </p>
-      <div className="*:breadcrumbs flex flex-wrap justify-center gap-2">
+      <div className="flex flex-wrap justify-center gap-2">
         <BreadCrumbs
           entries={[
             {
@@ -211,11 +208,14 @@ export default function TimelineInfoPage() {
 const BreadCrumbs: FC<{ entries: { title: string; href: string; Icon: React.FC<{ className: string }> }[] }> = ({
   entries,
 }) => (
-  <div className="rounded-lg bg-base-200 p-4">
-    <ul>
+  <div className="breadcrumbs">
+    <ul className="group">
       {entries.map((e) => (
-        <li key={e.href}>
-          <Link href={e.href} target="_blank">
+        <li
+          key={e.href}
+          className="not-last:*:rounded-r-none not-first:*:rounded-l-none not-group-hover:not-last:*:border-r-transparent not-group-hover:not-first:*:border-l-transparent before:absolute before:-translate-x-3 not-group-hover:before:transition-opacity group-hover:before:opacity-0 group-hover:before:duration-200 group-hover:before:ease-out"
+        >
+          <Link href={e.href} role="link" target="_blank" className="btn btn-neutral link link-hover btn-soft">
             <e.Icon className="size-5" />
             {e.title}
           </Link>
@@ -231,12 +231,21 @@ const ActionCard: FC<{ title: string; description: string; href: string; Icon: R
   Icon,
   title,
 }) => (
-  <Link href={href} target="_blank" rel="noopener noreferrer" className="btn h-full flex-col py-4">
-    <b className="font-semibold text-base">
-      <Icon className="mr-2 inline size-5" />
-      {title}
-    </b>
-    <p className="not-md:hidden text-base-content/60 text-sm">{description}</p>
+  <Link
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="btn btn-soft btn-neutral block h-full p-0 text-start"
+  >
+    <div className="card card-compact h-full flex-row items-center">
+      <div className="card-body pr-0">
+        <h2 className="card-title">{title}</h2>
+        <p>{description}</p>
+      </div>
+      <div className="ml-auto p-6 pl-0">
+        <Icon className="size-8" />
+      </div>
+    </div>
   </Link>
 );
 
@@ -262,11 +271,11 @@ const Section: FC<PropsWithChildren<{ image: { src: string; alt: string }; rever
       <Image
         src={image.src}
         alt={image.alt}
-        className="max-w-sm not-sm:max-w-full rounded-lg shadow-2xl"
+        className="max-w-sm not-sm:max-w-full rounded-box shadow-2xl"
         width={384}
         height={384}
       />
-      <p className="max-w-4xl rounded-lg bg-base-200 p-4">{children}</p>
+      <p className="max-w-4xl rounded-box bg-base-200/25 p-4">{children}</p>
     </div>
   </section>
 );

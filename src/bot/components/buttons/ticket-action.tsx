@@ -1,6 +1,7 @@
 import type { Params } from "@dressed/matcher";
 import { type ComponentInteraction, Container } from "@dressed/react";
 import { createMessage, modifyChannel } from "dressed";
+import { cache } from "@/db";
 import { openTicket } from "../selects/ticket-open";
 
 export const pattern = "ticket-:action(close|open){-:ticketName{-:message}{@:staff((&?\\d+,?)*)}}";
@@ -11,17 +12,21 @@ export default async function ticketButton(interaction: ComponentInteraction, ar
     const thread = await openTicket(interaction.user, ticketName, message, staff?.split(","));
     await interaction.reply(`<#${thread.id}>`, { ephemeral: true });
   } else if (args.action === "close") {
-    interaction.update(
-      <Container>
-        ### Ticket closed{"\n"}
-        Closed by {interaction.user.username}
-      </Container>,
-    );
-    await createMessage(interaction.channel.id, `> Closed by ${interaction.user.username}`);
-    await modifyChannel(interaction.channel.id, {
-      name: `[Solved] ${interaction.channel.name}`,
-      archived: true,
-      locked: true,
-    });
+    await Promise.all([
+      interaction.update(
+        <Container>
+          ### Ticket closed{"\n"}
+          Closed by {interaction.user.username}
+        </Container>,
+      ),
+      cache.listTickets.clear(),
+      createMessage(interaction.channel.id, `> Closed by ${interaction.user.username}`).then(() =>
+        modifyChannel(interaction.channel.id, {
+          name: `[Solved] ${interaction.channel.name}`,
+          archived: true,
+          locked: true,
+        }),
+      ),
+    ]);
   }
 }

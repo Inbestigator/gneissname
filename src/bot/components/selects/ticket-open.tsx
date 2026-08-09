@@ -9,6 +9,7 @@ import {
 } from "@dressed/react";
 import type { APIUser } from "discord-api-types/v10";
 import { addThreadMember, createThread } from "dressed";
+import { cache } from "@/db";
 
 export async function openTicket(
   user: APIUser,
@@ -16,10 +17,13 @@ export async function openTicket(
   message = "Our staff will be with you shortly, in the meantime please state your issue.",
   relevantStaff = ["&1225973068141297757"],
 ) {
-  const thread = await createThread("1225971091344982128", {
-    name: `[${ticketName}] ${user.username}`,
-    type: "Private",
-  });
+  const [thread] = await Promise.all([
+    createThread("1225971091344982128", {
+      name: `[${ticketName}] ${user.username}`,
+      type: "Private",
+    }),
+    cache.listTickets.clear(),
+  ]);
   addThreadMember(thread.id, user.id);
   createMessage(
     thread.id,

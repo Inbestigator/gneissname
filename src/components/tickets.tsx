@@ -3,8 +3,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { cn } from "@/lib/utils";
-
 interface Ticket {
   id: string;
   name: string;
@@ -13,38 +11,34 @@ interface Ticket {
 export default function Tickets({
   updateTicket,
   deleteTicket,
-}: Readonly<{
-  updateTicket: (data: FormData) => Promise<void>;
-  deleteTicket: (data: FormData) => Promise<void>;
-}>) {
-  const [selectedTab, setSelectedTab] = useState("");
-
+}: Readonly<{ updateTicket: (data: FormData) => Promise<void>; deleteTicket: (data: FormData) => Promise<void> }>) {
+  const [selectedTab, setSelectedTab] = useState<string>();
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["tickets"],
-    queryFn: fetchTickets,
+    async queryFn() {
+      const data: Ticket[] = await (await fetch("/api/tickets")).json();
+      setSelectedTab((p) => (p ? p : data[0].id));
+      return data;
+    },
   });
-
-  async function fetchTickets() {
-    const data: Ticket[] = await (await fetch("/api/tickets")).json();
-    data[0] && setSelectedTab(data[0].id);
-    return data;
-  }
 
   return (
     <>
       <h2 className="font-medium text-xl">Tickets</h2>
       {isPending && "Loading tickets..."}
       {isError && `Error: ${error.message}`}
-      <div role="tablist" className="tabs-boxed tabs flex flex-wrap">
+      <div className="tabs tabs-lift px-4">
         {data?.map((ticket) => (
-          <button
-            type="button"
+          <input
             key={ticket.id}
-            onClick={() => setSelectedTab(ticket.id)}
-            className={cn("tab", selectedTab === ticket.id && "tab-active")}
-          >
-            {ticket.name.replaceAll(/\[.*?\]/g, "")}
-          </button>
+            type="radio"
+            name="ticket-tabs"
+            value={ticket.id}
+            className="tab"
+            aria-label={ticket.name.replaceAll(/\[.*?\]/g, "")}
+            checked={ticket.id === selectedTab}
+            onChange={(e) => setSelectedTab(e.target.value)}
+          />
         ))}
       </div>
       {selectedTab && (
@@ -82,14 +76,14 @@ function EditTicket({
   const queryClient = useQueryClient();
 
   return (
-    <div className="card bg-base-300">
+    <div className="card bg-base-200">
       <div className="card-body">
         <h3 className="text-lg">
           {tags.map((tag) => `[${tag}] `)}
           {ticket.name.replaceAll(/\[.*?\]/g, "")}
         </h3>
         <form
-          className="flex flex-wrap gap-2"
+          className="sm:join flex flex-wrap not-sm:gap-2"
           action={async (f) => {
             await updateTicket(f);
             queryClient.invalidateQueries({ queryKey: ["tickets"] });
@@ -101,12 +95,12 @@ function EditTicket({
             placeholder="List tags here, separated by commas"
             value={tags.join(",")}
             onChange={(e) => setTags(e.target.value.split(/,\s*/))}
-            className="input w-full max-w-xs"
+            className="input sm:join-item"
           />
           <input type="hidden" name="tags" value={tags.map((tag) => `[${tag}] `).join("")} />
           <input type="hidden" name="ticketId" value={ticket.id} />
           <input type="hidden" name="user" value={ticket.name.replaceAll(/\[.*?\]\s*/g, "")} />
-          <button className="btn btn-primary" type="submit">
+          <button className="btn btn-soft btn-active sm:join-item" type="submit">
             Submit tags
           </button>
         </form>
@@ -118,7 +112,7 @@ function EditTicket({
             }
           }}
         >
-          <button type="submit" className="btn btn-outline btn-error">
+          <button type="submit" className="btn btn-dash btn-error">
             Delete
           </button>
           <input type="hidden" name="ticketId" value={ticket.id} />

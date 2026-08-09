@@ -5,36 +5,34 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
-
-export type Video = {
+export interface Video {
   thumbnail: string;
   index: number;
   description: string;
   id: string;
   title: string;
-};
+}
 
-export function SkeletonVideos({ index }: Readonly<{ index: number }>) {
-  return (
-    <div className={cn("card bg-base-200 md:col-span-1 md:flex", index === 0 ? "flex" : "hidden")}>
-      <figure className="skeleton flex aspect-video items-center overflow-hidden rounded-b-none" />
-      <div className="card-body">
-        <h2 className="card-title skeleton mt-0.75 mb-2.25 h-4.75">
-          <span className="sr-only">Loading video title</span>
-        </h2>
-        <p className="skeleton mb-px h-3.25" />
-        <p className="skeleton mb-px h-3.25" />
-        <p className="skeleton mb-0.5 h-3.25 w-3/4" />
-        <div className="card-actions">
-          <div className="btn btn-neutral btn-disabled text-transparent">
+const SkeletonVideo = () => (
+  <div className="card not-first:not-sm:hidden bg-base-200 last:not-md:hidden">
+    <figure className="skeleton flex aspect-video items-center overflow-hidden rounded-b-none" />
+    <div className="card-body">
+      <h2 className="card-title skeleton mt-0.75 mb-2.25 h-4.75">
+        <span className="sr-only">Loading video title</span>
+      </h2>
+      <p className="skeleton mb-px h-3.25" />
+      <p className="skeleton mb-px h-3.25" />
+      <p className="skeleton mb-0.5 h-3.25 w-3/4" />
+      <div className="card-actions">
+        <div className="btn btn-neutral btn-disabled">
+          <div className="btn border-0 p-0 opacity-0">
             Watch on YouTube <IconExternalLink className="size-5" />
           </div>
         </div>
       </div>
     </div>
-  );
-}
+  </div>
+);
 
 function decodeHtmlEntities(v: string) {
   const textArea = document.createElement("textarea");
@@ -45,7 +43,7 @@ function decodeHtmlEntities(v: string) {
 export default function LatestVideos() {
   const { data } = useQuery({
     queryKey: ["videos"],
-    queryFn: async (): Promise<Video[]> => {
+    async queryFn(): Promise<Video[]> {
       const response = await fetch("/api/videos", { next: { revalidate: 60 * 60 } });
       return response.json();
     },
@@ -54,37 +52,33 @@ export default function LatestVideos() {
   if (!data?.length) {
     return (
       <>
-        <SkeletonVideos index={0} />
-        <SkeletonVideos index={1} />
-        <SkeletonVideos index={2} />
+        <SkeletonVideo />
+        <SkeletonVideo />
+        <SkeletonVideo />
       </>
     );
   }
 
-  return (
-    <>
-      {data.map((video, index) => (
-        <div key={video.id} className={cn("card bg-base-200 md:flex", index < 2 && "sm:flex", index !== 0 && "hidden")}>
-          <figure className="flex aspect-video items-center overflow-hidden">
-            <Image
-              src={video.thumbnail}
-              width={1920}
-              height={1080}
-              alt={`Thumbnail for ${video.title}`}
-              draggable={false}
-            />
-          </figure>
-          <div className="card-body">
-            <h2 className="card-title">{decodeHtmlEntities(video.title)}</h2>
-            <p className="wrap-break-word line-clamp-3">{decodeHtmlEntities(video.description)}</p>
-            <div className="card-actions">
-              <Link target="_blank" href={`https://youtube.com/watch?v=${video.id}`} className="btn btn-neutral">
-                Watch on YouTube <IconExternalLink className="size-5" />
-              </Link>
-            </div>
-          </div>
+  return data.map((video) => (
+    <div key={video.id} className="card not-first:not-sm:hidden bg-base-200 last:not-md:hidden">
+      <figure className="flex aspect-video items-center overflow-hidden">
+        <Image
+          src={video.thumbnail}
+          width={1920}
+          height={1080}
+          alt={`Thumbnail for ${video.title}`}
+          draggable={false}
+        />
+      </figure>
+      <div className="card-body">
+        <h2 className="card-title">{decodeHtmlEntities(video.title)}</h2>
+        <p className="wrap-break-word line-clamp-3">{decodeHtmlEntities(video.description)}</p>
+        <div className="card-actions">
+          <Link target="_blank" href={`https://youtube.com/watch?v=${video.id}`} className="btn btn-neutral">
+            Watch on YouTube <IconExternalLink className="size-5" />
+          </Link>
         </div>
-      ))}
-    </>
-  );
+      </div>
+    </div>
+  ));
 }

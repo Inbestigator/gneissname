@@ -14,8 +14,8 @@ export default function IndexPage() {
         </header>
         <Link href="https://shop.gneiss.name" className="btn btn-dash group relative mx-auto not-sm:w-full">
           Check out the Gneiss shop! <IconExternalLink className="size-5" />
-          <div className="absolute -top-4 -right-4 size-8 rounded-full bg-[radial-gradient(white_30%,transparent_100%)] group-hover:hidden" />
-          <div className="absolute -top-2 -right-2 size-4 animate-ping rounded-full bg-red-100 p-1 group-hover:hidden">
+          <div className="absolute -top-4 -right-4 size-8 rounded-full bg-[radial-gradient(var(--page-scroll-bg,var(--root-bg))_30%,transparent_100%)] group-hover:hidden group-focus-visible:hidden" />
+          <div className="absolute -top-2 -right-2 size-4 animate-ping rounded-full bg-red-100 p-1 group-hover:hidden group-focus-visible:hidden">
             <div className="size-full rounded-full bg-red-600" />
           </div>
         </Link>

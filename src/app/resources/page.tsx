@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import type { FC } from "react";
 
 export const metadata: Metadata = {
   title: "Resources",
@@ -53,23 +54,23 @@ const resourcePacks = [
   },
 ];
 
-function Card({ item }: { item: (typeof worldDownloads)[number] }) {
-  return (
-    <Link
-      className="card card-compact bg-base-200 transition-all hover:bg-base-300/80"
-      href={item.id.startsWith("/") ? item.id : `https://drive.google.com/file/d/${item.id}`}
-      target="_blank"
-    >
+const Card: FC<{ item: (typeof worldDownloads)[number] }> = ({ item }) => (
+  <Link
+    className="btn btn-neutral btn-soft block h-full p-0 text-start"
+    href={item.id.startsWith("/") ? item.id : `https://drive.google.com/file/d/${item.id}`}
+    target="_blank"
+  >
+    <div className="card card-compact">
       <div className="card-body">
         <h2 className="card-title">
           {item.title}
-          <div className="badge badge-neutral ml-auto hidden md:flex">{item.version}</div>
+          <div className="badge badge-dash ml-auto text-nowrap">{item.version}</div>
         </h2>
         <p>{item.description}</p>
       </div>
-    </Link>
-  );
-}
+    </div>
+  </Link>
+);
 
 export default function DownloadsPage() {
   return (

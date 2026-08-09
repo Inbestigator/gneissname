@@ -12,16 +12,14 @@ export const authOptions: NextAuthOptions = {
   ],
   pages: { signIn: "/login" },
   callbacks: {
-    session: async ({ session, token }) => {
+    async session({ session, token }) {
       if (session?.user) {
         session.user.id = token.sub as string;
       }
       return session;
     },
-    async redirect() {
-      return "/dashboard";
-    },
-    jwt: async ({ user, token }) => {
+    redirect: () => "/dashboard",
+    async jwt({ user, token }) {
       if (user) {
         token.uid = user.id;
         const prismaUser = await prisma.user.findFirst({

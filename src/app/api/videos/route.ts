@@ -1,35 +1,3 @@
-import { NextResponse } from "next/server";
+import { cache } from "@/db";
 
-import type { Video } from "@/components/latest-videos";
-
-export async function GET() {
-  try {
-    const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCCk6atPf8zBPd-5C7rgEkRg&maxResults=3&order=date&type=video&key=${process.env.YOUTUBE_API_KEY}`,
-    );
-
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-    const data = await response.json();
-
-    const videos: Video[] = data.items.slice(0, 3).map(
-      (
-        item: {
-          snippet: { thumbnails: { high: { url: string } }; description: string; title: string };
-          id: { videoId: string };
-        },
-        index: number,
-      ) => ({
-        thumbnail: item.snippet.thumbnails.high.url,
-        index,
-        description: item.snippet.description,
-        id: item.id.videoId,
-        title: item.snippet.title,
-      }),
-    );
-
-    return NextResponse.json(videos);
-  } catch {
-    return NextResponse.json({ error: "Error fetching videos" }, { status: 500 });
-  }
-}
+export const GET = () => cache.listVideos().then(Response.json);
