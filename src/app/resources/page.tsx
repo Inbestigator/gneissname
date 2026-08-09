@@ -73,12 +73,12 @@ function Card({ item }: { item: (typeof worldDownloads)[number] }) {
 
 export default function DownloadsPage() {
   return (
-    <div className="mt-6 mb-8 grid gap-4 sm:grid-cols-3 md:my-10">
-      <h1 className="font-semibold text-4xl tracking-tight sm:col-span-3">World downloads</h1>
+    <div className="mt-6 mb-8 grid gap-4 sm:grid-cols-3 md:my-10 [&>h1]:sm:col-span-3">
+      <h1>World downloads</h1>
       {worldDownloads.map((item) => (
         <Card key={item.id} item={item} />
       ))}
-      <h1 className="font-semibold text-4xl tracking-tight sm:col-span-3">Resource packs</h1>
+      <h1>Resource packs</h1>
       {resourcePacks.map((item) => (
         <Card key={item.id} item={item} />
       ))}

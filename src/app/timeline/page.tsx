@@ -5,11 +5,11 @@ import type { FC, PropsWithChildren, SVGProps } from "react";
 
 export default function TimelineInfoPage() {
   return (
-    <div className="mt-6 mb-8 flex flex-col items-center justify-center gap-4 md:my-10">
-      <h1 className="text-balance text-center font-semibold text-4xl tracking-tight">Geologic Timeline Project</h1>
-      <p className="max-w-7xl text-balance text-center">
-        Deep time is a concept that is hard to wrap your head around, and when displayed it is often condensed like my
-        own booth at{" "}
+    <div className="mt-6 mb-8 flex flex-col items-center justify-center gap-4 text-balance text-center md:my-10">
+      <h1>Geologic Timeline Project</h1>
+      <p className="text-pretty">
+        Deep time is a concept that is hard to wrap your head around, and when displayed it is often condensed. Such as
+        in my booth at{" "}
         <Link href="https://smithed.net/summit" target="_blank" className="link link-hover text-blue-600">
           Smithed Summit 2026
         </Link>
@@ -52,8 +52,8 @@ export default function TimelineInfoPage() {
         After working on it for a few years with some contributors I&rsquo;m ready to devote more time and energy to
         complete it before the next real life geologic eon is upon us.
       </Section>
-      <section className="hero mx-auto max-w-7xl text-balance px-4 py-12">
-        <div className="hero-content w-full flex-col text-center">
+      <section className="hero text-pretty">
+        <div className="hero-content flex-col px-0">
           <p className="mt-4">
             <span className="text-lg">
               I&apos;m looking for contributors skilled in resource packs, datapacks, map making, Blockbench, modeling,
@@ -86,8 +86,8 @@ export default function TimelineInfoPage() {
         </div>
       </section>
       <div className="divider" />
-      <h1 className="text-balance text-center font-semibold text-4xl tracking-tight">More details</h1>
-      <h2 className="text-balance text-center font-medium text-2xl tracking-tight">World Building & Map Making</h2>
+      <h1>More details</h1>
+      <h2>World Building & Map Making</h2>
       <Section
         image={{
           src: "/timeline/2026-07-30_15.53.07.png",
@@ -133,7 +133,7 @@ export default function TimelineInfoPage() {
         In a future release the Museum will also have rooms for each time period. The final design for the interior and
         exterior of the museum needs to be decided on and built.
       </Section>
-      <h2 className="text-balance text-center font-medium text-2xl tracking-tight">Resource Pack and Assets</h2>
+      <h2>Resource Pack and Assets</h2>
       <Section
         image={{
           src: "/timeline/2026-07-30_15.55.10.png",
@@ -148,7 +148,7 @@ export default function TimelineInfoPage() {
         The art direction goal is to keep things looking like it would fit in Minecraft. There are additional models
         needed and we are really lacking animals specifically in the permian and cenozoic. A platypus is required.
       </Section>
-      <h2 className="text-balance text-center font-medium text-2xl tracking-tight">Datapack Work</h2>
+      <h2>Datapack Work</h2>
       <Section
         image={{
           src: "/timeline/Timeline_Manual_Sample.png",
@@ -174,12 +174,12 @@ export default function TimelineInfoPage() {
         simplified tree of life can be selected and displayed in relation to geologic time.
       </Section>
       <div className="divider" />
-      <p className="max-w-7xl text-balance text-center">
+      <p className="text-pretty">
         Beyond this, there is the need to keep everything behind the scenes organized. I would like to support this even
         after its release. There are a few future ideas that would be great to incorporate and I'm always willing to
         hear new ones too.
       </p>
-      <div className="*:breadcrumbs flex flex-wrap justify-center gap-2 *:rounded-lg *:bg-base-200 *:p-4">
+      <div className="*:breadcrumbs flex flex-wrap justify-center gap-2">
         <BreadCrumbs
           entries={[
             {
@@ -211,7 +211,7 @@ export default function TimelineInfoPage() {
 const BreadCrumbs: FC<{ entries: { title: string; href: string; Icon: React.FC<{ className: string }> }[] }> = ({
   entries,
 }) => (
-  <div>
+  <div className="rounded-lg bg-base-200 p-4">
     <ul>
       {entries.map((e) => (
         <li key={e.href}>
@@ -232,7 +232,7 @@ const ActionCard: FC<{ title: string; description: string; href: string; Icon: R
   title,
 }) => (
   <Link href={href} target="_blank" rel="noopener noreferrer" className="btn h-full flex-col py-4">
-    <b className="font-semibold">
+    <b className="font-semibold text-base">
       <Icon className="mr-2 inline size-5" />
       {title}
     </b>
@@ -254,8 +254,11 @@ const Section: FC<PropsWithChildren<{ image: { src: string; alt: string }; rever
   image,
   reverse,
 }) => (
-  <section className="hero">
-    <div className="hero-content flex-col lg:flex-row data-[reversed=true]:lg:flex-row-reverse" data-reversed={reverse}>
+  <section className="hero text-pretty text-start">
+    <div
+      className="hero-content flex-col px-0 lg:flex-row data-[reversed=true]:lg:flex-row-reverse"
+      data-reversed={reverse}
+    >
       <Image
         src={image.src}
         alt={image.alt}

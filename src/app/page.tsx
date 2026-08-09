@@ -7,7 +7,7 @@ export default function IndexPage() {
     <>
       <section className="mt-4 mb-8 flex flex-col gap-6">
         <header className="flex w-full flex-col items-center gap-2 text-center">
-          <h1 className="font-extrabold text-4xl tracking-tighter sm:text-7xl">Gneissname</h1>
+          <h1 className="font-extrabold tracking-tighter sm:text-7xl">Gneissname</h1>
           <p className="max-w-full text-lg text-muted-foreground md:max-w-200 md:text-xl">
             I&apos;m a geologist and YouTuber who likes to make things.
           </p>
