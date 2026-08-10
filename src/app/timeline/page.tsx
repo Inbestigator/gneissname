@@ -1,7 +1,14 @@
 import { IconFileDescription, IconHash } from "@tabler/icons-react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { FC, PropsWithChildren, SVGProps } from "react";
+
+export const metadata: Metadata = {
+  title: "Geologic Timeline Project",
+  description:
+    "A vanilla Minecraft world where each block represents one million years of Earth's history, with geological events, prehistoric life, custom assets, and interactive exhibits.",
+};
 
 export default function TimelineInfoPage() {
   return (
@@ -21,8 +28,8 @@ export default function TimelineInfoPage() {
           alt: "Gneiss Name standing in water next to a spider and crocodile",
         }}
       >
-        To help really understand it, I&rsquo;m creating a vanilla Java Minecraft world where traveling 1 block equals 1
-        million years. Seeing relationships at a 1 to 1 scale gives something more tangible to conceive of the distance
+        To help really understand it, I&rsquo;m creating a vanilla Java Minecraft world where traveling one block equals
+        one million years. Seeing relationships at a 1:1 scale gives something more tangible to conceive of the distance
         between events.
         <br />
         <br />
@@ -97,8 +104,8 @@ export default function TimelineInfoPage() {
         something not in vanilla, we make it and add it to the resource pack.
         <br />
         <br />
-        The initial layout was built using simple noise patterns and this needs to be refined for the middle 3 billion
-        years by adding mountains, streams, sediment, etc.
+        The initial layout was built using simple noise patterns and this needs to be refined for the middle three
+        billion years by adding mountains, streams, sediment, etc.
       </Section>
       <Section
         image={{
@@ -107,8 +114,8 @@ export default function TimelineInfoPage() {
         }}
       >
         The most recent ~600 million years has plants and animals of the time, constrained to their duration on earth.
-        For example T-rex was around from 69-66 mya so it's only in 4 blocks of the diorama. These custom resources need
-        to be added into the world to create little scenes and fit with the topography.
+        For example T-rex was around from 69-66 mya so it's only in four blocks of the diorama. These custom resources
+        need to be added into the world to create little scenes and fit with the topography.
         <br />
         <br />
         To give you an idea of scale, we have over 300 animals and 100 plants already created and are looking to include
@@ -122,9 +129,9 @@ export default function TimelineInfoPage() {
         reverse
       >
         The spawn location and hub of the timeline is a museum which will contain an interactive map, orientation and
-        explanation of how and why we are doing things the way we are. Things like, if a tree's canopy is 5 blocks wide,
-        it doesn&rsquo;t mean the tree lived for 5 million years and other limitations that we have to concede to make
-        the world work.
+        explanation of how and why we are doing things the way we are. Things like, if a tree's canopy is five blocks
+        wide, it doesn&rsquo;t mean the tree lived for five million years and other limitations that we have to concede
+        to make the world work.
         <br />
         <br />
         In a future release the Museum will also have rooms for each time period. The final design for the interior and
