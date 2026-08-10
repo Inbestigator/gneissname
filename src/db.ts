@@ -27,31 +27,31 @@ export const cache = createCache(
       const { threads } = await listActiveThreads("750062409364013159");
       return threads.filter((t) => t.type === ChannelType.PrivateThread && t.parent_id === "1225971091344982128");
     },
-    async listVideos() {
+    async listVideos(): Promise<Video[]> {
       const response = await fetch(
         `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=UUCk6atPf8zBPd-5C7rgEkRg&maxResults=3&key=${process.env.YOUTUBE_API_KEY}`,
       );
 
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-      const data = await response.json();
-
-      return data.items.slice(0, 3).map(
-        (
-          item: {
-            snippet: { thumbnails: { high: { url: string } }; description: string; title: string };
+      const data = (await response.json()) as {
+        items: {
+          snippet: {
+            thumbnails: { high: { url: string } };
+            description: string;
+            title: string;
             resourceId: { videoId: string };
-          },
-          index: number,
-        ) =>
-          ({
-            thumbnail: item.snippet.thumbnails.high.url,
-            index,
-            description: item.snippet.description,
-            id: item.resourceId.videoId,
-            title: item.snippet.title,
-          }) satisfies Video,
-      );
+          };
+        }[];
+      };
+
+      return data.items.slice(0, 3).map((item, index) => ({
+        thumbnail: item.snippet.thumbnails.high.url,
+        index,
+        description: item.snippet.description,
+        id: item.snippet.resourceId.videoId,
+        title: item.snippet.title,
+      }));
     },
   },
   {
@@ -61,10 +61,7 @@ export const cache = createCache(
         const res = await redis.get(key);
         if (!res) return { state: "miss" };
         const data = JSON.parse(res);
-        return {
-          state: Date.now() < data.staleAt ? "hit" : "stale",
-          ...data,
-        };
+        return { state: Date.now() < data.staleAt ? "hit" : "stale", ...data };
       },
       set(key, value) {
         redis.set(key, JSON.stringify({ staleAt: Date.now() + 1500 * 1000, value }), {
