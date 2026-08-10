@@ -17,7 +17,7 @@ export default function TimelineInfoPage() {
       <p className="text-pretty">
         Deep time is a concept that is hard to wrap your head around, and when displayed it is often condensed. Such as
         in my booth at{" "}
-        <Link href="https://smithed.net/summit" target="_blank" className="link link-hover text-blue-600">
+        <Link href="https://smithed.net/summit" target="_blank" className="link link-hover text-[revert]">
           Smithed Summit 2026
         </Link>
         .
@@ -26,6 +26,7 @@ export default function TimelineInfoPage() {
         image={{
           src: "/timeline/next-to-critters.png",
           alt: "Gneiss Name standing in water next to a spider and crocodile",
+          height: 224,
         }}
       >
         To help really understand it, I&rsquo;m creating a vanilla Java Minecraft world where traveling one block equals
@@ -37,7 +38,10 @@ export default function TimelineInfoPage() {
         major events in earth's history, custom models and textures for plants and animals, and animated displays all
         based on real paleontological information.
       </Section>
-      <Section image={{ src: "/timeline/wide-shot.png", alt: "Wide shot of the Geologic Timeline Project" }} reverse>
+      <Section
+        image={{ src: "/timeline/wide-shot.png", alt: "Wide shot of the Geologic Timeline Project", height: 216 }}
+        reverse
+      >
         So why do this in vanilla, and not with mods? Because I want anyone to be able to just own Minecraft, download
         the world, and use it without knowledge of mods.
         <br />
@@ -47,7 +51,11 @@ export default function TimelineInfoPage() {
         educators.
       </Section>
       <Section
-        image={{ src: "/timeline/old-thumbnail.png", alt: "Thumbnail Image of the original geologic timeline video" }}
+        image={{
+          src: "/timeline/old-thumbnail.png",
+          alt: "Thumbnail Image of the original geologic timeline video",
+          height: 294,
+        }}
       >
         Creating a version of this was actually the original idea that got me thinking about using Minecraft to talk
         about geology and starting my youtube channel.
@@ -96,6 +104,7 @@ export default function TimelineInfoPage() {
         image={{
           src: "/timeline/wide-shot-middle-600.png",
           alt: "Wide shot of the middle ~600 million years of the Geologic Timeline, showing the simple terrain",
+          height: 216,
         }}
         reverse
       >
@@ -111,6 +120,7 @@ export default function TimelineInfoPage() {
         image={{
           src: "/timeline/cretaceous-dinos.png",
           alt: "Cretaceous dinosaurs in a small scene, showing the time period on the wall behind them",
+          height: 216,
         }}
       >
         The most recent ~600 million years has plants and animals of the time, constrained to their duration on earth.
@@ -125,6 +135,7 @@ export default function TimelineInfoPage() {
         image={{
           src: "/timeline/museum-lobby.png",
           alt: "Inside the circular lobby of a museum, showing a model of the earth hung from the cieling and multiple levels of exhibit halls, with a GuideName NPC.",
+          height: 216,
         }}
         reverse
       >
@@ -142,6 +153,7 @@ export default function TimelineInfoPage() {
         image={{
           src: "/timeline/dino-lineup.png",
           alt: "Many dinosaurs lined up in a dev display of their stratigraphic range",
+          height: 216,
         }}
       >
         Most of the custom models we are using are from the Prehistoric Fauna Mod. We have partnered with them and
@@ -157,6 +169,7 @@ export default function TimelineInfoPage() {
         image={{
           src: "/timeline/manual-excerpt.png",
           alt: "Sample page from the Timeline Manual book showing species entries and information",
+          height: 213,
         }}
         reverse
       >
@@ -171,6 +184,7 @@ export default function TimelineInfoPage() {
         image={{
           src: "/timeline/map-wall.png",
           alt: "Map of the geologic timeline composed of a long export of the chunks making it up",
+          height: 216,
         }}
       >
         The timeline map will allow players to select what part of time you want to visit but it will also display
@@ -180,8 +194,9 @@ export default function TimelineInfoPage() {
       <div className="divider" />
       <p className="text-pretty">
         Beyond this, there is the need to keep everything behind the scenes organized. I would like to support this even
-        after its release. There are a few future ideas that would be great to incorporate and I'm always willing to
-        hear new ones too.
+        after its release.
+        <br />
+        There are a few future ideas that would be great to incorporate and I'm always willing to hear new ones too.
       </p>
       <div className="flex flex-wrap justify-center gap-2">
         <BreadCrumbs
@@ -215,7 +230,7 @@ export default function TimelineInfoPage() {
 const BreadCrumbs: FC<{ entries: { title: string; href: string; Icon: React.FC<{ className: string }> }[] }> = ({
   entries,
 }) => (
-  <div className="breadcrumbs">
+  <div className="breadcrumbs p-0">
     <ul className="group">
       {entries.map((e) => (
         <li
@@ -265,7 +280,7 @@ const IconDiscordLogo: FC<SVGProps<SVGSVGElement>> = (props) => (
   </svg>
 );
 
-const Section: FC<PropsWithChildren<{ image: { src: string; alt: string }; reverse?: boolean }>> = ({
+const Section: FC<PropsWithChildren<{ image: { src: string; alt: string; height: number }; reverse?: boolean }>> = ({
   children,
   image,
   reverse,
@@ -275,13 +290,7 @@ const Section: FC<PropsWithChildren<{ image: { src: string; alt: string }; rever
       className="hero-content flex-col px-0 lg:flex-row data-[reversed=true]:lg:flex-row-reverse"
       data-reversed={reverse}
     >
-      <Image
-        src={image.src}
-        alt={image.alt}
-        className="max-w-sm not-sm:max-w-full rounded-box shadow-2xl"
-        width={384}
-        height={384}
-      />
+      <Image className="max-w-full shrink-0 rounded-box shadow-2xl" width={384} {...image} />
       <p className="max-w-4xl rounded-box bg-base-200/25 p-4">{children}</p>
     </div>
   </section>
