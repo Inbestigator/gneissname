@@ -15,12 +15,11 @@ export default function TimelineInfoPage() {
     <div className="mt-6 mb-8 flex flex-col items-center justify-center gap-4 text-balance text-center md:my-10">
       <h1>Geologic Timeline Project</h1>
       <p className="text-pretty">
-        Deep time is a concept that is hard to wrap your head around, and when displayed it is often condensed. Such as
-        in my booth at{" "}
+        Deep time is hard to wrap your head around, so my booth at{" "}
         <Link href="https://smithed.net/summit" target="_blank" className="link link-hover text-[revert]">
           Smithed Summit 2026
-        </Link>
-        .
+        </Link>{" "}
+        condenses it into a tangible form.
       </p>
       <Section
         image={{
@@ -34,41 +33,41 @@ export default function TimelineInfoPage() {
         between events.
         <br />
         <br />
-        Alongside this scaled geologic timeline is a diorama that represents earth at that time. The timeline includes
-        major events in earth's history, custom models and textures for plants and animals, and animated displays all
-        based on real paleontological information.
+        Alongside this scaled geologic timeline is a diorama that represents Earth at that time. The timeline includes
+        major events in Earth&rsquo;s history, custom models and textures for plants and animals, and animated displays,
+        all based on real paleontological information.
       </Section>
       <Section
         image={{ src: "/timeline/wide-shot.png", alt: "Wide shot of the Geologic Timeline Project", height: 216 }}
         reverse
       >
-        So why do this in vanilla, and not with mods? Because I want anyone to be able to just own Minecraft, download
-        the world, and use it without knowledge of mods.
+        So why do this in vanilla instead of with mods? Because I want anyone who owns Minecraft to be able to download
+        the world and use it without any knowledge of mods.
         <br />
         <br />
-        Minecraft is very approachable and it's one of the reasons why it's a good platform for education. My target
-        audience is anyone that is interested in earth's history but my aim is to have it accurate enough to be used by
-        educators.
+        Minecraft is very approachable, and that&rsquo;s one of the reasons it&rsquo;s a good platform for education. My
+        target audience is anyone interested in Earth&rsquo;s history, but my aim is to make it accurate enough to be
+        used by educators.
       </Section>
       <Section
         image={{
           src: "/timeline/old-thumbnail.png",
-          alt: "Thumbnail Image of the original geologic timeline video",
+          alt: "Thumbnail image of the original geologic timeline video",
           height: 294,
         }}
       >
         Creating a version of this was actually the original idea that got me thinking about using Minecraft to talk
-        about geology and starting my youtube channel.
+        about geology and starting my YouTube channel.
         <br />
         <br />
-        After working on it for a few years with some contributors I&rsquo;m ready to devote more time and energy to
-        complete it before the next real life geologic eon is upon us.
+        After working on it for a few years with some contributors, I&rsquo;m ready to devote more time and energy to
+        complete it before the next real-life geologic eon is upon us.
       </Section>
       <section className="hero text-pretty">
         <div className="hero-content flex-col px-0">
           <p className="mt-4">
             <span className="text-lg">
-              I&apos;m looking for contributors skilled in resource packs, datapacks, map making, Blockbench, modeling,
+              I&rsquo;m looking for contributors skilled in resource packs, datapacks, map-making, Blockbench, modeling,
               or pixel art.
             </span>
             <br />
@@ -98,8 +97,8 @@ export default function TimelineInfoPage() {
         </div>
       </section>
       <div className="divider" />
-      <h1>More details</h1>
-      <h2>World Building & Map Making</h2>
+      <h1>More Details</h1>
+      <h2>World-Building and Map-Making</h2>
       <Section
         image={{
           src: "/timeline/wide-shot-middle-600.png",
@@ -108,12 +107,12 @@ export default function TimelineInfoPage() {
         }}
         reverse
       >
-        The diorama is 4,567 blocks long, starting with the formation of earth and ending at present time. The goal is
-        to only use materials that would be present in that time, no green wool as grass etc. When there is a need for
-        something not in vanilla, we make it and add it to the resource pack.
+        The diorama is 4,567 blocks long, starting with the formation of Earth and ending at present time. The goal is
+        to use only materials that would be present at that time&mdash;no green wool standing in for grass, etc. When we
+        need something not found in vanilla, we make it and add it to the resource pack.
         <br />
         <br />
-        The initial layout was built using simple noise patterns and this needs to be refined for the middle three
+        The initial layout was built using simple noise patterns, and this needs to be refined for the middle three
         billion years by adding mountains, streams, sediment, etc.
       </Section>
       <Section
@@ -123,30 +122,30 @@ export default function TimelineInfoPage() {
           height: 216,
         }}
       >
-        The most recent ~600 million years has plants and animals of the time, constrained to their duration on earth.
-        For example T-rex was around from 69-66 mya so it's only in four blocks of the diorama. These custom resources
-        need to be added into the world to create little scenes and fit with the topography.
+        The most recent ~600 million years contains plants and animals of the time, constrained to their duration on
+        Earth. For example, <em>T. rex</em> was around from 69&ndash;66 <abbr title="Million Years Ago">mya</abbr>, so
+        it&rsquo;s only in four blocks of the diorama.
         <br />
         <br />
-        To give you an idea of scale, we have over 300 animals and 100 plants already created and are looking to include
-        more.
+        To give you an idea of scale, we already have over 300 animals and 100 plants created, and we&rsquo;re looking
+        to add more.
       </Section>
       <Section
         image={{
           src: "/timeline/museum-lobby.png",
-          alt: "Inside the circular lobby of a museum, showing a model of the earth hung from the cieling and multiple levels of exhibit halls, with a GuideName NPC.",
+          alt: "Inside the circular lobby of a museum, showing a model of the Earth hung from the ceiling and multiple levels of exhibit halls, with a GuideName NPC.",
           height: 216,
         }}
         reverse
       >
-        The spawn location and hub of the timeline is a museum which will contain an interactive map, orientation and
-        explanation of how and why we are doing things the way we are. Things like, if a tree's canopy is five blocks
-        wide, it doesn&rsquo;t mean the tree lived for five million years and other limitations that we have to concede
-        to make the world work.
+        The spawn location and hub of the timeline is a museum, which will contain an interactive map and an explanation
+        of how and why we&rsquo;re doing things the way we are&mdash;including the limitations we have to concede to
+        make the world work. For example, a five-block-wide tree canopy doesn&rsquo;t mean the tree lived for five
+        million years.
         <br />
         <br />
-        In a future release the Museum will also have rooms for each time period. The final design for the interior and
-        exterior of the museum needs to be decided on and built.
+        In a future release, the museum will also have rooms for each time period. The final interior and exterior
+        design still needs to be settled on and built.
       </Section>
       <h2>Resource Pack and Assets</h2>
       <Section
@@ -156,13 +155,13 @@ export default function TimelineInfoPage() {
           height: 216,
         }}
       >
-        Most of the custom models we are using are from the Prehistoric Fauna Mod. We have partnered with them and
+        Most of the custom models we are using are from the Prehistoric Fauna Mod. We have partnered with them, and
         besides using resources they have created for the mod, they have also created assets from other times for us to
         use.
         <br />
         <br />
-        The art direction goal is to keep things looking like it would fit in Minecraft. There are additional models
-        needed and we are really lacking animals specifically in the permian and cenozoic. A platypus is required.
+        Our art direction goal is to keep everything looking like it belongs in Minecraft. We still need additional
+        models, and we&rsquo;re especially lacking animals from the Permian and Cenozoic. A platypus is required.
       </Section>
       <h2>Datapack Work</h2>
       <Section
@@ -173,12 +172,12 @@ export default function TimelineInfoPage() {
         }}
         reverse
       >
-        Each player will be given a book which will use the dialog system (which I don&rsquo;t know anything about).
-        While on the timeline or in the diorama the player can open the book and it will display information for the
-        time period. This book will also basically act as a Pokedex. Plants and animals of each period will have grey
-        silhouettes in the book and once they are found in the world, an entry unlocks and gives more information. An
-        advancement is made once you find everything in a time period and I would like to add some more gameplay
-        elements to help facilitate exploration.
+        Each player will be given a book, which will use the dialog system (which I don&rsquo;t know anything about).
+        While on the timeline or in the diorama, the player can open the book, and it will display information for the
+        time period. This book will also function like a Pok&eacute;dex. Plants and animals of each period will have
+        gray silhouettes in the book, and once they are found in the world, an entry unlocks and gives more information.
+        An advancement is made once you find everything in a time period, and I would like to add some more gameplay
+        elements to encourage exploration.
       </Section>
       <Section
         image={{
@@ -187,16 +186,16 @@ export default function TimelineInfoPage() {
           height: 216,
         }}
       >
-        The timeline map will allow players to select what part of time you want to visit but it will also display
+        The timeline map will allow players to select what part of time they want to visit, but it will also display
         information relative to geologic time. Events like rates of extinction, the average global temperature, or a
         simplified tree of life can be selected and displayed in relation to geologic time.
       </Section>
       <div className="divider" />
       <p className="text-pretty">
-        Beyond this, there is the need to keep everything behind the scenes organized. I would like to support this even
+        Beyond this, everything behind the scenes needs to stay organized. I would like to support this project even
         after its release.
-        <br />
-        There are a few future ideas that would be great to incorporate and I'm always willing to hear new ones too.
+        <br />I have a few future ideas I&rsquo;d love to incorporate, and I&rsquo;m always open to hearing new ones
+        too.
       </p>
       <div className="flex flex-wrap justify-center gap-2">
         <BreadCrumbs

@@ -14,11 +14,27 @@ export default async function guess(interaction: ComponentInteraction, { answerI
   const isCorrect = hash("sha1", answerId, "hex").startsWith(hashed);
 
   if (session?.messageId === interaction.message.id && session.expiresAt > Date.now() && responses.length < 10) {
-    if (responses.some((a) => a.userId === interaction.user.id)) {
-      return interaction.editReply("You have already answered!");
-    }
-
     const ExplanationWrapper = session.game.explanation.endsWith("please suggest one!") ? Section : Fragment;
+
+    if (responses.some((a) => a.userId === interaction.user.id)) {
+      return interaction.editReply(
+        <>
+          ## You&apos;ve already answered!{"\n"}
+          ### Explanation:{"\n"}
+          <ExplanationWrapper
+            accessory={
+              <Button
+                custom_id={`ticket-open-Answer suggestion-For "${session.correct.id}"@761777382041714690`}
+                label="Suggest"
+                emoji={{ name: "💡" }}
+              />
+            }
+          >
+            {session.game.explanation}
+          </ExplanationWrapper>
+        </>,
+      );
+    }
 
     const editPromise = interaction.editReply(
       <>
