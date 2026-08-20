@@ -9,7 +9,6 @@ export default async function triviaDetails(interaction: ComponentInteraction, a
 
   if (
     session?.messageId === interaction.message.id &&
-    session.expiresAt > Date.now() &&
     responses.length < 10 &&
     !responses.some((a) => a.userId === interaction.user.id)
   ) {

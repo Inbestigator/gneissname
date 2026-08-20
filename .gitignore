@@ -39,3 +39,4 @@ tsconfig.tsbuildinfo
 
 bot.gen.ts
 .dressed/
+.vercel

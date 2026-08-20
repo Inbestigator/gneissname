@@ -34,7 +34,6 @@ export interface TriviaSession {
   correct: { id: string; text: string; hashed: string };
   messageId: string;
   channelId: string;
-  expiresAt: number;
   replaceableAt: number;
 }
 
@@ -84,6 +83,9 @@ async function getNextGame(): Promise<TriviaSession["game"] & { next: () => Prom
   return { ...game, next: () => fetchNext(list) };
 }
 
+export const sessionLink = (session: TriviaSession) =>
+  `https://discord.com/channels/750062409364013159/${session.channelId}/${session.messageId}`;
+
 export default async function trivia(interaction: CommandInteraction) {
   const [{ session: currentSession, responses }] = await Promise.all([
     getTriviaSession(),
@@ -95,10 +97,7 @@ export default async function trivia(interaction: CommandInteraction) {
         There is already a trivia game in progress!{"\n"}
         -# Replaceable &lt;t:{Math.round(currentSession.replaceableAt / 1000)}:R&gt;
         <ActionRow>
-          <Button
-            url={`https://discord.com/channels/750062409364013159/${currentSession.channelId}/${currentSession.messageId}`}
-            label="See trivia"
-          />
+          <Button url={sessionLink(currentSession)} label="See trivia" />
         </ActionRow>
       </>,
     );
@@ -140,7 +139,6 @@ export default async function trivia(interaction: CommandInteraction) {
     channelId: interaction.channel.id,
     messageId: "null",
     correct: { id: correct.id, text: correct.text, hashed: correctHash },
-    expiresAt: Date.now() + 45 * 6e4,
     replaceableAt: Date.now() + 15 * 6e4,
   };
 

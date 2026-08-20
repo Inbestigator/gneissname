@@ -3,7 +3,7 @@ import type { Params } from "@dressed/matcher";
 import { Button, type ComponentInteraction, editMessage, Section } from "@dressed/react";
 import { createAppEmoji } from "dressed";
 import { Fragment } from "react";
-import startTrivia, { getTriviaSession, markArchived, TriviaGame, type TriviaResponse } from "@/bot/commands/trivia";
+import { getTriviaSession, markArchived, sessionLink, TriviaGame, type TriviaResponse } from "@/bot/commands/trivia";
 import { modCredit } from "@/bot/utils";
 import { redis } from "@/db";
 
@@ -13,7 +13,7 @@ export default async function guess(interaction: ComponentInteraction, { answerI
   const [{ session, responses }] = await Promise.all([getTriviaSession(), interaction.deferReply({ ephemeral: true })]);
   const isCorrect = hash("sha1", answerId, "hex").startsWith(hashed);
 
-  if (session?.messageId === interaction.message.id && session.expiresAt > Date.now() && responses.length < 10) {
+  if (session?.messageId === interaction.message.id && responses.length < 10) {
     const ExplanationWrapper = session.game.explanation.endsWith("please suggest one!") ? Section : Fragment;
 
     if (responses.some((a) => a.userId === interaction.user.id)) {
@@ -95,16 +95,22 @@ export default async function guess(interaction: ComponentInteraction, { answerI
         (100 + Math.random() * 100) * (isCorrect ? 1 : -1),
         `trivia:${session.channelId}/${session.messageId}`,
       ),
-      // @ts-expect-error
-      responses.length >= 10 && startTrivia({ ...interaction, deferReply() {}, editReply() {} }),
     ]);
   } else {
     return Promise.all([
       interaction.editReply(
-        <>
+        <Section
+          accessory={
+            session && responses.length < 10 ? (
+              <Button url={sessionLink(session)} label="See the active game" />
+            ) : (
+              <Button custom_id="trivia-init" label="Start a new game" />
+            )
+          }
+        >
           ## {isCorrect ? "Correct" : "Nice try"}!{"\n"}
           -# This trivia has expired, so your answer isn&apos;t counted
-        </>,
+        </Section>,
       ),
       markArchived(interaction.message),
     ]);
