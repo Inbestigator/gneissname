@@ -32,6 +32,7 @@ export default async function leaderboard(interaction: CommandInteraction) {
   );
   return procrastinate(
     entriesPromise,
+    rankPromise,
     interaction.reply(
       <Container>
         ## Leaderboard{"\n"}
