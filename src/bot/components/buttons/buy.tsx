@@ -1,8 +1,7 @@
 import type { ComponentInteraction } from "@dressed/react";
 import { Suspense } from "react";
 import { shopItems } from "@/bot/commands/shop";
-import { modCredit, procrastinate } from "@/bot/utils";
-import { cache } from "@/db";
+import { getDBUser, modCredit, procrastinate } from "@/bot/utils";
 import { openTicket } from "../selects/ticket-open";
 
 const blockedShoppers = {
@@ -21,7 +20,7 @@ export default async function buy(
   if (!selectedItem) return interaction.reply("Item not found", { ephemeral: true });
   const { user } = interaction;
 
-  const [{ credit }] = await Promise.all([cache.getDBUser(user.id), interaction.deferReply({ ephemeral: true })]);
+  const [{ credit }] = await Promise.all([getDBUser(user.id), interaction.deferReply({ ephemeral: true })]);
 
   if (credit < selectedItem.price) {
     return interaction.editReply("You don't have enough to buy that!");

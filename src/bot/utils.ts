@@ -32,17 +32,12 @@ export async function modCredit(userId: string, modifier: number, reason: string
 }
 
 export async function getDBUser<T extends boolean = true>(
-  userId: string,
+  id: string,
   upsert?: T,
 ): Promise<T extends false ? User | undefined : User> {
-  let user = await prisma.user.findFirst({ where: { id: userId }, select: { credit: true } });
+  let user = await prisma.user.findFirst({ where: { id }, select: { credit: true } });
   if (!user && upsert !== false) {
-    user = await prisma.user.upsert({
-      where: { id: userId },
-      create: { id: userId, credit: 0 },
-      update: {},
-      select: { credit: true },
-    });
+    user = await prisma.user.upsert({ where: { id }, create: { id, credit: 0 }, update: {}, select: { credit: true } });
   }
   return user as User;
 }
